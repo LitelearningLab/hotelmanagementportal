@@ -1,0 +1,122 @@
+<div class="pagecontent">
+    <!-- row -->
+    <div class="row">
+        <!-- col -->
+        <div class="col-md-12">
+            <!-- tile -->
+            <section class="tile">
+                <form class="profile-settings" #categoryForm="ngForm" (ngSubmit)="onSubmit(categoryForm)"
+                    submit-validate name="categoryForm" novalidate>
+                    <fieldset ng-disabled="myBooleanValue">
+                        <!-- tile header -->
+                        <div class="tile-header dvd dvd-btm">
+                            <h4 class="custom-font">{{pagetitle}} Time Slot
+                            </h4>
+                        </div>
+                        <!-- /tile header -->
+                        <div class="tile-body">
+                            <div class="row">
+                                <div class="form-group col-md-4"
+                                    ng-class="{ 'has-error' : categoryForm.weekday.$invalid && !categoryForm.weekday.$pristine, 'has-success' : categoryForm.weekday.$valid && !categoryForm.weekday.$pristine}">
+                                    <label for="weekday" class="control-label">Weekdays<span
+                                            class="color_red">*</span></label>
+                                    <select type="text" name="weekday" id="weekday" class="form-control" ngModel
+                                        #weekday="ngModel" required>
+                                        <option value="">Select a Day</option>
+                                        <option value="Monday">Monday</option>
+                                        <option value="Tuesday">Tuesday</option>
+                                        <option value="Wednesday">Wednesday</option>
+                                        <option value="Thursday">Thursday</option>
+                                        <option value="Friday">Friday</option>
+                                        <option value="Saturday">Saturday</option>
+                                        <option value="Sunday">Sunday</option>
+                                    </select>
+                                    <p class="help-block">
+                                        <span class="invalid-feedback"
+                                            *ngIf="categoryForm.submitted && categoryForm.controls.weekday.errors && categoryForm.controls.weekday.errors.required">weekday
+                                            is
+                                            required.</span>
+                                    </p>
+                                </div>
+
+                                <div class="form-group col-md-4"
+                                    ng-class="{ 'has-error' : categoryForm.slottime.$invalid && !categoryForm.slottime.$pristine, 'has-success' : categoryForm.slottime.$valid && !categoryForm.slottime.$pristine}">
+                                    <label for="slottime">Slot Time<span class="color_red">*</span></label>
+                                    <input type="number" name="slottime" class="form-control" (change)="slotTimeChange($event)"
+                                        ngModel #slottime="ngModel" id="slottime" max="999"
+                                        required>
+                                    <p class="help-block">
+                                        Note:- Please Enter slot time in mints.
+                                        <span class="invalid-feedback"
+                                            *ngIf="categoryForm.submitted && categoryForm.value.slottime > 999">Slot
+                                            Time Must Be
+                                            Maximum Of 3 Numbers.</span>
+                                        <span class="invalid-feedback"
+                                            *ngIf="categoryForm.submitted && categoryForm.controls.slottime.errors && categoryForm.controls.slottime.errors.required">Slot
+                                            Time is required.</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                
+                                <div class="form-group col-md-4"
+                                    ng-class="{ 'has-error' : categoryForm.starttime.$invalid && !categoryForm.starttime.$pristine, 'has-success' : categoryForm.starttime.$valid && !categoryForm.starttime.$pristine}">
+                                    <label for="starttime">Start Time<span class="color_red">*</span></label>
+                                    <timepicker id="starttime" name="starttime" default-time="7pm" class="form-field" 
+                                    (ngModelChange) = "startTimeChanger($event)"
+                                        label="Enter time:" ngModel #starttime="ngModel" required>
+                                    </timepicker>
+                                    <p class="help-block">
+                                        <span class="invalid-feedback"
+                                            *ngIf="categoryForm.submitted && categoryForm.controls.starttime.errors && categoryForm.controls.starttime.errors.required">Start
+                                            Time is required.</span>
+                                    </p>
+                                </div>
+                                <div class="form-group col-md-4"
+                                    ng-class="{ 'has-error' : categoryForm.endtime.$invalid && !categoryForm.endtime.$pristine, 'has-success' : categoryForm.endtime.$valid && !categoryForm.endtime.$pristine}">
+                                    <label for="endtime">End Time</label>
+                                    <timepicker id="endtime" name="endtime" default-time="7pm" class="form-field" 
+                                        label="Enter time:" ng-model="TSAT.edittimeslotsData.time_end"  (ngModelChange) = "endTimeChanger($event)"
+                                        ngModel #endtime="ngModel" required></timepicker>
+                                    <p class="help-block">
+                                        <span class="invalid-feedback"
+                                            *ngIf="categoryForm.submitted && categoryForm.controls.endtime.errors && categoryForm.controls.endtime.errors.required">End
+                                            Time is required.</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4"
+                                    ng-class="{ 'has-error' : categoryForm.status.$invalid && !categoryForm.status.$pristine, 'has-success' : categoryForm.status.$valid && !categoryForm.status.$pristine}">
+                                    <label for="status">Status</label>
+                                    <select id="status" name="status" ngModel #status="ngModel" required
+                                        convert-to-number class="form-control mb-10">
+                                        <option value="" selected>Select</option>
+                                        <option value=1>Active</option>
+                                        <option value=2>Inactive</option>
+                                    </select>
+                                    <p class="help-block">
+                                        <span class="invalid-feedback"
+                                            *ngIf="categoryForm.submitted && categoryForm.controls.status.errors && categoryForm.controls.status.errors.required">Status
+                                            is required.</span>
+                                    </p>
+                                </div>
+                            </div>
+
+
+                            <div class="text-left">
+
+                                <button class="btn btn-success btn-ef btn-ef-5 btn-ef-5a"
+                                    ng-click="TSAT.submitTimeslot(categoryForm.$valid)">
+                                    <i class="fa fa-upload"></i> <span>Submit</span></button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </section>
+            <!-- /tile -->
+        </div>
+        <!-- /col -->
+    </div>
+    <!-- /row -->
+</div>

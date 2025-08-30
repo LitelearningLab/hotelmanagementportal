@@ -1,0 +1,7 @@
+<app-common-table [settings]="settings" [source]="source" [count]="count" [itemsPerPage]="default_limit"
+    [tablename]="'Institution List'" [add_btn]="add_btn" [viewUrl]="viewUrl" [addBtnUrl]="addBtnUrl" [addBtnName]="addBtnName"
+    [editUrl]="editUrl" [deleteApis]="deleteApis" [restoreApis]="restoreApis" (onDeleteChange)="onDeleteChange($event)"
+    (onitemsPerPageChange)="onitemsPerPageChange($event)" [card_details]="card_details"
+    (onPageChange)="onPageChange($event)" (onheaderCardChange)="onheaderCardChange($event)" [deletestatus]="deletestatus"
+    (onSearchChange)="onSearchChange($event)" [permanentdelete]="permanentdelete"[activeBulkAction]="activeBulkAction"[bulk_action]="bulk_action">
+</app-common-table>

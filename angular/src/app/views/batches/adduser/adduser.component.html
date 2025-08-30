@@ -1,0 +1,313 @@
+
+<div class="animated fadeIn" *ngIf="!viewpage">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- <div class="email-status" *ngIf="emailVerifyTag == 1">
+                <p><i class="fa fa-check" aria-hidden="true"></i> Email Verified </p>
+            </div>
+            <div class="email-unstatus" *ngIf="emailVerifyTag == 0">
+                <p><i class="fa fa-times" aria-hidden="true"></i> Email Unverified </p>
+            </div> -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="tabls-heading">
+                        <h3>{{pageTitle | titlecase}}</h3>
+                    </div>
+                </div>
+                <!-- <form #batchAddEditForm="ngForm" (ngSubmit)="onFormSubmit(batchAddEditForm)" autocomplete="off"> -->
+                    <!--Edit and add page-->
+                    <div class="card-body " *ngIf="!editbatchboolean">
+                        <h6 style="font-size: larger; font-weight: bolder;">Filter</h6>
+                     
+                        <form class="row" [formGroup]="filterForm" (ngSubmit)="onFilter()">
+                            <!-- <div class="col-md-3 mb-3">
+                              <label for="company">Company</label>
+                              <ng-select
+                                [items]="companynames"
+                                bindLabel="companyname"
+                                bindValue="_id"
+                                formControlName="company"
+                                class="form-control custom-ng-select p-0"
+                                (change)="getCountry($event)"
+                                placeholder="Select company"
+                              ></ng-select>
+                              <div *ngIf="filterForm.get('company').invalid && (filterForm.get('company').touched )">
+                                <small class="error" *ngIf="filterForm.get('company').hasError('required')">Company is required.</small>
+                              </div>
+                            </div> -->
+                          
+                            <!-- <div class="col-md-3 mb-3">
+                              <label for="country">Country</label>
+                              <ng-select
+                                [items]="countryList"
+                                bindLabel="country"
+                                bindValue="country"
+                                formControlName="country"
+                                class="form-control custom-ng-select p-0"
+                                (change)="getCity($event)"
+                                placeholder="Select Country"
+                              ></ng-select>
+                              <div *ngIf="filterForm.get('country').invalid && (filterForm.get('country').touched)">
+                                <small class="error" *ngIf="filterForm.get('country').hasError('required')">Country is required.</small>
+                              </div>
+                            </div> -->
+                          
+                            <div class="col-md-3 mb-3">
+                              <label for="city">City</label>
+                             
+                              <ng-select
+                                [items]="cityList"
+                                [multiple]="true"
+                                formControlName="city"
+                                class="form-control custom-ng-select p-0"
+                                placeholder="Select City"
+                              
+                              ></ng-select>
+                          
+                              <div *ngIf="filterForm.get('city').invalid && (filterForm.get('city').touched )">
+                                <small class="error" *ngIf="filterForm.get('city').hasError('required')">City is required.</small>
+                              </div>
+                            </div>
+                          
+                            <div class="col-md-3 mb-3">
+                              <label for="role">Role</label>
+                           
+                              <ng-select
+                                [items]="roleList"
+                                [multiple]="true"
+                                formControlName="role"
+                                class="form-control custom-ng-select p-0"
+                                placeholder="Select Role"
+                              ></ng-select>
+                              <div *ngIf="filterForm.get('role').invalid && (filterForm.get('role').touched )">
+                                <small class="error" *ngIf="filterForm.get('role').hasError('required')">Role is required.</small>
+                              </div>
+                            </div>
+                          
+                          
+                          
+                            <div class="col-md-3 mb-3">
+                              <label for="startDate">From Date</label>
+                             
+                              <input class="form-control datebg" readonly placeholder="Select start date"
+                              bsDatepicker formControlName="startdate" placement="left"
+                              [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-blue', showWeekNumbers: false, showTodayButton:true, todayPosition :'right' }"
+                              [maxDate]="maxDate" onkeydown="return false">
+                    
+
+                              <!-- <input type="date" class="form-control" formControlName="startdate" placeholder="Start Date" onfocus="'showPicker' in this && this.showPicker()"> -->
+                              <div *ngIf=" submitfilter&&filterForm.get('startdate').invalid">
+                                <small class="error" *ngIf="filterForm.get('startdate').hasError('required')">Start date is required.</small>
+                              </div>
+                            </div>
+                          
+                            <div class="col-md-3 mb-3">
+                              <label for="endDate">To Date</label>
+                              <!-- <input type="date" class="form-control" formControlName="enddate" placeholder="End Date" onfocus="'showPicker' in this && this.showPicker()"> -->
+                              <input class="form-control datebg" readonly placeholder="Select end date"
+                              bsDatepicker formControlName="enddate" placement="top"
+                             [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',containerClass:'theme-blue',showWeekNumbers: false , showTodayButton:true, todayPosition :'right' }"
+                              onkeydown="return false">
+             
+                              <div *ngIf="submitfilter&&filterForm.get('enddate').invalid ">
+                                <small class="error" *ngIf=" filterForm.get('enddate').hasError('required')">End date is required.</small>
+                                <small class="error" *ngIf="filterForm.get('enddate').hasError('endDateValidator')">End date cannot be earlier than start date.</small>
+                              </div>
+                              
+                            </div>
+                            
+                          
+                            <div class="mt-4 col-md-12">
+                              <button type="submit" class="btn btn-warning">Filter</button>
+                              <button class="btn btn-danger ml-3" type="button" (click)="clearForm()">Clear</button>
+                            </div>
+                            
+                          </form>
+                          
+                      
+
+                       
+                    </div>
+                    <div class="mt-5">
+                      <div *ngIf="showerror">
+                        <small style="font-size: 20px; font-weight: bold; font-family: monospace; color: red;" class="d-flex justify-content-center align-items-center">No Data Found</small>
+                      </div>
+                      
+                        <div *ngIf="this.showTable ">
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col"> <input 
+                                      type="checkbox" 
+                                      (change)="toggleSelectAll($event)" 
+                                        [checked]="isAllSelected" 
+                                      
+                                    /> #</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">E-mail</th>
+                                    <th scope="col">DOJ</th>
+                                    <th scope="col">Team</th>
+                                    <!-- <th scope="col"></th> -->
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  
+                                  <tr *ngFor="let user of userList;let i=index;">
+                                    <td scope="row"><input type="checkbox" (change)="onSelectUser(user, $event)"[checked]="selectedUsers.includes(user)"  style="margin-right: 5px;">{{ i+1}}</td>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.joindate|date }}</td>
+                                    <td>{{ user.team }}</td>
+                                  
+                                  </tr>
+                                </tbody>
+                              </table>
+                          
+                        </div>
+                        <hr style="font-weight: bold;" *ngIf="this.showTable " >
+                        <div class="d-flex justify-content-end" *ngIf="this.showTable">
+                          <button type="submit" (click)="submitBatchuser()" class="btn btn-primary">
+                            Add to Batch
+                          </button>
+                          <button (click)="clearForm()" style="margin-left: 12px;" class="btn btn-danger">
+                            Cancel
+                          </button>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+                    <!-- <div class="mt-3" *ngIf="showbatchform">
+                      <div>
+                        <h5 class="" style="font-weight: bold;">Batch details</h5>
+                      </div>
+                      <div class="mt-3">
+                        <form class="row" [formGroup]="batchForm" (ngSubmit)="submitBatch()">
+                          <div class="col-md-6 mb-3">
+                            <label for="company">Company <span class="mandatory">*</span></label>
+                            <ng-select
+                              [items]="companynames"
+                              bindLabel="companyname"
+                              bindValue="_id"
+                              formControlName="companyid"
+                              class="form-control custom-ng-select p-0"
+                              (change)="getCountry($event)"
+                              placeholder="Select company" 
+                            ></ng-select>
+                            <div *ngIf="batchForm.get('companyid').invalid && (batchForm.get('companyid').touched )">
+                              <small class="error" *ngIf="batchForm.get('companyid').hasError('required')">Company is required.</small>
+                            </div>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="city">City<span class="mandatory">*</span></label>
+                          
+                            <ng-select
+                              [items]="cityList"
+                            
+                              formControlName="city"
+                              class="form-control custom-ng-select p-0"
+                              placeholder="Select City"
+                            ></ng-select>
+                          
+                            <div *ngIf="batchForm.get('city').invalid && (batchForm.get('city').touched )">
+                              <small class="error" *ngIf="batchForm.get('city').hasError('required')">City is required.</small>
+                            </div>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="role">Role <span class="mandatory">*</span></label>
+                         
+                            <ng-select
+                              [items]="roleList"
+                             
+                              formControlName="role"
+                              class="form-control custom-ng-select p-0"
+                              placeholder="Select Role"
+                            ></ng-select>
+                            <div *ngIf="batchForm.get('role').invalid && (batchForm.get('role').touched )">
+                              <small class="error" *ngIf="batchForm.get('role').hasError('required')">Role is required.</small>
+                            </div>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="role">Team <span class="mandatory"></span></label>
+                         
+                            <ng-select
+                              [items]="teamList"
+                             
+                              formControlName="team"
+                              class="form-control custom-ng-select p-0"
+                              placeholder="Select Role"
+                            ></ng-select>
+                          
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="status">Status <span class="mandatory"></span></label>
+                              <select id="status" class="form-control" formControlName="status">
+                                <option value="1">Active</option>
+                                <option value="2">Inactive</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="startDate">Start Date<span class="mandatory">*</span></label>
+                           
+                              <input class="form-control datebg" readonly placeholder="Select start date"
+                                   bsDatepicker formControlName="startdate" placement="left"
+                                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',containerClass:'theme-blue',showWeekNumbers: false }"
+                                  [maxDate]="maxDate" onkeydown="return false">
+                  
+
+                           
+                            <div *ngIf="batchForm.get('startdate').invalid && (batchForm.get('startdate').touched )">
+                              <small class="error" *ngIf="batchForm.get('startdate').hasError('required')">Start date is required.</small>
+                            </div>
+                          </div>
+                        
+                          <div class="col-md-6 mb-3">
+                            <label for="endDate">End Date<span class="mandatory">*</span></label>
+                           
+                            <input class="form-control datebg" readonly placeholder="Select end date"
+                            bsDatepicker formControlName="enddate" placement="top"
+                           [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',containerClass:'theme-blue',showWeekNumbers: false }"
+                            onkeydown="return false">
+           
+                            <div *ngIf="batchForm.get('enddate').invalid && (batchForm.get('enddate').touched)">
+                              <small class="error" *ngIf="batchForm.get('enddate').hasError('required')">End date is required.</small>
+                            </div>
+                          </div>
+                          <div class="col-md-12 mb-3">
+                            <label for="endDate">Remarks</label>
+                            <textarea name="remarks" class="form-control" formControlName="remarks" placeholder="Enter your remarks" rows="5"  id="remarks"></textarea>
+                           
+           
+                            
+                          </div>
+                          
+                          <div class="mt-4 col-md-12">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                           
+                          </div>
+                         
+                     
+                        
+                        
+                        
+                         
+                        </form>
+
+                      </div>
+                    </div> -->
+                 
+                 
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+

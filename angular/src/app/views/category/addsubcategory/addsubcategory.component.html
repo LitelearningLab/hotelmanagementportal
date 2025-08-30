@@ -1,0 +1,269 @@
+<div class="animated fadeIn" *ngIf="!idExist">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>{{pageTitle | titlecase}}</strong>
+                    <!-- <p>Add Sub Category</p> -->
+                </div>
+                <form [formGroup]='subCategory' (ngSubmit)="onSubmit()" autocomplete="off">
+                    <div class="card-body">
+                        <div class="form-group grouping-strains row">
+                            <div class="col-md-6">
+                                <div class="group-control">
+                                    <label for="rcategory">Select Category <span class="mandatory">*</span></label>
+                                    <ng-select [items]="restaurantCatList" bindLabel="rcatname" bindValue="_id"
+                                        placeholder="Select item" [clearable]="false" [(ngModel)]="selectedCategory"
+                                        [ngClass]="{ 'is-invalid': submitted && rcatEditForm.rcategory.errors }"
+                                        formControlName="rcategory" (change)="getSubCategory(selectedCategory,0)">
+                                    </ng-select>
+                                    <p class="help-block">
+                                        <span class="invalid-feedback"
+                                            *ngIf="(rcatEditForm.rcategory.touched && rcatEditForm.rcategory.errors)||(submitted && rcatEditForm.rcategory.errors)">Category
+                                            is required.</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row" *ngFor="let field of fields.controls; let i = index" class="col-md-6">
+                                <div class="group-control">
+
+                                    <div formArrayName="fields" *ngIf="i <= 4">
+                                        <div>
+                                            <label>Category Level {{ i + 1 }}</label>
+
+                                            <select class="selectpicker" class='form-control'
+                                                [formControl]="field.get('dropdown')" (change)="onDropdownChange(i)"
+                                                data-live-search="true">
+                                                <option value="" selected disabled>Select category</option>
+                                                <option value="add-new">Add new</option>
+                                                <option *ngFor="let option of getDropdownOptions(i)"
+                                                    [value]="option._id">{{ option.scatname }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6" *ngIf="showOptions">
+                                <div class="group-control">
+                                    <label for="scatname">Sub Category Name <span class="mandatory">*</span> </label>
+                                    <input type="text" name="scatname" minlength="4" class="form-control" maxlength="30" [(ngModel)]="subCatName" (keyup)="changeSlug()" [ngModelOptions]="{standalone: true}"
+                                        placeholder="Enter Subcategory name" pattern='^[ A-Za-z0-9_@./\!$%^*()#&+-]*$'
+                                        formControlName="scatname" required>
+                                    <p class="help-block">
+                                        <span class="invalid-feedback"
+                                            *ngIf="(rcatEditForm.scatname.touched || submitted) && rcatEditForm.scatname.errors && (rcatEditForm.scatname.errors.required || rcatEditForm.scatname.errors.pattern)">
+                                            Sub Category name is required.</span>
+                                        <span class="invalid-feedback"
+                                            *ngIf="(rcatEditForm.scatname.touched || submitted) && rcatEditForm.scatname.errors && rcatEditForm.scatname.errors.minlength">Sub
+                                            Category Name Must Be
+                                            Minimum Of 4 Characters.</span>
+                                        <span class="invalid-feedback"
+                                            *ngIf="(rcatEditForm.scatname.touched || submitted) && rcatEditForm.scatname.errors && rcatEditForm.scatname.errors.maxlength">Sub
+                                            Category Name Must Be
+                                            Maximum Of 30 Characters.</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="showOptions">
+                                <div class="group-control">
+                                    <label for="slug">Slug <span class="mandatory">*</span> </label>
+                                    <input type="text" name="slug"class="form-control" [(ngModel)]="slugName" disabled [ngModelOptions]="{standalone: true}"
+                                        placeholder="Enter Subcategory name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="showOptions">
+                                <div class="group-control">
+                                    <label>Sub Category Image <span class="mandatory">*</span></label>
+                                    <span>
+                                        <input type="file" id="cimage" accept="image/*" name="cimage"
+                                            class="form-control" [required]="!previewImage" placeholder="Enter Name"
+                                            formControlName="cimage" (change)="fileUpload($event)">
+                                        <div *ngIf="submitted || rcatEditForm.cimage.touched">
+                                            <div class="invalid-feedback"
+                                                *ngIf="rcatEditForm.cimage.errors && rcatEditForm.cimage.errors.required">
+                                                Category image is required.
+                                            </div>
+                                        </div>
+                                    </span>
+                                    <span class="restaurant-img-error">Allowed files: png, jpg. Max file size 2Mb</span>
+                                    <img class="" height="150" [src]="previewImage">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6" *ngIf="showOptions">
+                                <div class="group-control">
+                                    <label for="status">Status <span class="mandatory">*</span></label>
+                                    <select name="status" id="status" class="form-control" name="status"
+                                        formControlName="status" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="1">Active</option>
+                                        <option value="2">Inactive</option>
+                                    </select>
+                                    <div *ngIf="rcatEditForm.status.touched || submitted">
+                                        <div class="invalid-feedback"
+                                            *ngIf="rcatEditForm.status.errors && rcatEditForm.status.errors.required">
+                                            Category status is
+                                            required.
+                                        </div>
+                                        <div class="invalid-feedback"
+                                            *ngIf="rcatEditForm.status.errors && rcatEditForm.status.errors.status">
+                                            Please enter valid
+                                            status
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-sm btn-success" *ngIf="showOptions">
+                            Submit
+                        </button>
+                        <button type="button" routerLink="/app/category/sub-category-list"
+                            class="btn btn-sm btn-danger">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="animated fadeIn" *ngIf="idExist">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>{{pageTitle | titlecase}}</strong>
+
+                </div>
+                <form [formGroup]='subCategory' (ngSubmit)="onSubmit()" autocomplete="off">
+                    <div class="card-body">
+                        <div class="form-group grouping-strains row">
+                            <div class="col-md-6">
+                                <div class="group-control">
+                                    <label for="rcategory">Select Category <span class="mandatory">*</span></label>
+                                    <ng-select [items]="restaurantCatList" bindLabel="rcatname" bindValue="_id"
+                                        [disabled]="disabled" placeholder="Select item" [clearable]="false"
+                                        [(ngModel)]="selectedCategory"
+                                        [ngClass]="{ 'is-invalid': submitted && rcatEditForm.rcategory.errors }"
+                                        formControlName="rcategory" (change)="getSubCategory(selectedCategory,0)">
+                                    </ng-select>
+                                    <p class="help-block">
+                                        <span class="invalid-feedback"
+                                            *ngIf="(rcatEditForm.rcategory.touched && rcatEditForm.rcategory.errors)||(submitted && rcatEditForm.rcategory.errors)">Category
+                                            is required.</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row" *ngFor="let field of fields.controls; let i = index" class="col-md-6">
+                                <div class="group-control">
+
+                                    <div formArrayName="fields" [disabled]="disabled">
+                                        <div>
+                                            <label>Category Level {{ i + 1 }}</label>
+                                            <select class="selectpicker" class='form-control'
+                                                [formControl]="field.get('dropdown')" (change)="onDropdownChange(i)"
+                                                data-live-search="true">
+                                                <option value="" selected disabled>Select category</option>
+                                                <option value="add-new">Add new</option>
+                                                <option *ngFor="let option of getDropdownOptions(i)"
+                                                    [value]="option._id">{{ option.scatname }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6" *ngIf="showOptions">
+                                <div class="group-control">
+                                    <label for="scatname">Sub Category Name <span class="mandatory">*</span> </label>
+                                    <input type="text" name="scatname" minlength="4" class="form-control" maxlength="30" [(ngModel)]="subCatName" [ngModelOptions]="{standalone: true}"
+                                        placeholder="Enter Subcategory name" pattern='^[ A-Za-z0-9_@./\!$%^*()#&+-]*$'
+                                        formControlName="scatname" required>
+                                    <p class="help-block">
+                                        <span class="invalid-feedback"
+                                            *ngIf="(rcatEditForm.scatname.touched || submitted) && rcatEditForm.scatname.errors && (rcatEditForm.scatname.errors.required || rcatEditForm.scatname.errors.pattern)">
+                                            Sub Category name is required.</span>
+                                        <span class="invalid-feedback"
+                                            *ngIf="(rcatEditForm.scatname.touched || submitted) && rcatEditForm.scatname.errors && rcatEditForm.scatname.errors.minlength">Sub
+                                            Category Name Must Be
+                                            Minimum Of 4 Characters.</span>
+                                        <span class="invalid-feedback"
+                                            *ngIf="(rcatEditForm.scatname.touched || submitted) && rcatEditForm.scatname.errors && rcatEditForm.scatname.errors.maxlength">Sub
+                                            Category Name Must Be
+                                            Maximum Of 30 Characters.</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="showOptions">
+                                <div class="group-control">
+                                    <label for="slug">Slug <span class="mandatory">*</span> </label>
+                                    <input type="text" name="slug"class="form-control" [(ngModel)]="slugName" disabled [ngModelOptions]="{standalone: true}"
+                                        placeholder="Enter Subcategory name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="showOptions">
+                                <div class="group-control">
+                                    <label>Sub Category Image <span class="mandatory">*</span></label>
+                                    <span>
+                                        <input type="file" id="cimage" accept="image/*" name="cimage"
+                                            class="form-control" [required]="!previewImage" placeholder="Enter Name"
+                                            formControlName="cimage" (change)="fileUpload($event)">
+                                        <div *ngIf="submitted || rcatEditForm.cimage.touched">
+                                            <div class="invalid-feedback"
+                                                *ngIf="rcatEditForm.cimage.errors && rcatEditForm.cimage.errors.required">
+                                                Category image is required.
+                                            </div>
+                                        </div>
+                                    </span>
+                                    <span class="restaurant-img-error">Allowed files: png, jpg. Max file size 2Mb</span>
+                                    <img class="" height="150" [src]="previewImage">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6" *ngIf="showOptions">
+                                <div class="group-control">
+                                    <label for="status">Status <span class="mandatory">*</span></label>
+                                    <select name="status" id="status" class="form-control" name="status"
+                                        formControlName="status" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="1">Active</option>
+                                        <option value="2">Inactive</option>
+                                    </select>
+                                    <div *ngIf="rcatEditForm.status.touched || submitted">
+                                        <div class="invalid-feedback"
+                                            *ngIf="rcatEditForm.status.errors && rcatEditForm.status.errors.required">
+                                            Category status is
+                                            required.
+                                        </div>
+                                        <div class="invalid-feedback"
+                                            *ngIf="rcatEditForm.status.errors && rcatEditForm.status.errors.status">
+                                            Please enter valid
+                                            status
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-sm btn-success" *ngIf="showOptions">
+                            Submit
+                        </button>
+                        <button type="button" routerLink="/app/category/sub-category-list"
+                            class="btn btn-sm btn-danger">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

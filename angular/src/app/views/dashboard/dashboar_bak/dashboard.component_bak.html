@@ -1,0 +1,426 @@
+<h1>dashboard</h1>
+<div class="animated fadeIn">
+    <div class="content">
+        <div class="container-fluid dashboard-container">
+            <section class="dashboard-structure" id="widget1">
+                <div class="listmain-dash">
+                    <div class="histmain-dash clr-green">
+                        <div class="shape-handle">
+                            <div class="main-middle">
+                                <div class="left-counter">
+                                    <span> <i class="fi fi-rr-shopping-cart"></i> </span>
+                                </div>
+                                <div class="right-counter">
+                                    <h6> Orders </h6>
+                                    <h5 id="total_users">{{dashBoardDetails.orders || 0}}</h5>
+                                </div>
+                            </div>
+
+                            <div class="common-shifts">
+                                <h5>Completed <span id="total_users">{{dashBoardDetails.completedOrders || 0}}</span>
+                                </h5>
+                                <h5>Inprogress <span id="total_users">{{dashBoardDetails.inprogressOrders || 0}}</span>
+                                </h5>
+                            </div>
+
+                            <p class="abs-links">
+                                <a routerLink="/app/orders/neworders"><img src="assets/image/arrow.svg"></a>
+                            </p>
+                        </div>
+                        <!-- <div class="box-top">
+                            <h5>ORDERS </h5>
+                            <h4 id="total_users">{{dashBoardDetails.orders || 0}}</h4>
+                        </div>    
+                        <div class="box-left">
+                            <h5>Completed </h5>
+                            <h4 id="total_users">{{dashBoardDetails.completedOrders || 0}}</h4>
+                        </div>
+                        <div class="box-right">    
+                            <h5>Inprogress </h5>
+                            <h4 id="total_users">{{dashBoardDetails.inprogressOrders || 0}}</h4>
+                        </div>    
+                        <p>
+                            <a routerLink="/app/orders/orders-dashboard" class="view-detail"><img src="assets/image/arrow.svg"></a>
+                        </p> -->
+                    </div>
+                </div>
+
+                <div class="listmain-dash">
+                    <div class="histmain-dash clr-yellow">
+                        <div class="shape-handle">
+                            <div class="main-middle">
+                                <div class="left-counter">
+                                    <span> <i class="fi fi-rr-user"></i> </span>
+                                </div>
+                                <div class="right-counter">
+                                    <h6> Users </h6>
+                                    <h5> {{dashBoardDetails.users || 0}} </h5>
+                                </div>
+
+                            </div>
+                            <div class="common-shifts">
+                                <h5>Active <span id="total_drivers">{{dashBoardDetails.activeUsers || 0}}</span> </h5>
+                                <h5>InActive <span id="total_drivers">{{dashBoardDetails.inactiveUsers || 0}}</span>
+                                </h5>
+                            </div>
+                            <p class="abs-links">
+                                <a routerLink="/app/users/list"><img src="assets/image/arrow.svg"></a>
+                            </p>
+                        </div>
+                        <!-- <div class="box-top">
+                            <h5>USER </h5>
+                            <h4 id="total_drivers">{{dashBoardDetails.users || 0}}</h4>
+                        </div>    
+                        <div class="box-left">
+                            <h5>Active </h5>
+                            <h4 id="total_drivers">{{dashBoardDetails.activeUsers || 0}}</h4>
+                        </div>
+                        <div class="box-right">    
+                            <h5>InActive</h5>
+                            <h4 id="total_drivers">{{dashBoardDetails.inactiveUsers || 0}}</h4>
+                        </div>    
+                        <p>
+                            <a routerLink="/app/users/list" class="view-detail"><img src="assets/image/arrow.svg"></a>
+                        </p> -->
+                    </div>
+                </div>
+
+                <!-- <div class="listmain-dash">
+                    <div class="histmain-dash clr-ancblue">
+                        <div class="shape-handle">
+                            <div class="main-middle">
+                                <div class="left-counter">
+                                    <span> <i class="fi fi-rr-steering-wheel"></i> </span>
+                                </div>
+                                <div class="right-counter">
+                                    <h6> Drivers </h6>
+                                    <h5> {{dashBoardDetails.drivers || 0}} </h5>
+                                </div>
+                            </div>
+                            <div class="common-shifts">
+                                <h5>Approved <span id="overdue_drivers">{{dashBoardDetails.approvedDrivers || 0}}</span>
+                                </h5>
+
+                                <h5>Unapproved <span id="overdue_drivers">{{dashBoardDetails.unapprovedDrivers ||
+                                        0}}</span>
+                                </h5>
+
+                                <h5>Online <span id="overdue_drivers">{{dashBoardDetails.onlineDrivers || 0}}</span>
+                                </h5>
+
+                                <h5>Offline <span id="overdue_drivers">{{dashBoardDetails.oflineDrivers || 0}}</span>
+                                </h5>
+                            </div>
+                            <p class="abs-links">
+                                <a [routerLink]="['/app/drivers/driverslist']" [queryParams]="{selected: 'feed'}"><img
+                                        src="assets/image/arrow.svg"></a>
+                            </p>
+                        </div>
+                        <div class="box-top">
+                            <h5>DRIVERS </h5>
+                            <h4 id="overdue_drivers">{{dashBoardDetails.drivers || 0}}</h4>
+                        </div>
+                        <div class="box-left">
+                            <h5>Approved </h5>
+                            <h4 id="overdue_drivers">{{dashBoardDetails.approvedDrivers || 0}}</h4>
+                        </div>
+                        <div class="box-right">    
+                            <h5>Unapproved </h5>
+                            <h4 id="overdue_drivers">{{dashBoardDetails.unapprovedDrivers || 0}}</h4>
+                        </div>
+                        <div class="box-left">    
+                            <h5>Online </h5>
+                            <h4 id="overdue_drivers">{{dashBoardDetails.onlineDrivers || 0}}</h4>
+                        </div>
+                        <div class="box-right">    
+                            <h5>Offline </h5>
+                            <h4 id="overdue_drivers">{{dashBoardDetails.oflineDrivers || 0}}</h4>
+                        </div>
+                        <p>
+                            <a [routerLink]="['/app/drivers/driverslist']" [queryParams]="{selected: 'feed'}" class="view-detail"><img src="assets/image/arrow.svg"></a>
+                        </p>
+                    </div>
+                </div> -->
+
+                <div class="listmain-dash">
+                    <div class="histmain-dash clr-orange">
+                        <div class="shape-handle">
+                            <div class="main-middle">
+                                <div class="left-counter">
+                                    <span> <i class="fi fi-rr-apps"></i> </span>
+                                </div>
+                                <div class="right-counter">
+                                    <h6> Products </h6>
+                                    <h5> {{dashBoardDetails.products || 0}} </h5>
+                                </div>
+                            </div>
+                            <div class="common-shifts">
+                                <!-- <h5> Recommended <span id="total_rides">{{dashBoardDetails.recommended || 0}}</span>
+                                </h5> -->
+
+                                <!-- <h5> Unrecommended <span id="total_rides">{{dashBoardDetails.unrecommended || 0}}</span>
+                                </h5> -->
+
+                                <h5> Active <span id="total_rides">{{dashBoardDetails.activeproducts || 0}}</span></h5>
+
+                                <h5> Inactive <span id="total_rides">{{dashBoardDetails.inactiveproducts || 0}}</span>
+                                </h5>
+                            </div>
+                            <p class="abs-links">
+                                <a routerLink="/app/products/list"><img src="assets/image/arrow.svg"></a>
+                            </p>
+                        </div>
+                        <!-- <div class="box-top">
+                            <h5> PRODUCTS </h5>
+                            <h4 id="total_rides">{{dashBoardDetails.products || 0}}</h4>
+                        </div>    
+                        <div class="box-left">
+                            <h5> Recommended </h5>
+                            <h4 id="total_rides">{{dashBoardDetails.recommended || 0}}</h4>
+                        </div>
+                        <div class="box-right">    
+                            <h5> Unrecommended </h5>
+                            <h4 id="total_rides">{{dashBoardDetails.unrecommended || 0}}</h4>
+                        </div>
+                        <div class="box-left">    
+                            <h5> Active </h5>
+                            <h4 id="total_rides">{{dashBoardDetails.activeproducts || 0}}</h4>
+                        </div>
+                        <div class="box-right">    
+                            <h5> Inactive </h5>
+                            <h4 id="total_rides">{{dashBoardDetails.inactiveproducts || 0}}</h4>
+                        </div>    
+                        <p>
+                            <a routerLink="/app/products/list" class="view-detail"><img src="assets/image/arrow.svg"></a>
+                        </p> -->
+                    </div>
+                </div>
+            </section>
+            <div class="tile-header dvd dvd-btm">
+                <h3 class="custom-font"> Today's Statistics </h3>
+            </div>
+            <section class="dashboard-structure" id="widget1">
+                <div class="listmain-dash">
+                    <div class="histmain-dash clr-green">
+                        <div class="medium-sta">
+                            <div class="counting-order">
+                                <i class="fi fi-rr-shopping-cart"></i>
+                            </div>
+
+                            <div class="order-lines">
+                                <h5>Orders </h5>
+                                <h6 id="total_users">{{todayOrder.total_orders || 0}}</h6>
+                            </div>
+                            <div class="common-shifts">
+                                <h5>Completed Orders <span id="total_users"> {{todayOrder.completedOrderDetails.count ||
+                                        0}}</span></h5>
+
+                                <h5>New Orders <span id="total_users">{{todayOrder.newOrderDetails.count || 0}}</span>
+                                </h5>
+
+                                <p class="abs-links">
+                                    <a routerLink="/app/orders/neworders"><img src="assets/image/arrow.svg"></a>
+                                </p>
+                            </div>
+
+                        </div>
+                        <!-- <div class="box-top">
+                            <h5>ORDERS </h5>
+                            <h4 id="total_users">{{todayOrder.total_orders || 0}}</h4>
+                        </div>    
+                        <div class="box-left">
+                            <h5>Completed Orders </h5>
+                            <h4 id="total_users">{{todayOrder.completedOrderDetails.count || 0}}</h4>
+                        </div>
+                        <div class="box-right">    
+                            <h5>New Orders </h5>
+                            <h4 id="total_users">{{todayOrder.newOrderDetails.count || 0}}</h4>
+                        </div>    
+                        <p>
+                            <a routerLink="/app/orders/orders-dashboard" class="view-detail"><img src="assets/image/arrow.svg"></a>
+                        </p> -->
+                    </div>
+                </div>
+
+                <div class="listmain-dash">
+                    <div class="histmain-dash clr-accepted">
+                        <div class="medium-sta">
+                            <div class="counting-order">
+                                <i class="fi fi-rr-shopping-cart-check"></i>
+                            </div>
+
+                            <div class="order-lines">
+                                <h5>Accepted Orders</h5>
+                                <h6> </h6>
+                                <!-- <h6 id="total_drivers">{{dashBoardDetails.users || 0}}</h6> -->
+                            </div>
+                            <div class="common-shifts">
+                                <h5>Packed Orders <span
+                                        id="total_drivers">{{todayOrder.restaurantAcceptOrderDetails.count || 0}}</span>
+                                </h5>
+
+                                <!-- <h5>Driver <span id="total_drivers">{{todayOrder.driverAcceptedOrderDetails.count ||
+                                        0}}</span> </h5>
+
+                                <h5>Pickedup Orders <span
+                                        id="total_drivers">{{todayOrder.driverPickedUpOrderDetails.count || 0}}</span>
+                                </h5> -->
+
+                                <p class="abs-links">
+                                    <a routerLink="/app/orders/packedorders"><img src="assets/image/arrow.svg"></a>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- <div class="histmain-dash clr-yellow">
+                        <div class="box-top">
+                            <h5>ACCEPTED ORDERS </h5>
+                             <h4 id="total_drivers">{{dashBoardDetails.users || 0}}</h4>
+                        </div>
+                        <div class="box-left">
+                            <h5>Packed Orders </h5>
+                            <h4 id="total_drivers">{{todayOrder.restaurantAcceptOrderDetails.count || 0}}</h4>
+                        </div>
+                        <div class="box-right">    
+                            <h5>Driver</h5>
+                            <h4 id="total_drivers">{{todayOrder.driverAcceptedOrderDetails.count || 0}}</h4>
+                        </div>
+                        <h5>Pickedup Orders</h5>
+                        <h4 id="total_drivers">{{todayOrder.driverPickedUpOrderDetails.count || 0}}</h4>
+                        <p>
+                            <a routerLink="/app/orders/orders-dashboard" class="view-detail"><img src="assets/image/arrow.svg"></a>
+                        </p>
+                    </div> -->
+                    </div>
+                </div>
+
+                <div class="listmain-dash">
+                    <div class="histmain-dash clr-reject">
+                        <div class="medium-sta">
+                            <div class="counting-order">
+                                <i class="fi fi-rr-delete document"></i>
+                            </div>
+                            <div class="order-lines">
+                                <h5>Rejected Orders</h5>
+                                <h6> </h6>
+                                <!-- <h6 id="overdue_drivers">{{todayOrder.drivers || 0}}</h6> -->
+                            </div>
+                            <div class="common-shifts">
+                                <h5>User <span id="overdue_drivers">{{todayOrder.userRejectedOrderDetails.count ||
+                                        0}}</span> </h5>
+
+                                <!-- <h5>Driver <span id="overdue_drivers">{{todayOrder.driverRejectedOrderDetails.count ||
+                                        0}}</span> </h5> -->
+
+                                <h5>Admin <span id="overdue_drivers">{{todayOrder.adminRejectedOrderDetails.count ||
+                                        0}}</span> </h5>
+
+                                <p class="abs-links">
+                                    <!-- <a [routerLink]="['/app/orders/usercancelledorders']"
+                                        [queryParams]="{selected: 'feed'}"><img src="assets/image/arrow.svg"></a> -->
+                                </p>
+                            </div>
+                        </div>
+                        <!-- <div class="histmain-dash clr-ancblue">
+                        <div class="box-top">
+                            <h5>REJECTED ORDERS </h5>
+                        </div>    
+                        <div class="box-left">
+                            <h5>User </h5>
+                            <h4 id="overdue_drivers">{{todayOrder.userRejectedOrderDetails.count || 0}}</h4>
+                        </div>
+                        <div class="box-right">    
+                            <h5>Driver </h5>
+                            <h4 id="overdue_drivers">{{todayOrder.driverRejectedOrderDetails.count || 0}}</h4>
+                            <h5>Admin </h5>
+                            <h4 id="overdue_drivers">{{todayOrder.adminRejectedOrderDetails.count || 0}}</h4>
+                        </div>    
+                        <p>
+                            <a [routerLink]="['/app/orders/orders-dashboard']" [queryParams]="{selected: 'feed'}" class="view-detail"><img src="assets/image/arrow.svg"></a>
+                        </p>
+                    </div> -->
+                    </div>
+                </div>
+
+                <div class="listmain-dash">
+                    <div class="histmain-dash clr-earning">
+                        <div class="medium-sta">
+                            <div class="counting-order">
+                                <i class="fi fi-rr-money"></i>
+                            </div>
+                            <div class="order-lines">
+                                <h5> Earnings </h5>
+                                <h6> </h6>
+                                <!-- <h6 id="total_rides">{{todayOrder.products || 0}}</h6> -->
+                            </div>
+
+                            <div class="common-shifts">
+                                <h5> Grand Total <span id="total_rides">{{grand_total || 0}}</span> </h5>
+
+                                <h5> Product Total <span id="total_rides">{{restaurant_total || 0}}</span> </h5>
+
+                                <!-- <h5> Tax Total <span id="total_rides">{{tax_total || 0}} </span> </h5>
+
+                                <h5> Delivery Charge <span id="total_rides">{{delivery_amount || 0}}</span> </h5> -->
+
+                                <!-- <h5> Coupon Total <span id="total_rides">{{coupon_total || 0}}</span> </h5> -->
+
+                                <p class="abs-links">
+                                    <a routerLink="/app/adminearnings/adminearningslist"><img
+                                            src="assets/image/arrow.svg"></a>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- <div class="histmain-dash clr-orange">
+                        <div class="box-top">
+                            <h5> EARNINGS </h5>
+                        </div>    
+                        <div class="box-left">
+                            <h5> Grand Total </h5>
+                            <h4 id="total_rides">{{grand_total || 0}}</h4>
+                        </div>
+                        <div class="box-right">    
+                            <h5> Product Total </h5>
+                            <h4 id="total_rides">{{restaurant_total || 0}}</h4>
+                        </div>
+                        <div class="box-left">    
+                            <h5> Tax Total </h5>
+                            <h4 id="total_rides">{{tax_total || 0}}</h4>
+                        </div>
+                        <div class="box-right">    
+                            <h5> Delivery Charge </h5>
+                            <h4 id="total_rides">{{delivery_amount || 0}}</h4>
+                        </div>    
+                        <h5> Coupon Total </h5>
+                        <h4 id="total_rides">{{coupon_total || 0}}</h4>
+                        <p>
+                            <a routerLink="/app/adminearnings/adminearningslist" class="view-detail"><img src="assets/image/arrow.svg"></a>
+                        </p>
+                    </div> -->
+                    </div>
+                </div>
+            </section>
+
+            <div class="tile-header">
+                <h3> Order Statistics </h3>
+            </div>
+
+            <!-- <div class="shift-graphs">
+                <div class="ranges-methods">
+                    <select class="select" name="earningyear" id="earningyear" [(ngModel)]="orderstatics"
+                        (ngModelChange)="onChangeOrderStatics($event)">
+                        <option value="7">Last 7 days</option>
+                        <option value="30">Last 1 month</option>
+                        <option value="180">Last 6 month</option>
+                        <option value="365">Last 1 year</option>
+                    </select>
+                    <div class="eargraph animation-loader">
+                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                            [options]="barChartOptions" [legend]="barChartLegend">
+                        </canvas>
+
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,165 @@
+<div class="animated fadeIn" *ngIf="!viewpage">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <h5 ><strong>{{ pageTitle | titlecase }}</strong></h5>
+          <!-- <div class="card-header">
+            
+          </div> -->
+          <form
+            #notificationForm="ngForm"
+            (ngSubmit)="onFormSubmit(notificationForm)"
+            autocomplete="off"
+          >
+            <div class="card-body">
+              <div class="form-group grouping-strains row">
+                <div class="col-md-6">
+                  <div class="group-control">
+                    <label for="name"
+                      >Title<span class="mandatory">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="title"
+                      ngModel
+                      title="title"
+                      #title="ngModel"
+                      name="title"
+                      required
+                      class="form-control"
+                      placeholder="Enter Title"
+                      maxlength="100"
+                      [ngClass]="{
+                        'is-invalid': notificationForm.submitted && title.errors,
+                        'is-valid': !title.errors && title.valid
+                      }"
+                    />
+                    <div *ngIf="notificationForm.submitted && !title.valid">
+                      <div class="invalid-feedback" *ngIf="title.errors.required">
+                       Title is required.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="group-control">
+                      <label for="message"
+                        >Message<span class="mandatory">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="message"
+                        ngModel
+                        message="message"
+                        #message="ngModel"
+                        required
+                        name="message"
+                        class="form-control"
+                        placeholder="Enter Message"
+                        maxlength="150"
+                        [ngClass]="{
+                          'is-invalid': notificationForm.submitted && message.errors,
+                          'is-valid': !message.errors && message.valid
+                        }"
+                      />
+                      <div *ngIf="notificationForm.submitted && !message.valid">
+                        <div class="invalid-feedback" *ngIf="message.errors.required">
+                            Message is required.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="group-control">
+                      <label for="file"
+                        >Image<span class="mandatory">*</span>
+                      </label>
+                      <input
+                        type="file"
+                        id="file"
+                        ngModel
+                        file="file"
+                        #file="ngModel"
+                        required
+                        name="file"
+                        class="form-control"
+                        placeholder="Enter Message"
+                        (change)="changefile($event)"
+                   
+                        [ngClass]="{
+                          'is-invalid': notificationForm.submitted && file.errors,
+                          'is-valid': !file.errors && file.valid
+                        }"
+                      />
+                     <div>
+                      <div *ngIf="notificationForm.submitted && !file.valid">
+                        <div class="invalid-feedback" *ngIf="file.errors.required">
+                            image is required.
+                        </div>
+                      </div>
+                      <div>
+                        <small>width:3840 px and hight:2400 px</small>
+                      </div>
+
+                     </div>
+                    
+                    </div>
+                  </div>
+             
+             
+                <!-- <div class="col-md-6">
+                  <div class="group-control">
+                    <label for="status"
+                      >Status <span class="mandatory">*</span></label
+                    >
+                    <select
+                      name="status"
+                      id="status"
+                      class="form-control"
+                      ngModel
+                      name="status"
+                      #status="ngModel"
+                      required
+                      [ngClass]="{
+                        'is-invalid': notificationForm.submitted && status.errors,
+                        'is-valid': !status.errors && status.valid
+                      }"
+                    >
+                      <option value="1">Active</option>
+                      <option value="2">Inactive</option>
+                    </select>
+                    <div *ngIf="notificationForm.submitted && !status.valid">
+                      <div
+                        class="invalid-feedback"
+                        *ngIf="status.errors.required"
+                      >
+                        Status is required.
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+            <div class="card-footer">
+              <button
+                type="submit"
+                *ngIf="!viewpage"
+                class="btn btn-sm btn-success"
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                *ngIf="!viewpage"
+                routerLink="/app/notificationss/list"
+                class="btn btn-sm btn-danger"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

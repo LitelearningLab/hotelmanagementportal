@@ -1,0 +1,472 @@
+<div class="row" *ngIf="user_based_name">
+    <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0 tabls-heading">
+        <h3>{{user_based_name | titlecase }}</h3>
+    </div>
+</div>
+<div class="animated fadeIn" *ngIf="card_details && card_details.length > 0">
+    <div class="row">
+        <div class="col-lg-12">
+            <section class="dashboard-structure" id="widget1">
+                <div class="listmain-dash" *ngFor="let item of card_details"
+                [ngClass]="{'header-card': (cardActive && item.click_val && item.click_val == cardActive) ? true: false }"
+                (click)="headercardfun(item.click_val)">
+                    <div class="histmain-dash {{item.bg_color}}">
+                        <h5>{{item.title}}</h5>
+                        <h4 id="total_users">{{item.value}}</h4>
+                    </div>
+                </div>
+            </section>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="filter" *ngIf="filter_action">
+    <!-- <div class="col-md-6 p-0">
+        <h2> <span (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic">
+                <i class="fa fa-filter" aria-hidden="true"></i> Filter <i
+                    class="{{!isCollapsed ? 'fa fa-angle-up' : 'fa fa-angle-down'}}"></i></span>
+        </h2>
+    </div> -->
+    <div class="col-md-6 p-0">
+        <div class="btn-group export-lists" dropdown *ngIf="export_btn">
+            <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                Export <span class="caret"></span>
+            </button>
+            <ul *dropdownMenu class="dropdown-menu" role="menu">
+                <!-- <li role="menuitem"><a class="dropdown-item" (click)="exportFunction('csv')">CSV</a></li> -->
+                <li role="menuitem"><a class="dropdown-item" (click)="exportFunction('excel')">EXCEL</a></li>
+                <!-- <li role="menuitem"><a class="dropdown-item" (click)="exportFunction('pdf')">PDF</a></li> -->
+            </ul>
+        </div>
+    </div>
+    <div class="filter-box filbox-imports" id="collapseBasic" [collapse]="isCollapsed">
+        <div class="col-12">
+            <form [formGroup]="filterForm" autocomplete="off" (ngSubmit)="filterSubmite()">
+                <div class="row">
+                    <div class="filter-spilt {{filter_action_list.length >= 4 ? 'col-2':'col-4'}}"
+                        *ngFor="let item of filter_action_list; let i=index">
+                        <div class="filter-list">
+                            <label>{{item.name}}</label>
+                            <div *ngIf="item.tag == 'input'">
+                                <input class="form-control datebg" 
+                                       readonly 
+                                       placeholder="Select {{item.name}}"
+                                       type="text" 
+                                       *ngIf="item.type == 'date'" 
+                                       bsDatepicker 
+                                       formControlName="field_{{i}}"
+                                       [bsConfig]="bsConfig">
+                              </div>
+
+                            <div *ngIf="item.tag == 'input'">
+                                <input class="form-control datebg" placeholder="Select {{item.name}}" type="text"
+                                    *ngIf="item.name == 'Order Id'" formControlName="field_{{i}}">
+                            </div>
+
+                            <div class="filter_btn" *ngIf=" item.tag=='select'">
+                                <!-- <select name="" class=" form-control" formControlName="field_{{i}}"
+                                    *ngIf="item.name == 'City'" [(ngModel)]="city">
+                                    <option value="" disabled selected hidden>Select city</option>
+                                    <option *ngFor="let list of cityList; let i=index" [value]="list._id">
+                                        {{list.cityname}}
+                                    </option>
+                                </select> -->
+
+                                
+                                <ng-select  *ngIf="item.name == 'Institution'" [items]="companyList"
+                                        bindLabel="companyname" bindValue="_id" [(ngModel)]="Company" name="company"
+                                        class="form-control custom-ng-select" formControlName="field_{{i}}" (change)="getCountry(Company)"
+                                         placeholder="Select Institution">
+                                    </ng-select>
+                                    <ng-select *ngIf="item.name == 'Country'" [items]="countryList"
+                                    [(ngModel)]="country" name="country" bindValue="country" (change)="getCity(country)"  bindLabel="country"
+                                    class="form-control custom-ng-select" formControlName="field_{{i}}" 
+                                     placeholder="Select Country"  (change)="($event)">
+                                </ng-select>
+                                    <ng-select *ngIf="item.name == 'City'" [items]="cityList"
+                                    [(ngModel)]="city" name="city"
+                                    [multiple]="batchlisting"
+
+                                    class="form-control custom-ng-select" formControlName="field_{{i}}" 
+                                     placeholder="Select City">
+                                </ng-select>
+                                <ng-select *ngIf="item.name == 'Year'" [items]="roleList"
+                                [(ngModel)]="role" name="role"   [multiple]="batchlisting"
+                                class="form-control custom-ng-select" formControlName="field_{{i}}" 
+                                 placeholder="Select Year">
+                            </ng-select>
+                            <ng-select *ngIf="item.name == 'Course'" [items]="teamList"
+                            [(ngModel)]="team" name="team"
+                            class="form-control custom-ng-select" formControlName="field_{{i}}" 
+                             placeholder="Select Course">
+                            </ng-select>
+                                
+                                <select name="" class="form-control" formControlName="field_{{i}}"
+                                    *ngIf="item.name == 'Brands'" [(ngModel)]="brands">
+                                    <option value="" disabled selected hidden>Select Brands</option>
+                                    <option *ngFor="let list of brandsList; let i=index" [value]="list._id">
+                                        {{list.brandname}}
+                                    </option>
+                                </select>
+                                <select name="" class="form-control" formControlName="field_{{i}}"
+                                    *ngIf="item.name == 'Status'" [(ngModel)]="status">
+                                    <option value="" disabled selected hidden>Select Status</option>
+                                    <option value="3">All</option>
+                                    <option value="1">Active</option>
+                                    <option value="2">In Active</option>
+                                    <!-- <option value="0">Deleted</option> -->
+                                </select>
+                                
+                                <select name="" class="form-control" formControlName="field_{{i}}"
+                                    *ngIf="item.name == 'Recommended'" [(ngModel)]="recommended">
+                                    <option value="" disabled selected hidden>Select Recommended</option>
+                                    <option value="1">Recommended</option>
+                                    <option value="0">Un Recommended</option>
+                                </select>
+                                <select name="" class="form-control" formControlName="field_{{i}}"
+                                    *ngIf="item.name == 'Category'" [(ngModel)]="Category"
+                                    (change)="getsubcategory(Category)">
+                                    <option value="" disabled selected hidden>Select category</option>
+                                    <option *ngFor="let list of categoryList; let i=index" [value]="list._id">
+                                        {{list.rcatname}}
+                                    </option>
+                                </select>
+                                <select name="" class="form-control" formControlName="field_{{i}}"
+                                    *ngIf="item.name == 'Subcategory'" [(ngModel)]="subcategory">
+                                    <option value="" disabled selected>Select Sub Category</option>
+                                    <option *ngFor="let list of subcategoryList; let i=index" [value]="list._id">
+                                        {{list.scatname}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-12 mt-4" >
+
+                        <div class="row">
+                            <div class="col-xs-12 col-12 col-md-4 form-group mb-3">
+                              <input type="text"
+                                     placeholder="Daterangepicker"
+                                     class="form-control"
+                                     bsDaterangepicker
+                                     [bsValue]="rangedatepiker"
+                                     [bsConfig]="{ showPreviousMonth: true }">
+                            </div>
+                          </div>
+                    </div> -->
+                    <div class="col-2 filter-spilt">
+                        <div class="filter-list filter-btn" style="margin-right: 0px !important;">
+                            <label></label>
+                            <button type="submit" class="btn btn-success btn-sm" style="margin-right: 2px !important;" [disabled]="!filterForm?.dirty">Submit</button>
+                            <button type="button" (click)="filterForm.reset(); clearformData()" class="btn btn-secondary btn-sm" style="margin-right: 0px !important;"
+                                [disabled]='!filterForm?.dirty'>Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0 tabls-heading">
+            <h3>{{tablename}}</h3>
+        </div>
+        <!-- <div *ngIf="add_btn && !template" class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0 adds-heading">
+            <div class="mr-1 mb-1 table-add-btn">
+                <button class="btn subdomain" routerLink="{{addBtnUrl}}">
+                    <i class="fa fa-plus-circle"></i> <strong> {{addBtnName | titlecase }}</strong>
+                </button>
+            </div>
+        </div> -->
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 col-lg-3" *ngIf="bulk_action && !notification_action">
+                            <div class="mr-1 mb-1">
+                                <select name="bulk-action" (change)="actionclicked()" id="bulk-action" class="form-control"
+                                    [(ngModel)]="bulkactions" placeholder="Bulk Action">
+                                    <option disabled value="bulkaction">Bulk Action</option>
+                                    <option value="delete">Delete</option>
+                                    <!-- <option *ngIf='user_list_filter_action' value="inactive">InActive</option>
+                                    <option *ngIf='activeBulkAction' value="active">Active</option> -->
+                                </select>
+                            </div>
+                        </div>
+                        <div *ngIf="add_btn " class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0 adds-heading">
+                            <div class="mr-1 mb-1 table-add-btn1">
+                                <button class="btn subdomain addsub-admin" routerLink="{{addBtnUrl}}">
+                                    <i class="fa fa-plus" aria-hidden="true"></i> {{addBtnName | titlecase }}
+                                </button>
+                            </div>
+                        </div>
+                        <div *ngIf="add_user" class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0 adds-heading">
+                            <div class="mr-1 mb-1 table-add-btn1" (click)="showAddModal()">
+                                <button class="btn subdomain addsub-admin">
+                                    <i class="fa fa-plus" aria-hidden="true"></i> Add User
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-lg-6 mar-spaces" *ngIf="!bulk_action && notification_action">
+                            <div class="mr-1 mb-1">
+                                <button class="btn send-inst" style="margin-right: 10px;"
+                                    (click)="sendMailNotify('mail')">
+                                    <i class="fa fa-envelope"></i> Send Mail
+                                </button>
+                                <button class="btn send-noti" (click)="sendMailNotify('push')">
+                                    <i class="fa fa-bell"></i> Send Notification
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-lg-2" *ngIf="bulk_action">
+                            <div class="mr-1 mb-1" >
+                                <button type="button" [disabled]="acitivebulkbutton" (click)="bulkActionChange()"
+                                    class="btn btn-light apply-btn">Apply</button>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-2 col-sm-2 col-lg-2" *ngIf="bulk_action && !notification_action">
+                            <div class="mr-1 mb-1" *ngIf="bulk_action && bulkSelect">
+                                <button type="button" (click)="bulkActionChange()"
+                                    class="btn btn-light apply-btn">Apply</button>
+                            </div>
+                        </div> -->
+                        <div class="col-md-4 col-sm-4 col-lg-3 search-input-tag">
+                            <div class="mr-1 mb-1" *ngIf="showSearch">
+                                <form autocomplete="off">
+                                    <input type="search" autocomplete="nope" name="kanavu" id='kanavu-sliks'
+                                        class="form-control" [ngModelOptions]="{standalone: true}" placeholder="Search"
+                                        (input)="onSearchKeyUp($event.target.value)">
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ng2-smart-table [settings]="settings" [source]="source" (custom)="onCustomAction($event)"
+                        [currentPage]="currentPerPage" [count]="count" (Pagechange)="Pagechange($event)"
+                        [itemsPerPage]="itemsPerPage" (PerPagechange)="PerPagechange($event)"
+                        (userRowSelect)="onUserRowSelect($event)">
+                    </ng2-smart-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div bsModal #deleteModal="bs-modal" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content cases-model">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Delete record</h5>
+                <button type="button" class="close" aria-label="Close" (click)="deleteModal.hide()">
+                    <span aria-hidden="true"> <i class="fa fa-times" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6 *ngIf="!deletestatus">Are you sure you want to delete? </h6>
+                <h6 *ngIf="deletestatus"> Are you sure you want to permanent delete? </h6>
+                <!-- <div class="form-group grouping-strains row bulk-delete-form" *ngIf="bulkSelect">
+                    <div class="col-md-6">
+                        <div class="group-control">
+                            <label for="username">Username <span class="mandatory">*</span></label>
+                            <input type="text" id="username" [(ngModel)]="username" name="username"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="group-control"> 
+                            <label for="password">Password <span class="mandatory">*</span></label>
+                            <input type="password" id="password" [(ngModel)]="password" name="password"
+                                class="form-control">
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn conform-dels" (click)="confirm()">
+                    Yes
+                </button>
+                <button type="button" class="btn conform-cancel" (click)="deleteModal.hide();username='';password=''">
+                    No
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #changebatchModal="bs-modal" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content cases-model">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Change Batch</h5>
+                <button type="button" class="close" aria-label="Close" (click)="changebatchModal.hide(errorstatus=false)">
+                    <span aria-hidden="true"> <i class="fa fa-times" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- <h6>Are you sure you want to changeBatch?</h6> -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="currentBatch1">Current Batch</label>
+                            <input type="text" id="currentBatch1" #currentBatch [disabled]="true" name="currentBatch1" class="form-control">
+                        </div>
+                    </div>
+                    <div class="group-control col-md-6">
+                          <label for="currentBatch1">Shift Batch</label>
+                        <ng-select [items]="batchlist" id="company" bindValue="_id"
+                            bindLabel="name" [multiple]="false" ngModel name="shiftbatch"
+                            #shiftbatch="ngModel" required placeholder="Select Your shiftbatch"
+                            [searchable]="true" [clearable]="true" (change)="datachange($event)" (search)="changepart($event)"
+                            [ngClass]="{ 'is-invalid':errorstatus }"
+                            [ngClass]="{ 'is-valid': errorstatus}">
+                            <!-- (change)="changecompany($event)" -->
+                           
+                            <ng-template ng-option-tmp let-item="item" let-index="index" >
+                                <b>{{ item.name }}</b>
+                            </ng-template>
+                        </ng-select>
+                    <div>
+                        <small *ngIf="errorstatus" style="color: red;" class="d-felx justify-content-start">This field is required</small>
+                    </div>
+                        </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn conform-dels" (click)="changeBatch(shiftbatch)">
+                    Submit
+                </button>
+                <button type="button" class="btn conform-cancel" (click)="changebatchModal.hide(errorstatus=false);username='';password=''">
+                    No
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div bsModal #addUserModal="bs-modal" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content cases-model">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add User</h5>
+                <button type="button" class="close" aria-label="Close" (click)="addUserModal.hide(errorstatus=false)">
+                    <span aria-hidden="true"> <i class="fa fa-times" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- <h6>Are you sure you want to changeBatch?</h6> -->
+                <div class="row">
+                    
+                    <div class="group-control col-md-12">
+                        <label for="currentBatch1" class="d-flex justify-content-start" style="font-weight: bolder;" >Select the User</label>
+                        <ng-select [items]="userList" id="useradd" bindValue="_id"
+                            bindLabel="username" [multiple]="true" ngModel name="useradd"
+                            #useradd="ngModel" required placeholder="Select Your user"
+                            [searchable]="true" [clearable]="true"  (change)="datachange($event)"
+                            [ngClass]="{ 'is-invalid':errorstatus }"
+                            [ngClass]="{ 'is-valid': errorstatus}">
+                          
+                            <ng-template ng-option-tmp let-item="item" let-index="index" >
+                                <b>{{ item.username }}</b>
+                            </ng-template>
+                        </ng-select>
+                        <div>
+                            <small *ngIf="errorstatus" style="color: red;" class="d-felx justify-content-start">This field is required</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn conform-dels" (click)="addUser(useradd)">
+                    Submit
+                </button>
+                <button type="button" class="btn conform-cancel" (click)="addUserModal.hide(errorstatus=false);username='';password=''">
+                    No
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #restoreModal="bs-modal" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content cases-model">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Restore record</h5>
+                <button type="button" class="close" aria-label="Close" (click)="restoreModal.hide(); destroySearc()">
+                    <span aria-hidden="true"> <i class="fa fa-times" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6> Are you sure you want to Restore? </h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn conform-dels" (click)="confirmRestore(); destroySearc()">
+                    Yes
+                </button>
+                <button type="button" class="btn conform-cancel" (click)="restoreModal.hide(); destroySearc()">
+                    No
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div bsModal #inactiveModal="bs-modal" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content cases-model">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{modalName}} record</h5>
+                <button type="button" class="close" aria-label="Close" (click)="inactiveModal.hide(); destroySearc()">
+                    <span aria-hidden="true"> <i class="fa fa-times" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6> Are you sure you want to {{modalName}}? </h6>
+                <div class="form-group grouping-strains row bulk-delete-form" *ngIf="bulkSelect">
+                    <div class="col-md-6">
+                        <div class="group-control">
+                            <label for="username">Username <span class="mandatory">*</span></label>
+                            <input type="text" id="username" [(ngModel)]="username" name="username"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="group-control">
+                            <label for="password">Password <span class="mandatory">*</span></label>
+                            <input type="password" id="password" [(ngModel)]="password" name="password"
+                                class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn conform-dels" (click)="confirmInActive(); destroySearc()">
+                    Yes
+                </button>
+                <button type="button" class="btn conform-cancel"
+                    (click)="inactiveModal.hide();username='';password=''; destroySearc()">
+                    No
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

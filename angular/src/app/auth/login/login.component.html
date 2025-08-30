@@ -1,0 +1,64 @@
+<div class="app-body cus-login">
+    <div class="main d-flex align-items-center login-middle background-image;" style="background-image: url('assets/img/backgroundimagae.jpg'); object-fit: fill;">
+        <div class="container" >
+            <div class="row">
+                <div class="col-md-5 mx-auto midl-spaces" >
+                    <div class="card-group" >
+                        <div class="card p-4" style="background-color: rgb(255, 255, 255); box-shadow: 0px 1px 10px rgb(18, 17, 17);" >
+                            <div class="card-body" >
+                                <form [formGroup]="loginform" (ngSubmit)="onFormSubmit()" autocomplete="off">
+                                    <div class="login-logo">
+                                        <!-- <img *ngIf="logo" [src]='environment+logo'> -->
+                                        <img src='assets/img/profluent-logo-1.png'>
+                                    </div>
+                                    <p class="text-muted" style="font-size: bold; font-family: monospace; color: black;">Sign In to your account</p>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-user-o"></i></span>
+                                        </div>
+                                        <input type="text" formControlName="username" class="form-control"
+                                            placeholder="Email" required name="username"  pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?">
+                                        <div class="req-content" *ngIf="from.username.errors && formsubmite">
+                                            <div *ngIf="from.username.errors.required && formsubmite">
+                                                Email name is required.
+                                            </div>
+                                            <div *ngIf="from.username.errors.pattern && formsubmite">Please enter valid Email</div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group mb-4">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                        </div>
+                                        <input [type]="passwordFieldType" formControlName="password" class="form-control"
+           placeholder="Password" required>
+    <div class="input-group-append">
+        <span class="input-group-text" (click)="togglePasswordVisibility()">
+            <i *ngIf="passwordFieldType === 'password'" class="fa fa-eye" aria-hidden="true"></i>
+            <i *ngIf="passwordFieldType === 'text'" class="fa fa-eye-slash" aria-hidden="true"></i>
+        </span>
+    </div>
+                                        <div class="req-content" *ngIf="from.password.errors && formsubmite">
+                                            <div *ngIf="from.password.errors.required && formsubmite">
+                                                Password is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <button type="submit"  [disabled]="submitted" class="btn btn-success px-4" style="font-weight: bold;">Login</button>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <button type="button" class="btn btn-link password-links px-0" style="font-family: monospace; font-weight: bold;"
+                                                routerLink="/auth/forgot">Forgot
+                                                password?</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

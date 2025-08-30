@@ -1,0 +1,35 @@
+<ol class="breadcrumb">
+  <ng-template ngFor let-breadcrumb [ngForOf]="breadcrumbs | async" let-last="last">
+    <li class="breadcrumb-item"
+        *ngIf="(breadcrumb.label.title || breadcrumb.params) && (breadcrumb.url.slice(-1) == '/' || last)"
+        [ngClass]="{active: last}">
+      
+      <a *ngIf="!last && breadcrumb.label.title === 'Home'" [routerLink]="breadcrumb.url">
+        <i class="fa fa-home home-icon-breadcrumb"></i>
+        {{ truncate(breadcrumb.label.title) }}
+      </a>
+      
+      <a *ngIf="!last && breadcrumb.label.title !== 'Home' && breadcrumb.label.title !== 'Reports'" [routerLink]="breadcrumb.url">
+        {{ truncate(breadcrumb.label.title) }}
+      </a>
+
+      <a *ngIf="last && breadcrumb.label.title !== 'Home'" [routerLink]="breadcrumb.url">
+        {{ truncate(breadcrumb.label.title) }}
+      </a>
+
+      <a *ngIf="!last && breadcrumb.label.title === 'Reports'">
+        {{ truncate(breadcrumb.label.title) }}
+      </a>
+
+      <a *ngIf="!isEmptyObject(breadcrumb.params)" [routerLink]="breadcrumb.url">
+        <ng-container *ngIf="!isEmptyObject(breadcrumb.params)">
+          <ng-container *ngFor="let key of objectKeys(breadcrumb.params); let lastParam = last">
+            > {{ truncate(breadcrumb.params[key]) }}
+            <ng-container *ngIf="!lastParam"> > </ng-container>
+          </ng-container>
+        </ng-container>
+      </a>
+    </li>
+  </ng-template>
+  <ng-content></ng-content>
+</ol>

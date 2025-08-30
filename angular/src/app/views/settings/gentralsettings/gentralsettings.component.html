@@ -1,0 +1,434 @@
+<div class="animated fadeIn general_setting">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-cogs"></i> General Settings
+                </div>
+
+                <form #gentrelSettingForm="ngForm" (ngSubmit)="onFormSubmit(gentrelSettingForm)" autocomplete="off">
+                    <div class="card-body">
+                        <div class="form-group grouping-strains row">
+                            <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="site_title">Site Title <span class="mandatory">*</span> </label>
+                                    <input type="text" id="site_title" ngModel name="site_title" #site_title="ngModel"
+                                    required class="form-control" placeholder="Enter Site Title"
+                                    pattern="^[^\d]+$"
+                                    [ngClass]="{ 'is-invalid': gentrelSettingForm.submitted && site_title.errors }"
+                                    [ngClass]="{ 'is-valid': !site_title.errors && site_title.valid}">
+                                <div *ngIf="gentrelSettingForm.submitted && !site_title.valid">
+                                    <div class="invalid-feedback" *ngIf="site_title.errors.required">Site Title is required.</div>
+                                    <div class="invalid-feedback" *ngIf="site_title.errors.pattern">Numbers are not allowed.</div>
+                                </div>                                
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="email_address">E-mail Address <span class="mandatory">*</span> </label>
+                                    <input type="text" id="email_address" ngModel name="email_address"
+                                        placeholder="Enter E-Mail" #email_address="ngModel" required
+                                        class="form-control" email
+                                        [ngClass]="{ 'is-invalid': gentrelSettingForm.submitted && email_address.errors }"
+                                        [ngClass]="{ 'is-valid': !email_address.errors && email_address.valid}">
+                                    <div *ngIf="gentrelSettingForm.submitted && !email_address.valid">
+                                        <div class="invalid-feedback" *ngIf="email_address.errors.required">E-Mail is
+                                            required.
+                                        </div>
+                                        <div class="invalid-feedback" *ngIf="email_address.errors.email">Invalid E-Mail
+                                            ID
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="phone">Phone Number <span class="mandatory">*</span> </label>
+                                    <input type="text" id="phone" ngModel name="phone" #phone="ngModel" required
+                                        class="form-control" placeholder="Enter Phone Number"
+                                        [ngClass]="{ 'is-invalid': gentrelSettingForm.submitted && phone.errors }"
+                                        [ngClass]="{ 'is-valid': !phone.errors && phone.valid}">
+                                    <div *ngIf="gentrelSettingForm.submitted && !phone.valid">
+                                        <div class="invalid-feedback" *ngIf="phone.errors.required">Phone Number is
+                                            required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="site_url">Site URL <span class="mandatory">*</span> </label>
+                                    <input type="text" id="site_url" ngModel name="site_url" #site_url="ngModel"
+                                        required class="form-control" placeholder="Enter Site URL"
+                                        [ngClass]="{ 'is-invalid': gentrelSettingForm.submitted && site_url.errors }"
+                                        [ngClass]="{ 'is-valid': !site_url.errors && site_url.valid}">
+                                    <div *ngIf="gentrelSettingForm.submitted && !site_url.valid">
+                                        <div class="invalid-feedback" *ngIf="site_url.errors.required">Site URL Number
+                                            is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="booking_id">Booking Id Prefix <span class="mandatory">*</span> </label>
+                                    <input type="text" id="booking_id" ngModel name="booking_id" #booking_id="ngModel"
+                                        required class="form-control" pattern="[A-Za-z\s\-.,'&]*"
+                                        placeholder="Enter Booking ID"
+                                        [ngClass]="{ 'is-invalid': gentrelSettingForm.submitted && booking_id.errors }"
+                                        [ngClass]="{ 'is-valid': !booking_id.errors && booking_id.valid}">
+                                    <div *ngIf="gentrelSettingForm.submitted && !booking_id.valid">
+                                        <div class="invalid-feedback" *ngIf="booking_id.errors?.pattern">
+                                            Only alphabetic characters, hyphens, periods, commas, apostrophes,
+                                            and ampersands are allowed"
+                                        </div>
+                                        <div class="invalid-feedback" *ngIf="booking_id.errors.required">Booking Id
+                                            Prefix is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="search_radius">Search Radius in Km <span class="mandatory">*</span>
+                                    </label>
+                                    <input type="number" id="search_radius" ngModel name="search_radius" #search_radius="ngModel" required class="form-control" placeholder="Enter Site URL" [ngClass]="{ 'is-invalid': gentrelSettingForm.submitted && search_radius.errors }" [ngClass]="{ 'is-valid': !search_radius.errors && search_radius.valid}">
+                                    <div *ngIf="gentrelSettingForm.submitted && !search_radius.valid">
+                                        <div class="invalid-feedback" *ngIf="search_radius.errors.required">Search Radius is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br> -->
+                            <!-- <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="admin_order">Admin order time out (Minutes) <span
+                                            class="mandatory">*</span> </label>
+                                    <input type="number" id="admin_order" ngModel name="admin_order"
+                                        #admin_order="ngModel" required class="form-control"
+                                        placeholder="Enter Site URL"
+                                        [ngClass]="{ 'is-invalid': gentrelSettingForm.submitted && admin_order.errors }"
+                                        [ngClass]="{ 'is-valid': !admin_order.errors && admin_order.valid}">
+                                    <div *ngIf="gentrelSettingForm.submitted && !admin_order.valid">
+                                        <div class="invalid-feedback" *ngIf="admin_order.errors.required">Admin order is
+                                            required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="drivers_order">Driver's order time out (Minutes)<span
+                                            class="mandatory">*</span> </label>
+                                    <input type="number" id="drivers_order" ngModel name="drivers_order" #drivers_order="ngModel" required class="form-control" placeholder="Enter Site URL" [ngClass]="{ 'is-invalid': gentrelSettingForm.submitted && drivers_order.errors }" [ngClass]="{ 'is-valid': !drivers_order.errors && drivers_order.valid}">
+                                    <div *ngIf="gentrelSettingForm.submitted && !drivers_order.valid">
+                                        <div class="invalid-feedback" *ngIf="drivers_order.errors.required">Driver's order is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="billing_cycle">Billing cycle <span class="mandatory">*</span> </label>
+                                    <input type="number" id="billing_cycle" ngModel name="billing_cycle" #billing_cycle="ngModel" required class="form-control" placeholder="Enter Site URL" [ngClass]="{ 'is-invalid': gentrelSettingForm.submitted && billing_cycle.errors }" [ngClass]="{ 'is-valid': !billing_cycle.errors && billing_cycle.valid}">
+                                    <div *ngIf="gentrelSettingForm.submitted && !billing_cycle.valid">
+                                        <div class="invalid-feedback" *ngIf="billing_cycle.errors.required">Billing cycle is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br> -->
+                            <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="web_header">Select Web Header Menu Category <span
+                                            class="mandatory">*</span> </label>
+                                    <ng-select [items]="webfoodcategory" id="web_header" bindValue="_id"
+                                        bindLabel="rcatname" [multiple]="true" ngModel name="web_header"
+                                        #web_header="ngModel" required placeholder="Select Your web_header"
+                                        [searchable]="true" [clearable]="true"
+                                        [ngClass]="{ 'is-invalid': gentrelSettingForm.submitted && web_header.errors }"
+                                        [ngClass]="{ 'is-valid': !web_header.errors && web_header.valid}">
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            <b>{{ item.rcatname }}</b>
+                                        </ng-template>
+                                    </ng-select>
+                                    <div *ngIf="gentrelSettingForm.submitted && !web_header.valid">
+                                        <div class="invalid-feedback" *ngIf="web_header.errors.required">Your Web Header
+                                            Menu is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="group-control m-0">
+                                    <label for="web_header">Ratings & Reviews <span class="mandatory">*</span> </label>
+                                    <label class="switch">
+                                        <input type="checkbox" ngModel name="reviwes_rating" [(ngModel)]="review_rat"
+                                            id="reviwes_rating" #reviwes_rating="ngModel" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="exampleSelect">Time Slot</label>
+                                <label class="switch">
+                                    <input type="checkbox" ngModel name="time_slot" id="time_slot"
+                                        [(ngModel)]="time_slot_check" (change)="change_timeSlot($event.target.checked)">
+                                    <span class="slider round"></span>
+                                </label>
+                                <!-- <select class="time_slot" id="exampleSelect" [(ngModel)]="time_slot" name="time_slot">
+                                    <option value="enable">Enable</option>
+                                    <option value="disable">Disable</option>
+                                </select> -->
+                            </div>
+                            <div class="col-md-4" *ngIf="time_slot === 'disable'">
+                                <!-- <div class="mt-4 no_of_day_delivery" > -->
+                                <label for="exampleSelect">Number of delivery days <span class="mandatory">*</span>
+                                </label>
+                                <input type="number" class="form-control" [(ngModel)]="number_of_days" [min]="1"
+                                    name="number_of_days">
+                                <!-- </div> -->
+                            </div>
+
+
+                            <!-- <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="mobile_header">Select Mobile Header Menu Category <span
+                                            class="mandatory">*</span> </label>
+                                    <ng-select [items]="mobilefoodcategory" id="mobile_header" bindValue="_id" bindLabel="rcatname" [multiple]="true" ngModel name="mobile_header" #mobile_header="ngModel" required placeholder="Select Your mobile_header" [searchable]="true" [clearable]="true"
+                                        [ngClass]="{ 'is-invalid': gentrelSettingForm.submitted && mobile_header.errors }" [ngClass]="{ 'is-valid': !mobile_header.errors && mobile_header.valid}">
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            <b>{{ item.rcatname }}</b>
+                                        </ng-template>
+                                    </ng-select>
+                                    <div *ngIf="gentrelSettingForm.submitted && !mobile_header.valid">
+                                        <div class="invalid-feedback" *ngIf="mobile_header.errors.required">Your Mobile Header Menu is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card-header">
+                        <i class="fa fa-cogs"></i> Currency Settings
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group grouping-strains row">
+                            <div class="col-md-6">
+                                <div class="group-control">
+                                    <label for="currency_code">Currency Code <span class="mandatory">*</span> </label>
+                                    <ng-select [items]="currency" id="currency_code" bindLabel="code" bindValue="code"
+                                        (change)="currencyChange($event)" [multiple]="false" ngModel
+                                        name="currency_code" #currency_code="ngModel" required
+                                        placeholder="Select Your currency_code" [searchable]="true" [clearable]="true"
+                                        [ngClass]="{ 'is-invalid': gentrelSettingForm.submitted && currency_code.errors }"
+                                        [ngClass]="{ 'is-valid': !currency_code.errors && currency_code.valid}">
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            <b>{{ item.code}}</b>
+                                        </ng-template>
+                                    </ng-select>
+                                    <div *ngIf="gentrelSettingForm.submitted && !currency_code.valid">
+                                        <div class="invalid-feedback" *ngIf="currency_code.errors.required">Currency
+                                            Code is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="group-control">
+                                    <label for="currency_symbol">Currency Symbol <span class="mandatory">*</span>
+                                    </label>
+                                    <input type="text" id="currency_symbol" ngModel name="currency_symbol"
+                                        #currency_symbol="ngModel" required class="form-control" readonly
+                                        [ngClass]="{ 'is-invalid': gentrelSettingForm.submitted && currency_symbol.errors }"
+                                        [ngClass]="{ 'is-valid': !currency_symbol.errors && currency_symbol.valid}">
+                                    <div *ngIf="gentrelSettingForm.submitted && !currency_symbol.valid">
+                                        <div class="invalid-feedback" *ngIf="currency_symbol.errors.required">Currency
+                                            Symbol is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-header">
+                        <i class="fa fa-cogs"></i> Site Settings
+                    </div>
+                    <!-- <div class="card-body">
+                        <div class="form-group grouping-strains row"> -->
+                    <!-- <div class="col-md-6">
+                                <label>Site Publish</label>
+                                <label class="checkbox checkbox-custom-alt ">
+                                    <input name="site_publish" type="radio" ngModel #site_publish="ngModel" value="1"
+                                        required><i></i> Production
+                                </label>
+                                <label class="checkbox checkbox-custom-alt ">
+                                    <input name="site_publish" type="radio" ngModel #site_publish="ngModel" value="0"
+                                        required><i></i> Development
+                                </label>
+                            </div> -->
+                    <!-- <div class="col-md-4 date_format">
+                                <label>Date Format</label>
+                                <label class="checkbox checkbox-custom-alt " *ngFor="let item of date_format">
+                                    <input name="date_format" type="radio" ngModel #date_format="ngModel"
+                                        value="{{item}}" required><i></i>{{dateFormat | date:item}}
+                                </label>
+                            </div>
+                            <div class="col-md-4 time_format">
+                                <label>Time Format</label>
+                                <label class="checkbox checkbox-custom-alt " *ngFor="let item of time_format">
+                                    <input name="time_format" type="radio" ngModel #time_format="ngModel"
+                                        value="{{item}}" required><i></i>{{dateFormat | date:item}}
+                                </label>
+                            </div> -->
+
+
+
+                    <!-- </div>
+
+                    </div> -->
+
+                    <!-- <div class="col-md-6">
+                        <label>ETA Buffer Time <span class="mandatory">*</span>
+                            <input type="number" name="eta_time" id="eta_time" ngModel #eta_time="ngModel"
+                                required>Minutes
+                        </label>
+                    </div>
+                    <br> -->
+
+                    <div class="card-body">
+                        <div class="form-group grouping-strains row">
+                            <div class="col-md-12">
+                                <div class="group-control">
+                                    <label for="logo">Logo <span class="mandatory">*</span> </label>
+                                    <div class="file-chooser">
+                                        <span class="ste-level" *ngIf="logoName"> {{logoName}} </span>
+                                        <span class="ste-level" *ngIf="!logoName"> Choose a file </span>
+                                        <span class="ste-levs"> Upload </span>
+                                        <div class="mychs">
+                                            <input type="file" class="form-control" name="logo" id="logo"
+                                                (change)="logoChange($event)">
+                                        </div>
+                                    </div>
+                                    <span class="setting-image-tag">
+                                        <img src={{logoPriview}} alt="logo">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="group-control">
+                                    <label for="footer_logo">Footer Logo <span class="mandatory">*</span> </label>
+                                    <div class="file-chooser">
+                                        <span class="ste-level" *ngIf="footerLogoName">{{footerLogoName}} </span>
+                                        <span class="ste-level" *ngIf="!footerLogoName">Choose a file </span>
+                                        <span class="ste-levs"> Upload </span>
+                                        <div class="mychs">
+                                            <input type="file" class="form-control" name="footer_logo" id="footer_logo"
+                                                (change)="footerLogoChange($event)">
+                                        </div>
+                                    </div>
+                                    <span class="setting-image-tag">
+                                        <img src={{footerLogoPriview}} alt="footer_logo">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="group-control">
+                                    <label for="favicon">Favicon <span class="mandatory">*</span> </label>
+                                    <div class="file-chooser">
+                                        <span class="ste-level" *ngIf="faviconName"> {{faviconName}} </span>
+                                        <span class="ste-level" *ngIf="!faviconName"> Choose a file </span>
+                                        <span class="ste-levs"> Upload </span>
+                                        <div class="mychs">
+                                            <input type="file" class="form-control" name="favicon" id="favicon"
+                                                (change)="faviconChange($event)">
+                                        </div>
+
+                                    </div>
+                                    <span class="setting-image-tag">
+                                        <img src={{faviconPriview}} alt="favicon">
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="group-control">
+                                    <label for="appicon">App Icon <span class="mandatory">*</span> </label>
+                                    <div class="file-chooser">
+                                        <span class="ste-level" *ngIf="appIconName"> {{appIconName}} </span>
+                                        <span class="ste-level" *ngIf="!appIconName"> Choose a file </span>
+                                        <span class="ste-levs"> Upload </span>
+                                        <div class="mychs">
+                                            <input type="file" class="form-control" name="appicon" id="appicon"
+                                                (change)="appIconChange($event)">
+                                        </div>
+
+                                    </div>
+                                    <span class="setting-image-tag">
+                                        <img src={{appIconPriview}} alt="appicon">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 additional_images">
+                                <label for="Aditional Images">Splash Screen</label>
+                                <input type="file" multiple class="form-control input-file" #additionlimage
+                                    (change)="detectFiles($event)">
+                            </div>
+                            <div class="col-md-12">
+                                <div
+                                    class="view-img w-100 d-flex flex-wrap justify-content-start align-items-center gap-2 mb-3 add_img">
+                                    <span class="multiple-img position-relative"
+                                        *ngFor="let url of Preview_files; let i=index">
+                                        <span class="close-icon-multi position-absolute"
+                                            (click)="closeMultiImage(i,url)">
+                                            <i class="fa fa-times-circle close-icon" aria-hidden="true"></i>
+                                        </span>
+                                        <img [src]="url" onerror="this.src='assets/img/pdf.svg'"
+                                            class="img-view rounded-3 mb-3">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 additional_images">
+                                <label for="Aditional Images">Web Login Image</label>
+                                <input type="file" class="form-control input-file" name="login"
+                                    (change)="loginImageChange($event.target.files[0])">
+                            </div>
+                            <div class="col-md-12">
+                                <div
+                                    class="view-img w-100 d-flex flex-wrap justify-content-start align-items-center gap-2 mb-3 add_img">
+                                    <span class="multiple-img position-relative" *ngIf="login_image_preview">
+                                        <img [src]="login_image_preview" onerror="this.src='assets/img/no_img.png'"
+                                            class="img-view rounded-3 mb-3">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 additional_images">
+                                <label for="Aditional Images">Web Register Image</label>
+                                <input type="file" class="form-control input-file" name="register"
+                                    (change)="registerImageChange($event.target.files[0])">
+                            </div>
+                            <div class="col-md-12">
+                                <div
+                                    class="view-img w-100 d-flex flex-wrap justify-content-start align-items-center gap-2 mb-3 add_img">
+                                    <span class="multiple-img position-relative" *ngIf="register_image_preview">
+                                        <img [src]="register_image_preview" onerror="this.src='assets/img/no_img.png'"
+                                            class="img-view rounded-3 mb-3">
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-sm btn-success" [disabled]="submitebtn">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

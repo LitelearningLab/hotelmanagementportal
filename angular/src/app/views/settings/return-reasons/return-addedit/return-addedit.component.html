@@ -1,0 +1,65 @@
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-paperclip"></i> Return Reason
+                </div>
+                <form #returnReasonForm="ngForm" (ngSubmit)="onFormSubmit(returnReasonForm)"  autocomplete="off">
+                    <div class="card-body">
+                        <div class="form-group grouping-strains row">
+                            <div class="col-md-6">
+                                <div class="group-control">
+                                    <label for="reason">Retrun reason <span class="mandatory">*</span> </label>
+                                    <input type="text" id="reason" ngModel name="reason" #reason="ngModel" required class="form-control" placeholder="Enter the return reason" [ngClass]="{ 'is-invalid': returnReasonForm.submitted && reason.errors }" [ngClass]="{ 'is-valid': !reason.errors && reason.valid}">
+                                    <div *ngIf="returnReasonForm.submitted && !reason.valid">
+                                        <div class="invalid-feedback" *ngIf="reason.errors.required">Return reason is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="group-control">
+                                    <label for="return_text">Status <span class="mandatory">*</span> </label>
+                                    <select id="status"   ngModel #status="ngModel"  name="status"
+                                    [ngClass]="{'is-invalid':returnReasonForm.submitted&& status.errors}"
+                                    [ngClass]="{ 'is-valid': !status.errors && status.valid}" class="form-control" required>
+                                    <option value="">Select</option>
+                                    <option value="1">Active</option>
+                                    <option value="2">InActive</option>
+                                </select>
+                                <div *ngIf="returnReasonForm.submitted && !status.valid">
+                                    <div class="invalid-feedback" *ngIf="status.errors.required">Status is required.
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="group-control">
+                                    <label for="type">Type <span class="mandatory">*</span> </label>
+                                    <select id="type"   ngModel #type="ngModel"  name="type"
+                                    [ngClass]="{'is-invalid':returnReasonForm.submitted&& type.errors}"
+                                    [ngClass]="{ 'is-valid': !type.errors && type.valid}" class="form-control" required>
+                                    <option value="">Select</option>
+                                    <option value="return">Return</option>
+                                    <option value="cancel">Cancel</option>
+                                </select>
+                                <div *ngIf="returnReasonForm.submitted && !type.valid">
+                                    <div class="invalid-feedback" *ngIf="type.errors.required">Status is required.
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-footer" >
+                        <button type="submit" class="btn btn-sm btn-success" >
+                             Submit
+                        </button>
+                    </div>
+                </form>
+            </div>

@@ -1,0 +1,303 @@
+.file-upload,
+.cover-file-upload {
+    display: none;
+}
+
+.red-icon {
+    color: red;
+    font-size: 18px;
+}
+
+.p-image {
+    position: absolute;
+    top: 73%;
+    right: 32%;
+    color: #666666;
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+.customtabClass .nav-link {
+    color: #0737B5 !important;
+}
+
+.r-image{
+    position: absolute;
+    top:6%;
+    right: 36%;
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+.p-image>i {
+    font-size: 18px;
+}
+
+.c-image {
+    position: absolute;
+    top: 65%;
+    right: 14%;
+    color: #666666;
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+
+.c-image>i {
+    font-size: 20px;
+}
+
+.p-image:hover {
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+
+.upload-button:hover {
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    color: #999;
+}
+
+.profile-uploaders {
+    width: 100%;
+    float: left;
+    position: relative;
+}
+
+.profile-circle img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    text-align: center;
+    display: inline-block;
+}
+
+.profile-circle {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    display: inline-block;
+}
+
+.cropper-image {
+    margin-top: 40px;
+}
+
+label {
+    display: inline-block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.cover-image-div {
+    width: 330px;
+    height: 150px;
+    background-color: #ccc;
+}
+
+.cover-image {
+    max-height: 200px;
+    height: 150px;
+    max-width: 350px;
+    width: 330px;
+    object-fit: cover;
+}
+
+::ng-deep .ng-option img {
+    height: 20px !important;
+    width: 20px !important;
+}
+
+.tabset-div {
+    padding: 10px;
+}
+
+::ng-deep div.tab-content {
+    margin-top: 5px;
+}
+
+::ng-deep .nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: #20a8d8;
+    border-radius: 15px;
+}
+
+::ng-deep .nav-pills .nav-link {
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    margin-right: 5px;
+}
+
+.follow-list {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.follow-list li {
+    display: flex;
+    width: 50%;
+    margin-bottom: 10px;
+    background: #fff;
+    padding: 0 15px;
+}
+
+.folspac-lists {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.follow-list li i {
+    display: flex;
+    flex-wrap: wrap;
+    width: 15%;
+}
+
+.follow-list li i img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+.follow-list li p {
+    padding: 0;
+    margin: 0;
+    width: 85%;
+}
+
+.follow-list li p span {
+    font-size: 14px;
+    display: flex;
+    color: #000;
+    line-height: 24px;
+    padding-bottom: 0px;
+    width: 100%;
+    word-break: break-all;
+}
+
+.follow-list li p small {
+    font-size: 13px;
+    display: flex;
+    color: rgb(112, 112, 112);
+    line-height: 19px;
+    padding-bottom: 0px;
+    width: 100%;
+    word-break: break-all;
+}
+
+::ng-deep .tabset-div .tab-content .tab-pane {
+    min-height: 300px;
+}
+
+p.no-record {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: #999696;
+    margin: 30px 0;
+}
+
+.pac-container {
+    z-index: 10000 !important;
+    width: auto !important;
+    position: initial !important;
+    left: 0 !important;
+    right: 0 !important;
+    display: block !important;
+}
+
+.pac-container:empty {
+    display: none !important;
+}
+
+h6.allow-files {
+    width: 96%;
+    text-align: center;
+    font-size: 13px;
+    color: #747474;
+    margin: 4px 0 15px;
+}
+
+.email-status {
+    border: 1px solid #4ebe52;
+    padding: 5px;
+    text-align: center;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 4px;
+}
+
+.email-status p {
+    margin: 0;
+    font-size: 16px;
+    color: #4ebe52;
+}
+
+.email-unstatus {
+    border: 1px solid #f96b61;
+    padding: 5px;
+    text-align: center;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 4px;
+}
+
+.email-unstatus p {
+    margin: 0;
+    font-size: 16px;
+    color: #f96b61;
+}
+
+::ng-deep .is-invalid .ng-select-container {
+    border: 1px solid red !important;
+}
+
+::ng-deep .is-valid .ng-select-container {
+    border-color: #4dbd74 !important;
+}
+
+.cover-imgs {
+    margin: 4px 0;
+}
+
+.ng-select .ng-has-value .placeholder {
+    display: block !important;
+}
+
+.custom ::ng-deep .ng-placeholder::before {
+    font-family: FontAwesome;
+    content: "\f002";
+}
+
+.badge badge-success badge-pill mb-1{
+    color: black;
+}
+.p-image {
+    top: 86%;
+    right: 36%;
+}
+
+.animated-button {
+    transition: transform 0.4s ease-in-out;
+}
+
+.animated-button:hover {
+    transform: scale(1.1);
+    background-color: grey;
+    border-color: gray;
+    color: white;
+}
+
+.text-active {
+    color: green;
+    font-weight: bold;
+    
+}
+
+.text-inactive {
+    color: #ffc107;
+    font-weight: bold;
+}
+

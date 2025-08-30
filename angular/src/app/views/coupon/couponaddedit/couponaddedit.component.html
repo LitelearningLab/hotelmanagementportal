@@ -1,0 +1,232 @@
+<div class="container">
+    <form #userAddEditForm="ngForm" (ngSubmit)="onFormSubmit(userAddEditForm)">
+        <div class="row">
+            <div class="col-sm-6 col-md-6">
+                <label for="rcategory">Coupon Type <span class="color_red"> *</span></label>
+                <select type="text" ngModel name="selectadmin" #selectadmin="ngModel" id="status" required
+                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && selectadmin.errors }"
+                    [ngClass]="{ 'is-valid': !selectadmin.errors && selectadmin.valid}" class="form-control">
+                    <option value="">Select</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <div *ngIf="userAddEditForm.submitted && !selectadmin.valid">
+                    <div class="invalid-feedback" *ngIf="selectadmin.errors.required">Coupon type is required.
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-6 col-md-6">
+                <label for="rcategory">Coupon Name <span class="color_red"> *</span></label>
+                <input type="text" ngModel name="coupon_name" #coupon_name="ngModel" required
+                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && coupon_name.errors }"
+                    [ngClass]="{ 'is-valid': !coupon_name.errors && coupon_name.valid}" class="form-control">
+                <div *ngIf="userAddEditForm.submitted && !coupon_name.valid">
+                    <div class="invalid-feedback" *ngIf="coupon_name.errors.required"> Coupon name is required.
+                    </div>
+                </div>
+            </div> 
+            <div class="col-sm-6 col-md-6">
+                <div class="group-control">
+                    <label for="cimage">Coupon Image <span class="mandatory">*</span> </label>
+                    <span *ngIf="!id">
+                        <input type="file" id="cimage" ngModel name="cimage" required #cimage="ngModel"
+                            class="form-control input_choose_file" placeholder="Enter Name"
+                            [ngClass]="{ 'is-invalid': userAddEditForm.submitted && cimage.errors }"
+                            [ngClass]="{ 'is-valid': !cimage.errors && cimage.valid}" (change)="fileUpload($event)">
+                        <div *ngIf="userAddEditForm.submitted && !cimage.valid">
+                            <div class="invalid-feedback" *ngIf="cimage.errors.required">
+                                Coupon image is required.
+                            </div>
+                        </div>
+                    </span>
+                    <span *ngIf="id">
+                        <input accept="image/*" type="file" id="cimage" ngModel name="cimage" #cimage="ngModel"
+                            class="form-control input_choose_file" placeholder="Enter Name"
+                            [ngClass]="{ 'is-invalid': userAddEditForm.submitted && cimage.errors }"
+                            [ngClass]="{ 'is-valid': !cimage.errors && cimage.valid}" (change)="fileUpload($event)">
+                    </span>
+                    <div class="col-md-6">
+                        <div class="group-control">
+                            <img class="" height="150" [src]="previewImage">
+                        </div>
+                    </div>
+                    <small class="restaurant-img-error">Allowed files: png, jpg. Max file size 2Mb</small>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-6">
+                <label for="rcategory">Code <span class="color_red"> *</span></label>
+                <input type="text" maxlength="20" ngModel name="coupon_code" #coupon_code="ngModel" required
+                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && coupon_code.errors }"
+                    [ngClass]="{ 'is-valid': !coupon_code.errors && coupon_code.valid}" class="form-control">
+                <div *ngIf="userAddEditForm.submitted && !selectadmin.valid">
+                    <div class="invalid-feedback" *ngIf="coupon_code.errors.required"> Coupon code is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-md-6">
+                <label for="rcategory">Discount Type <span class="color_red">*</span></label>
+                <select type="text" ngModel name="discounttype" #discounttype="ngModel" required
+                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && discounttype.errors }"
+                    [ngClass]="{ 'is-valid': !discounttype.errors && discounttype.valid}" class="form-control"
+                    (change)='onFilterData($event)'>
+                    <option value="">Select</option>
+                    <option value="Flat">Flat Discount</option>
+                    <option value="Percentage">Percentage Discount</option>
+                </select>
+                <div *ngIf="userAddEditForm.submitted && !discounttype.valid">
+                    <div class="invalid-feedback" *ngIf="discounttype.errors.required">Discount type is required.
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-sm-6" *ngIf="discounttype != 'Flat'" >
+                <label for="rcategory">Percentage<span class="color_red"> *</span></label>
+                <input type=number ngModel name="percentage" #percentage="ngModel" class="form-control" min=0>
+            </div> -->
+            <div class="col-sm-6 col-md-6" *ngIf="!percent">
+                <label for="rcategory">Amount <span class="color_red"> *</span></label>
+                <input type=number ngModel name="amount" #amount="ngModel" class="form-control" min=0 required
+                [ngClass]="{ 'is-invalid': userAddEditForm.submitted && amount.errors }"
+                [ngClass]="{ 'is-valid': !amount.errors && amount.valid}">
+                <div *ngIf="userAddEditForm.submitted && !amount.valid">
+                    <div class="invalid-feedback" *ngIf="amount.errors.required"> Amount is required.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-sm-6 col-md-6" *ngIf="percent==0">
+                <label for="rcategory">Min Amount <span class="color_red"> *</span></label>
+                <input type=number ngModel name="minamount" #minamount="ngModel" class="form-control" min=0 required
+                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && minamount.errors }"
+                    [ngClass]="{ 'is-valid': !minamount.errors && minamount.valid}">
+                <div *ngIf="userAddEditForm.submitted && !minamount.valid">
+                    <div class="invalid-feedback" *ngIf="minamount.errors.required"> Amount is required.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-6" *ngIf="percent">
+                <label for="rcategory">Percentage <span class="color_red"> *</span></label>
+                <input type=number ngModel name="amount" #amount="ngModel" class="form-control" min=0 max=100 required
+                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && amount.errors }"
+                    [ngClass]="{ 'is-valid': !amount.errors && amount.valid}">
+                <div *ngIf="userAddEditForm.submitted && !amount.valid">
+                    <div class="invalid-feedback" *ngIf="amount.errors.required">Percentage is required.
+                    </div>
+                    <div class="invalid-feedback" *ngIf="amount.errors.max">Percentage has to be maximum 0f 100
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+       
+        <div class="row">
+            <div class="col-sm-6 col-md-6" *ngIf="percent===1">
+                <label for="rcategory">Max Amount <span class="color_red"> *</span></label>
+                <input type=number ngModel name="maxamount" #maxamount="ngModel" class="form-control" min=0 max=100 required
+                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && maxamount.errors }"
+                    [ngClass]="{ 'is-valid': !maxamount.errors && maxamount.valid}">
+                <div *ngIf="userAddEditForm.submitted && !maxamount.valid">
+                    <div class="invalid-feedback" *ngIf="maxamount.errors.required">Percentage is required.
+                    </div>
+                    <div class="invalid-feedback" *ngIf="maxamount.errors.max">Percentage has to be maximum 0f 100
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <label for="rcategory">Usage Limit Per Coupon <span class="color_red"> *</span></label>
+                <input type=number class="form-control" ngModel name="percoupon" #percoupon="ngModel" min=0 required
+                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && percoupon.errors }"
+                    [ngClass]="{ 'is-valid': !percoupon.errors && percoupon.valid}">
+                <div *ngIf="userAddEditForm.submitted && !percoupon.valid">
+                    <div class="invalid-feedback" *ngIf="percoupon.errors.required"> Usage limit per coupon is required.
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <label for="rcategory">Usage Limit Per User <span class="color_red"> *</span></label>
+                <input type=number class="form-control" ngModel name="peruser" #peruser="ngModel" min=0 required
+                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && peruser.errors }"
+                    [ngClass]="{ 'is-valid': !peruser.errors && peruser.valid}">
+                <div *ngIf="userAddEditForm.submitted && !peruser.valid">
+                    <div class="invalid-feedback" *ngIf="peruser.errors.required">Usage limit per user is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 coupon_from_date">
+                <label for="rcategory">From Date <span class="color_red"> *</span></label>
+                <input type="text" placeholder="Filter By Start Date" [minDate]="dp.isOpen ? minDate :''" ngModel
+                    name="onFromdate" #onFromdate="ngModel" required
+                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && onFromdate.errors }"
+                    [ngClass]="{ 'is-valid': !onFromdate.errors && onFromdate.valid}" class="form-control"
+                    #dp="bsDatepicker" bsDatepicker [bsConfig]="{ isAnimated: true,showTodayButton:true, dateInputFormat: 'DD/MM/YYYY'}"
+                    (bsValueChange)="set_start_date($event, userAddEditForm)" autocomplete="off">
+                <button class="btn btn-success" (click)="dp.toggle()"
+                    [attr.aria-expanded]="dp.isOpen" type="button"><i class="fa fa-calendar"></i></button>
+                <div *ngIf="userAddEditForm.submitted && !onFromdate.valid">
+                    <div class="invalid-feedback" *ngIf="onFromdate.errors.required">From date is required.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-sm-5 coupon_to_date" *ngIf="!id"> <!-- Only show this block if it's a new coupon -->
+                <label for="rcategory">To Date <span class="color_red"> *</span></label>
+                <input type="text" placeholder="Filter By End Date" ngModel name="onTodate" #onTodate="ngModel" required
+                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && onTodate.errors }"
+                    [ngClass]="{ 'is-valid': !onTodate.errors && onTodate.valid}" class="form-control"
+                    [minDate]="startdate" #dp1="bsDatepicker" bsDatepicker
+                    [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD/MM/YYYY'}"
+                    (bsValueChange)="set_end_date($event)" autocomplete="off">
+                <button class="btn btn-success" (click)="dp1.toggle()"
+                    [attr.aria-expanded]="dp1.isOpen" type="button"><i class="fa fa-calendar"></i></button>
+    
+                <div *ngIf="userAddEditForm.submitted && !onTodate.valid">
+                    <div class="invalid-feedback" *ngIf="onTodate.errors.required">To date is Required
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 coupon_to_date" *ngIf="id">
+                <label for="rcategory">To Date <span class="color_red"> *</span></label>
+                <input type="text" placeholder="Filter By End Date" ngModel name="onTodate" #onTodate="ngModel"
+                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && onTodate.errors }"
+                    [ngClass]="{ 'is-valid': !onTodate.errors && onTodate.valid}" class="form-control"
+                    [minDate]="startdate" #dp1="bsDatepicker" bsDatepicker
+                    [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD/MM/YYYY'}"
+                    (bsValueChange)="set_end_date($event)" autocomplete="off">
+                <button class="btn btn-success"  (click)="dp1.toggle()"
+                    [attr.aria-expanded]="dp1.isOpen" type="button"><i class="fa fa-calendar"></i></button>
+
+                <div *ngIf="userAddEditForm.submitted && !onTodate.valid">
+                    <div class="invalid-feedback" *ngIf="onTodate.errors.required">To date is Required
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <label for="rcategory">Status <span class="color_red"> *</span></label>
+                <select type="text" ngModel name="status" #status="ngModel" required
+                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && status.errors }"
+                    [ngClass]="{ 'is-valid': !status.errors && status.valid}" class="form-control">
+                    <option value="">Select</option>
+                    <option value="1">Active</option>
+                    <option value="2">InActive</option>
+                </select>
+                <div *ngIf="userAddEditForm.submitted && !status.valid">
+                    <div class="invalid-feedback" *ngIf="status.errors.required">Status is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <button type="submit" class="add_coupon_submit">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

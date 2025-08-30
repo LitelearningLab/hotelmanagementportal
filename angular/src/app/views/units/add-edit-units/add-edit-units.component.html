@@ -1,0 +1,88 @@
+<div class="container">
+    <label class="ng-binding" *ngIf='!id'>Add Units</label>
+    <label class="ng-binding" *ngIf='id'>Edit Units</label>
+    <form name="nameDetails" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-group inlin">
+            <div>
+                <label for="rcategory">Name <span class="color_red">*</span></label>
+                <input type="text" [pattern]="pattern" style="width:200px;" class="form-control" formControlName="name"
+                    placeholder="Name" required>
+                <div *ngIf="submitted && f.name.errors && f.name.errors.required" style="color:red">
+                    Attribute Name is required.
+                </div>
+                <div *ngIf="submitted && f.name.errors?.pattern" style="color:red">
+                    Enter Atleast one alphabet and space at beggining is not allowed.
+                </div>
+            </div>
+            <div class="form-group mt-2">
+                <input type="button" title="Click to add more symbols" class="btn btn-lg add_cls " id="addrow" value="+"
+                    (click)="onAddSkills()" />
+                <!-- <span class="tooltiptext">Tooltip text</span> -->
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="rcategory" style="color: gray;">Symbol <span class="color_red">*</span></label>
+            <div class="row" formArrayName="units">
+                <div *ngFor="let unit of getUnits(userForm); let i = index" [formGroupName]="i">
+                    <div class="form-group inlin"
+                        style="display: flex; align-items: center; justify-content: space-between;">
+                        <div>
+                            <input [pattern]="pattern" type="text" class="form-control" name="name"
+                                formControlName="name">
+                            <div *ngIf="submitted && f.units.controls[i].get('name').errors?.required"
+                                style="color:red">
+                                Symbol is required.
+                            </div>
+                            <div *ngIf="submitted && f.units.controls[i].get('name').errors?.pattern" style="color:red">
+                                Enter Atleast one alphabet and space at beggining is not allowed.
+                            </div>
+                        </div>
+                        <div class="form-group mt-2">
+                            <button type="button" class="btn remove" (click)="onRemoveSkill(i)">_</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="rcategory">Status <span class="color_red">*</span></label>
+            <select style="width:30%" type="text" name="status" id="status" class="form-control"
+                formControlName="status" [(ngModel)]="status" convert-to-number required>
+                <option value="" selected disabled>Select</option>
+                <option value="1">Active</option>
+                <option value="2">In-Active</option>
+            </select>
+            <div *ngIf="submitted && f.status.errors && f.status.errors.required" style="color:red">Status is required.
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="group-control">
+                <small>{{userForm.get('webHeader').errors|json}}</small>
+                <label for="web_header">Select Category <span class="mandatory">*</span> </label>
+                <ng-select [items]="webfoodcategory" id="web_header" bindValue="_id" bindLabel="rcatname"
+                    [multiple]="true" [(ngModel)]="selectedWebHeader" formControlName="webHeader" required
+                    placeholder="Select Category" [searchable]="true" [clearable]="true"
+                    (change)="onSelectionChange($event)"
+                    [ngClass]="{ 'is-invalid': submitted && userForm.get('webHeader').errors }"
+                    [ngClass]="{ 'is-valid': !userForm.get('webHeader').errors && userForm.get('webHeader').valid}">
+                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                        <b>{{ item.rcatname }}</b>
+                    </ng-template>
+                </ng-select>
+                
+            </div>
+            <div *ngIf="submitted && f.webHeader.errors && f.webHeader.errors.required" style="color:red">Status is required.
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <button type="submit" class="add_unit_save btn-primary mt-2">Save</button>
+        </div>
+    </form>
+</div>

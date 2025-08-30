@@ -1,0 +1,92 @@
+<h4>
+    <label class="ng-binding" *ngIf='!id'>Add Web Banners</label>
+    <label class="ng-binding" *ngIf='id'>Edit Banners</label>
+</h4>
+<label>Banners details</label>
+<div class="container">
+    <form name="nameDetails" [formGroup]="webform" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-sm-4">
+                <label for="rcategory">Banner <span class="color_red">*</span></label>
+                <input type="text" formControlName="bannername" [(ngModel)]="bannerName" class="form-control"
+                    placeholder="Banner Name" name="" (keyup)="letterLeft(bannerName)" maxlength="30" required>
+                <span>Banner name should not exceed
+                    30 Charcters , left:{{nameWordsLeft}}</span>
+                <div *ngIf="submitted && formcontrol.bannername.errors?.required" style="color:red">Banner name is
+                    required!
+                </div>
+                <!-- <div *ngIf="formcontrol.bannername.touched" style="color:red">Banner should be in
+                    30Charcters{{nameWordsLeft}}
+
+                </div> -->
+                <!-- File Input -->
+            </div>
+            <div class="col-sm-4">
+                <div class="group-control">
+                    <label for="status">Category <span class="mandatory">*</span></label>
+                    <select name="status" id="status" class="form-control" formControlName="banner_category" required
+                        [ngClass]="{ 'is-invalid': submitted && status.errors, 'is-valid': !status.errors && status.valid}">
+                        <option value="" disabled selected>Select</option>
+                        <option *ngFor="let categorylist of categorylist" value="{{categorylist.rcatname}}">
+                            {{categorylist.rcatname}}</option>
+                    </select>
+                    <div *ngIf="submitted && !status.valid">
+                        <div class="invalid-feedback" *ngIf="formcontrol.banner_category.errors?.required">Category is
+                            required.
+                        </div>
+                        <!-- <div class="invalid-feedback" *ngIf="status.errors.status">Please enter valid category
+                        </div> -->
+                    </div>
+                </div>
+                <!-- <input type="text" formControlName="bannername" class="form-control" placeholder="Banner Name" required>
+                <div *ngIf="submitted && formcontrol.bannername.errors?.required" style="color:red">Banner name is
+                    required!
+                </div> -->
+                <!-- File Input -->
+            </div>
+            <div class="col-sm-4">
+                <label for="rcategory">Specification<span class="color_red">*</span></label>
+                <input type="text" formControlName="description" [(ngModel)]="specification" class="form-control"
+                    maxlength="100" (keyup)="specificationLetterLeft(specification)" placeholder="Specification"
+                    required>
+                <span>Specification should not exceed
+                    100 Charcters , left:{{specificationLeft}}</span>
+                <div *ngIf="submitted && formcontrol.description.errors?.required" style="color:red">Specification is
+                    required!
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <label for="rcategory">Banner Image <span class="color_red">*</span></label>
+                <div class="form-group">
+                    <input class="form-control" type="file" accept="image/*" formControlName="image"
+                        (change)="onSelectedFile($event)" [required]="!preview">
+                </div>
+                <div *ngIf="submitted && formcontrol.image.errors?.required" style="color:red">Image is required!
+                </div>
+                <span class="restaurant-img-error">Allowed files: png, jpg. Max file size 1Mb</span>
+
+            </div>
+            <div class="col-sm-6">
+                <label>Status<span class="color_red">*</span></label>
+                <select type="text" name="status" id="status" class="form-control" [(ngModel)]="status"
+                    formControlName="status" convert-to-number required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="1">Active</option>
+                    <option value="2">In-Active</option>
+                </select>
+                <div *ngIf="submitted && formcontrol.status.errors?.required" style="color:red">Status is required!
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="preview">
+                        <img class="ng-scope" style="width: 200px;" [src]="preview" width="50px">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 50px;">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+</div>

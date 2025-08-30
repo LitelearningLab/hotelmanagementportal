@@ -1,0 +1,286 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>{{ pageTitle | titlecase }}</strong>
+          <button class="pull-right btn btn-success btn-sm" style="color: white;"  (click)="downloadTemplate()"> Download Bulk Upload Template</button>
+        </div>
+        <form #bulkupload="ngForm" (ngSubmit)="onFormSubmit(bulkupload)" autocomplete="off">
+          <div class="card-body">
+            <div class="form-group grouping-strains row">
+              <div class="col-md-6"  *ngIf="!companysubadmin && !trainerData && !companydata">
+                <div class="group-control">
+                  <label for="web_header">Institution <span class="mandatory">*</span>
+                  </label>
+
+                  <ng-select [items]="companynames" id="company" bindValue="_id" bindLabel="companyname"
+                    [multiple]="false" ngModel name="company" #company="ngModel" required
+                    placeholder="Select Your Institution" [searchable]="true" [clearable]="true" [ngClass]="{
+                      'is-invalid': bulkupload.submitted && company.errors
+                    }" [ngClass]="{ 'is-valid': !company.errors && company.valid }" (change)="getCompanyDetails(this)">
+                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                      <b>{{ item.companyname }}</b>
+                    </ng-template>
+
+                  </ng-select>
+                  <div *ngIf="bulkupload.submitted && !company.valid">
+                    <div class="invalid-feedback" *ngIf="company.errors.required">
+                      Company is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="group-control">
+                  <label for="name">Excel <span class="mandatory">*</span>
+                  </label>
+                  <input type="file" id="file" name="file" ngModel file="file"
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    (change)="selectedFile($event)" #file="ngModel" required class="form-control"
+                    placeholder="Enter file" [ngClass]="{
+                      'is-invalid':
+                        bulkupload.submitted && (file.errors || fileError),
+                      'is-valid': !file.errors && !fileError && file.valid
+                    }" />
+                  <div style="width: 100%;" class="mt-2 d-flex flex-wrap align-items-center">
+                    <small style="font-size: 12px; margin-right: -2%;" class="align-items-end d-flex">
+                      <span style="color: red">Mandatory Fields: All columns are mandatory</span>
+                      <!-- <span style="margin-left: 5px;">
+                        Username, Email, Mobile, City, Country, Team, Role, Joining Date.
+                      </span> -->
+                    </small>
+                   
+                  
+                    <!-- <small style="cursor: pointer;" (click)="downloadTemplate()" class="btn btn-primary">
+                      Download Bulk Upload Template
+                    </small> -->
+                  </div>
+
+                  <div *ngIf="fileError" class="error">{{ fileError }}</div>
+                  <div *ngIf="bulkupload.submitted && !file.valid">
+                    <div class="invalid-feedback" *ngIf="file.errors.required">
+                      Excel is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6" *ngIf="iscompany">
+                        <table class="table table-bordered">
+                          <thead style="background: #646E7A;; color: white;" >
+                            <th>Max User Limit</th>
+                            <th>Already Assigned</th>
+                            <th>Avaliable Licences</th>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>{{SelectedCompany.activeusers}}</td>
+                              <td>{{SelectedCompany.totalusers}}</td>
+                              <td>{{SelectedCompany.activeusers - SelectedCompany.totalusers}}</td>
+
+                            </tr>
+                          </tbody>
+                        </table>       
+              </div>
+
+              <!-- <div class="col-md-6" >
+                                <label for="joiningdate">Joining date <span class="mandatory">*</span></label>
+                                <div class="form-group">
+                                  <input
+                                    type="text"
+                                    placeholder="Data of joing"
+                                    class="form-control"
+                                    id="joiningdate"
+                                    #joiningdate="ngModel"
+                                    ngModel [minDate]="minDate"
+                                    [bsConfig]="{ isAnimated: true }"
+                                    name="joiningdate"
+                                    [ngClass]="{
+                                      'is-invalid': bulkupload.submitted && joiningdate.errors,
+                                      'is-valid': bulkupload.submitted && joiningdate.value && !joiningdate.errors
+                                    }"
+                                    bsDatepicker required
+                                  />
+                                </div>
+                                <div *ngIf="bulkupload.submitted && joiningdate.errors">
+                                  <div class="invalid-feedback" *ngIf="joiningdate.errors.required">
+                                    Date is required.
+                                  </div>
+                                </div>
+                              </div> -->
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" [disabled]="disablesubmit" *ngIf="!viewpage" class="btn btn-sm btn-success">
+              Submit
+            </button>
+            <button type="button" *ngIf="!viewpage" routerLink="/app/users/list" class="btn btn-sm btn-secondary">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="skipped">
+    <h5>Alert</h5>
+    <div class="row justify-content-center align-items-center">
+      <!-- Center vertically and horizontally -->
+      <div class="col-md-12 d-flex justify-content-center">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">S.no</th>
+              <th scope="col">Name</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Email</th>
+              <th scope="col">Year</th>
+              <th scope="col">Course</th>
+              <th scope="col">Country</th>
+              <th scope="col">City</th>
+              <th scope="col">Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let doc of skippeddocumets; let i = index">
+              <!-- <td>{{doc.issues.general|json}}</td> -->
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ doc.name | titlecase}}</td>
+              <td [ngStyle]="{'color': doc.issues?.phone?.exists ? 'red' : 'black'}">
+                {{ doc.mobile }}
+              </td>
+              <td [ngStyle]="{'color': doc.issues?.email?.exists ? 'red' : 'black'}">
+                {{ doc.email }}
+              </td>
+              <td [ngStyle]="{'color': doc.issues?.role?.exists ? 'red' : 'black'}">
+                {{ doc.data.year | titlecase}}
+              </td>
+              <td [ngStyle]="{'color': doc.issues?.team?.exists ? 'red' : 'black'}">
+                {{ doc.data.course  | titlecase}}
+              </td>
+              <td [ngStyle]="{'color': doc.issues?.country?.exists ? 'red' : 'black'}">
+                {{ doc.data.Country  | titlecase}}
+              </td>
+              <td [ngStyle]="{'color': doc.issues?.city?.exists ? 'red' : 'black'}">
+                {{ doc.data.City  | titlecase}}
+              </td>
+              <td>
+
+                <ng-container *ngIf="doc.issues.country">
+                  <div>
+                    {{doc.issues.country.reason}}
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf="doc.issues.city">
+                  <div>
+                    {{doc.issues.city.reason}}
+
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf="doc.issues.role">
+                  <div>
+                    {{doc.issues.role.reason}}
+
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf="doc.issues.team">
+                  <div>
+                    {{doc.issues.team.reason}}
+
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf="doc.issues.userLimit">
+                  <div>
+                    {{doc.issues.userLimit.reason}}
+
+                  </div>
+                </ng-container>
+
+
+                <!-- Check if Email already exists in the user's list -->
+                <ng-container *ngIf="doc.issues.email?.status == 3 && doc.issues.phone?.status !== 5">
+                  Email already exists in your user list; please use the edit user option to update data for this user.
+                </ng-container>
+
+
+                <!-- Check if Email already exists in another company -->
+                <ng-container *ngIf="doc.issues.email?.status == 4 && doc.issues.phone?.status !== 6">
+                  Email already exists; please email support@profluentlabs.com to resolve this issue.
+                </ng-container>
+
+
+
+                <!-- Check if Phone number already exists in the user's list -->
+                <ng-container *ngIf="doc.issues.phone?.status == 5 && doc.issues.email?.status !== 3">
+                  Phone number already exists in your user list; please use the edit user option to update data for this
+                  user.
+                </ng-container>
+
+                <ng-container *ngIf="doc.issues.phone?.status == 6 && doc.issues.email?.status !== 4">
+                  Phone number already exists; please email support@profluentlabs.com to resolve this issue.
+                </ng-container>
+
+
+
+                <ng-container
+                  *ngIf="doc.issues.email?.status == undefined && doc.issues.email?.reason == 'Invalid email format'">
+                  Invalid email format.
+                </ng-container>
+
+                <ng-container *ngIf="doc.issues.phone?.status == 7">
+                  Invalid phone number.
+                </ng-container>
+
+
+
+                <ng-container *ngIf="doc.issues.email?.status == 3 && doc.issues.phone?.status == 5">
+                  Phone number and email id already exist in your user list; please use the edit user option to update
+                  data for this user.
+                </ng-container>
+
+                <ng-container *ngIf="doc.issues.email?.status == 4 && doc.issues.phone?.status == 6">
+                  Phone number and email id already exist; please email support@profluentlabs.com to resolve this issue.
+                </ng-container>
+
+
+
+
+
+
+
+
+
+
+                <!-- <ng-template #singleIssue>
+                  <ng-container *ngIf="doc.issues.email.exists">
+                    {{ doc.issues.email.reason }}
+                  </ng-container>
+                  <ng-container *ngIf="doc.issues.phone.exists && !doc.issues.email.exists">
+                    {{ doc.issues.phone.reason }}
+                  </ng-container>
+                </ng-template> -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="col-md-6 avathar_updadate_icon">
+                                <span class="avathat_title">Avatar:</span>
+                                <input type="text" class="icon_input">
+                                <input type="file" class="image_icons"  (change)="selectedFile($event)" name=""
+                                    id="">
+                                <div class="avs-details">
+                                    <img [src]="usercroppedImage">
+                                </div>
+                            </div> -->

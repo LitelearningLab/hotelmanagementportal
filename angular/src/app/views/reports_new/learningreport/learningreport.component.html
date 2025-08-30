@@ -1,0 +1,252 @@
+<div class="animated fadeIn">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body ">
+                <!-- <h6 style="font-size: larger; font-weight: bolder;">Filter</h6> -->
+      
+                <form class="row" [formGroup]="filterForm">
+                  <div class="col-md-2 mb-2" *ngIf="!companysubadmin  && !trainerData && !companydata">
+                    <label for="company">Institution<span class="text-danger">*</span></label>
+                    <ng-select [items]="companynames" bindLabel="companyname" bindValue="_id" formControlName="company"
+                      class="form-control custom-ng-select p-0" (change)="getCountry($event)"
+                      placeholder="Select Institution"></ng-select>
+                    <div *ngIf="filterForm.get('company').invalid && (filterForm.get('company').touched )">
+                      <small class="error" *ngIf="filterForm.get('company').hasError('required')">Institution is required.</small>
+                    </div>
+                  </div>
+      
+                  <div class="col-md-2 mb-2">
+                    <label for="city">City<span class="text-danger">*</span></label>
+      
+                    <ng-select [items]="cityList" formControlName="city" [multiple]="true" class="form-control custom-ng-select p-0"
+                      placeholder="Select City"></ng-select>
+      
+                    <div *ngIf="filterForm.get('city').invalid && (filterForm.get('city').touched )">
+                      <small class="error" *ngIf="filterForm.get('city').hasError('required')">City is required.</small>
+                    </div>
+                  </div>
+      
+                  <div class="col-md-2 mb-2">
+                    <label for="team">Course</label>
+      
+                    <ng-select [items]="teamList" formControlName="team" [multiple]="true" class="form-control custom-ng-select p-0"
+                      placeholder="Select Course"></ng-select>
+              
+                  </div>
+      
+                 
+                  
+                  <div class="col-md-2 mb-2">
+                    <label for="endDate">User Joining Date</label>
+                    <input type="text" formControlName="userjoiningdate" placeholder="Select Date Range" bsDaterangepicker
+                      triggers="keydown click" class="form-control"
+                      [bsConfig]="{ ranges: ranges, showWeekNumbers:false, todayHighlight: true, rangeInputFormat: 'DD/MM/YYYY', showTodayButton:true,containerClass:'theme-default'}">
+                    
+                    </div> 
+                  <div class="col-md-2 mb-2">
+                    <label for="endDate">Report Period<span class="text-danger">*</span></label>
+                    <input type="text" formControlName="perioddate" placeholder="Select Date Range" bsDaterangepicker
+                      triggers="keydown click" class="form-control"
+                      [bsConfig]="{ ranges: ranges,showWeekNumbers:false,  todayHighlight: true, rangeInputFormat: 'DD/MM/YYYY', showTodayButton:true,containerClass:'theme-default'}">
+                      <div *ngIf="filterForm.get('perioddate').invalid && (filterForm.get('perioddate').touched )">
+                        <small class="error" *ngIf="filterForm.get('perioddate').hasError('required')">Report Period Date is required.</small>
+                      </div>
+                    </div>
+                  <div class="col-md-2 mb-2 mt-4 ">
+                    <button type="submit" style="margin-top: 6px;" class="btn  btn-success "
+                      (click)="filter()">Filter</button>
+                    <button class="btn  btn-secondary ml-2" style="margin-top: 6px;" type="button"
+                      (click)="clearForm()">Clear</button>
+                   
+                  
+                  </div>
+      
+                </form>
+      
+              </div>
+        
+        <div class="card-body" *ngIf="isShowlbl1 || isShowlbl2 || isShowlbl3">
+            <nav aria-label="breadcrumb" >
+                <ol class="breadcrumb">
+                    <li *ngIf="Gridshowno !=1" class="breadcrumb-item cur active"><a (click)="BacktoMain()">Filtered Data</a>
+                    </li>
+                    <li *ngIf="isShowlbl1" class="breadcrumb-item"><a>{{LabelLernername}}</a></li>
+
+                    <li *ngIf="Gridshowno ==3 || Gridshowno ==4" (click)="BacktoBack()" class="breadcrumb-item cur active">
+                        <a>{{LabelLernername}}</a></li>
+                    <li *ngIf="isShowlbl2" class="breadcrumb-item"> {{LabelGroupOrDate}}</li>
+
+                    <!-- <li *ngIf="Gridshowno ==4" (click)="BacktoBackGroup()" class="breadcrumb-item cur active">
+                        <a>{{LabelGroupOrDate}}</a></li>
+                    <li *ngIf="isShowlbl3" class="breadcrumb-item"> {{LabelWord}}</li> -->
+                </ol>
+            </nav>
+        </div>
+
+        <div class="card-body " *ngIf="Gridshowno == 1">
+            <dx-data-grid #dataGridVar id="gridContainer" [showBorders]="true" [dataSource]="Grid1Data" 
+              [remoteOperations]="false" [allowColumnReordering]="true" [rowAlternationEnabled]="true"
+              [allowColumnResizing]="true" (onContentReady)="contentReady($event)" [wordWrapEnabled]="true"  >
+              <dxo-filter-row [visible]="true"></dxo-filter-row>
+              <dxo-header-filter [visible]="true"></dxo-header-filter>
+              <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
+              <dxo-paging [pageSize]="10"></dxo-paging>
+              <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>
+              <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+              
+            <dxi-column dataField="username" [width]="150"  dataType="string" caption="Learner Name">
+            </dxi-column>
+            
+
+            <dxi-column alignment="right" dataField="processlearning_totalPracticeTime" cellTemplate="cellTemplate1" 
+                dataType="string" caption="Process Learning">
+                <div *dxTemplate="let cell of 'cellTemplate1'">
+                    <a (click)="SumClick(cell,'processlearning',cell.value)" href="javascript:void(0)">{{cell.value}}</a>
+                </div>
+            </dxi-column>
+              <dxi-column alignment="right" dataField="arcallsim_totalPracticeTime" cellTemplate="cellTemplate2" dataType="string" caption="AR Call Simulations">
+                <div *dxTemplate="let cell of 'cellTemplate2'">
+                    <a (click)="SumClick(cell,'arcallsim',cell.value)" href="javascript:void(0)">{{cell.value}}</a>
+                </div>
+              </dxi-column>
+              <dxi-column alignment="right" dataField="profluenteng_totalPracticeTime" cellTemplate="cellTemplate3" dataType="string" caption="Profluent English">
+                <div *dxTemplate="let cell of 'cellTemplate3'">
+                    <a (click)="SumClick(cell,'profluenteng',cell.value)" href="javascript:void(0)">{{cell.value}}</a>
+                </div>
+              </dxi-column>
+              <dxi-column alignment="right" dataField="softskills_totalPracticeTime" cellTemplate="cellTemplate4" dataType="string" caption="Soft Skills">
+                <div *dxTemplate="let cell of 'cellTemplate4'">
+                    <a (click)="SumClick(cell,'softskills',cell.value)" href="javascript:void(0)">{{cell.value}}</a>
+                </div>
+              </dxi-column>
+              <dxi-column dataField="totalsum" dataType="string" caption="Total"></dxi-column>
+              <!-- <dxi-column dataField="batchName" dataType="string" caption="Batch Name"></dxi-column> -->
+              <dxi-column dataField="city" dataType="string" caption="City"></dxi-column>
+              <dxi-column dataField="course" dataType="string" caption="Course"></dxi-column>
+            </dx-data-grid>
+          </div>
+          <div class="card-body " *ngIf="Gridshowno == 2">
+            <dx-data-grid #dataGridVar id="gridContainer" [showBorders]="true" [dataSource]="Grid2Data"
+              [remoteOperations]="false" [allowColumnReordering]="true" [rowAlternationEnabled]="true"
+              [allowColumnResizing]="true" (onContentReady)="contentReady($event)"  >
+              <dxo-filter-row [visible]="true"></dxo-filter-row>
+              <dxo-header-filter [visible]="true"></dxo-header-filter>
+              <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
+              <dxo-paging [pageSize]="10"></dxo-paging>
+              <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>
+              <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+              
+            <dxi-column dataField="subCategory"   dataType="string" caption="Sub Category">
+            </dxi-column>
+            
+            <dxi-column dataField="category"   dataType="string" caption="Category">
+            </dxi-column>
+
+            <dxi-column dataField="type"  dataType="string" caption="Titles Accessed">
+            </dxi-column>
+            <dxi-column alignment="right" dataField="totalPracticeTime" cellTemplate="cellTemplate1"
+                dataType="string" caption="Learning Hours">
+                <div *dxTemplate="let cell of 'cellTemplate1'">
+                    <a (click)="SumClick2(cell,cell.value)" href="javascript:void(0)">{{cell.value}}</a>
+                </div>
+            </dxi-column>
+              
+             
+            </dx-data-grid>
+          </div>
+
+
+          <div class="card-body " *ngIf="Gridshowno == 3">
+            <dx-data-grid #dataGridVar id="gridContainer" [showBorders]="true" [dataSource]="Grid3Data"
+              [remoteOperations]="false" [allowColumnReordering]="true" [rowAlternationEnabled]="true"
+              [allowColumnResizing]="true" (onContentReady)="contentReady($event)" (onCellClick)="onGr3CellClicked($event)"  >
+              <dxo-filter-row [visible]="true"></dxo-filter-row>
+              <dxo-header-filter [visible]="true"></dxo-header-filter>
+              <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
+              <dxo-paging [pageSize]="10"></dxo-paging>
+              <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>
+              <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+
+              <dxi-column dataField="activityName"  [width]="300" dataType="string" caption="Title">
+            </dxi-column> 
+            <dxi-column dataField="subCategory"   dataType="string" caption="Sub Category">
+            </dxi-column>
+            
+            <dxi-column dataField="category"   dataType="string" caption="Category">
+            </dxi-column>
+
+            <dxi-column dataField="startTime"  dataType="string" caption="Start Date & Time(M/D/Y)">
+            </dxi-column>
+            <dxi-column dataField="endTime"  dataType="string" caption="End Date & Time(M/D/Y)">
+            </dxi-column>
+            <!-- <dxi-column alignment="right" [width]="160" dataField="learnhours"
+                dataType="string" caption="Active Screen Time">
+            </dxi-column> -->
+            <dxi-column alignment="right" dataField="learnhours" cellTemplate="cellTemplate1"
+            dataType="string" caption="Active Screen Time">
+            <div *dxTemplate="let cell of 'cellTemplate1'">
+                <a href="javascript:void(0)">{{cell.value}}</a>
+            </div>
+        </dxi-column>
+             
+            </dx-data-grid>
+          </div>
+
+       </div>  
+    </div>
+  </div>
+</div>
+<div id="container">
+<dx-popup [width]="600" [height]="500" [showTitle]="true" title="Active Screen Time" [dragEnabled]="false"
+  [hideOnOutsideClick]="true" [showCloseButton]="false"  [(visible)]="popupVisible">
+
+
+  <dxi-toolbar-item widget="dxButton" toolbar="bottom" location="after" [options]="closeButtonOptions">
+  </dxi-toolbar-item>
+  <!-- <dxo-position at="bottom" my="center" [of]="positionOf" collision="fit">
+              </dxo-position> -->
+  <div *dxTemplate="let data of 'content'">
+    <table class="table table-bordered">
+      <thead>
+        <th>
+          Event
+        </th>
+        <th>
+          Start Time
+        </th>
+        <th>
+          End Time
+        </th>
+        <th>
+          Time Spent
+        </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of rowdt; index as i">
+          <td>
+            {{a.index}}
+          </td>
+          <td>
+            {{a.startdt}}
+          </td>
+          <td>
+            {{a.enddt}}
+          </td>
+          <td>
+            {{a.sec}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+
+          </td>
+          <td></td>
+          <td>Total</td>
+          <td>{{totsec}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</dx-popup>
+</div>

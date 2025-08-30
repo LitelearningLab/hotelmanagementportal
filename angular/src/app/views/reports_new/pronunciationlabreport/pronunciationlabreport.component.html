@@ -1,0 +1,285 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+
+      <div class="card">
+        <!-- <div class="card-header">
+          <div class="tabls-heading">
+           
+            <label style="text-decoration: underline;cursor: pointer; " *ngIf="Gridshowno !=1" (click)="BacktoMain()"> <a href="javascript:void(0)" >{{LabelLernername}}</a></label>
+            <label style="text-decoration: underline;cursor: pointer;" *ngIf="Gridshowno ==3 || Gridshowno ==4" (click)="BacktoBack()"> &nbsp; <a href="javascript:void(0)" ><i class="fa fa-chevron-right" aria-hidden="true"></i> {{LabelGroupOrDate}}</a></label>
+            <label style="text-decoration: underline;cursor: pointer;" *ngIf="Gridshowno ==4" (click)="BacktoBackGroup()"> &nbsp; <a href="javascript:void(0)" ><i class="fa fa-chevron-right" aria-hidden="true"></i> {{LabelWord}}</a></label>
+
+          </div>
+        
+
+        </div> -->
+        <div class="card-body ">
+          <!-- <h6 style="font-size: larger; font-weight: bolder;">Filter</h6> -->
+
+          <form class="row" [formGroup]="filterForm">
+            <div class="col-md-2 mb-2" *ngIf="!companysubadmin && !trainerData && !companydata">
+              <label for="company">Company<span class="text-danger">*</span></label>
+              <ng-select [items]="companynames" bindLabel="companyname" bindValue="_id" formControlName="company"
+                class="form-control custom-ng-select p-0" (change)="getCountry($event)"
+                placeholder="Select Company"></ng-select>
+              <div *ngIf="filterForm.get('company').invalid && (filterForm.get('company').touched )">
+                <small class="error" *ngIf="filterForm.get('company').hasError('required')">Company is required.</small>
+              </div>
+            </div>
+
+            <div class="col-md-2 mb-2">
+              <label for="city">City<span class="text-danger">*</span></label>
+
+              <ng-select [items]="cityList" formControlName="city" [multiple]="true" class="form-control custom-ng-select p-0"
+                placeholder="Select City"></ng-select>
+
+              <div *ngIf="filterForm.get('city').invalid && (filterForm.get('city').touched )">
+                <small class="error" *ngIf="filterForm.get('city').hasError('required')">City is required.</small>
+              </div>
+            </div>
+
+            <div class="col-md-2 mb-2">
+              <label for="team">Role</label>
+
+              <ng-select [items]="teamList" formControlName="team" [multiple]="true" class="form-control custom-ng-select p-0"
+                placeholder="Select Role"></ng-select>
+              <!-- <div *ngIf="filterForm.get('team').invalid && (filterForm.get('team').touched )">
+                <small class="error" *ngIf="filterForm.get('team').hasError('required')">Role is required.</small>
+              </div> -->
+            </div>
+
+            <!-- <div class="col-md-3 mb-3">
+                          <label for="startDate">From User Joining date</label>
+                         
+                          <input class="form-control datebg" readonly placeholder="Select start date"
+                          bsDatepicker formControlName="startdate" placement="left"
+                          [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-blue', showWeekNumbers: false, showTodayButton:true, todayPosition :'right' }"
+                           onkeydown="return false">
+                
+
+                          <div *ngIf="filterForm.get('startdate').invalid && (filterForm.get('startdate').touched )">
+                            <small class="error" *ngIf="filterForm.get('startdate').hasError('required')">Start date is required.</small>
+                          </div>
+                        </div>
+                      
+                        <div class="col-md-3 mb-3">
+                          <label for="endDate">To User Joining Date</label>
+                          
+                          <input class="form-control datebg" readonly placeholder="Select end date"
+                          bsDatepicker formControlName="enddate" placement="top"
+                         [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',containerClass:'theme-blue',showWeekNumbers: false , showTodayButton:true, todayPosition :'right'}"x
+                          onkeydown="return false" >
+         
+                          <div *ngIf="filterForm.get('enddate').invalid && (filterForm.get('enddate').touched)">
+                            <small class="error" *ngIf="filterForm.get('enddate').hasError('required')">End date is required.</small>
+                            <small class="error" *ngIf="filterForm.get('enddate').hasError('endDateValidator')">End date cannot be earlier than start date.</small>
+                          </div>
+                        </div> -->
+            
+            <div class="col-md-2 mb-2">
+              <label for="endDate">User Joining Date</label>
+              <input type="text" formControlName="userjoiningdate" placeholder="Select Date Range" bsDaterangepicker
+                triggers="keydown click" class="form-control"
+                [bsConfig]="{ ranges: ranges,  todayHighlight: true, rangeInputFormat: 'DD/MM/YYYY', showTodayButton:true,containerClass:'theme-default'}">
+              
+              </div> 
+            <div class="col-md-2 mb-2">
+              <label for="endDate">Report Period<span class="text-danger">*</span></label>
+              <input type="text" formControlName="perioddate" placeholder="Select Date Range" bsDaterangepicker
+                triggers="keydown click" class="form-control"
+                [bsConfig]="{ ranges: ranges, todayHighlight: true, rangeInputFormat: 'DD/MM/YYYY', showTodayButton:true,containerClass:'theme-default'}">
+                <div *ngIf="filterForm.get('perioddate').invalid && (filterForm.get('perioddate').touched )">
+                  <small class="error" *ngIf="filterForm.get('perioddate').hasError('required')">Report Period Date is required.</small>
+                </div>
+              </div>
+            <!-- *ngIf="Gridshowno != 1" [bsConfig]="{ containerClass : 'theme-default', todayHighlight: true, rangeInputFormat: 'DD/MM/YYYY', showTodayButton:true}" -->
+            <div class="col-md-2 mb-2 mt-4 ">
+              <button type="submit" style="margin-top: 6px;" class="btn  btn-success "
+                (click)="filter()">Filter</button>
+              <button class="btn  btn-secondary ml-2" style="margin-top: 6px;" type="button"
+                (click)="clearForm()">Clear</button>
+             
+              <!-- <button *ngIf="Gridshowno == 3" class="btn  btn-primary ml-2" style="margin-top: 6px; float: right;"
+                type="button" (click)="BacktoBack()"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+                <button *ngIf="Gridshowno !=1" class="btn  btn-primary " style="margin-top: 6px; float: right;"
+                type="button" (click)="BacktoMain()"><i class="fa fa-backward" aria-hidden="true"></i></button> -->
+            </div>
+
+          </form>
+
+        </div>
+        <div class="card-body">
+          <nav aria-label="breadcrumb" *ngIf="isShowlbl1 || isShowlbl2 || isShowlbl3" >
+            <ol class="breadcrumb">
+              <li *ngIf="Gridshowno !=1" class="breadcrumb-item cur active"><a (click)="BacktoMain()">Filtered Data</a></li>
+              <li *ngIf="isShowlbl1" class="breadcrumb-item"><a >{{LabelLernername}}</a></li>
+              <li *ngIf="Gridshowno ==3 || Gridshowno ==4" (click)="BacktoBack()" class="breadcrumb-item cur active">  <a>{{LabelLernername}}</a></li>
+              <li *ngIf="isShowlbl2"  class="breadcrumb-item">  {{LabelGroupOrDate}}</li>
+              <li *ngIf="Gridshowno ==4"  (click)="BacktoBackGroup()" class="breadcrumb-item cur active">  <a>{{LabelGroupOrDate}}</a></li>
+              <li *ngIf="isShowlbl3"  class="breadcrumb-item">  {{LabelWord}}</li>
+              
+            </ol>
+          </nav>
+
+          <!-- <label class="lblstyle" *ngIf="Gridshowno !=1" (click)="BacktoMain()"> <a href="javascript:void(0)" >Filter Data</a></label><label *ngIf="isShowlbl1"> ▶ {{LabelLernername}}</label>
+          <label class="lblstyle" *ngIf="Gridshowno ==3 || Gridshowno ==4" (click)="BacktoBack()"> &nbsp; <a href="javascript:void(0)" ><i class="fa fa-chevron-right" aria-hidden="true"></i> {{LabelLernername}}</a></label><label *ngIf="isShowlbl2"> ▶ {{LabelGroupOrDate}}</label>
+          <label class="lblstyle" *ngIf="Gridshowno ==4" (click)="BacktoBackGroup()"> &nbsp; <a href="javascript:void(0)" ><i class="fa fa-chevron-right" aria-hidden="true"></i> {{LabelGroupOrDate}}</a></label><label *ngIf="isShowlbl3"> ▶ {{LabelWord}}</label> -->
+
+        </div>
+        <div class="card-body " *ngIf="Gridshowno == 1">
+          <!-- <h1>sdfsd</h1> -->
+          <dx-data-grid #dataGridVar id="gridContainer" [showBorders]="true" [dataSource]="RootData"
+            [remoteOperations]="false" [allowColumnReordering]="true" [rowAlternationEnabled]="true"
+            [allowColumnResizing]="true" (onContentReady)="contentReady($event)"  >
+            <dxo-filter-row [visible]="true"></dxo-filter-row>
+            <dxo-header-filter [visible]="true"></dxo-header-filter>
+            <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
+            <dxo-paging [pageSize]="10"></dxo-paging>
+            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>
+            <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+            <!-- href="{{cell.data._id}}" -->
+            <!-- <dxi-column dataField="username" dataType="string" caption="Learner Name" [width]="150"></dxi-column> -->
+
+            <dxi-column dataField="username" [width]="150" cellTemplate="cellTemplate" dataType="string"
+              caption="Learner Name"></dxi-column>
+            <div *dxTemplate="let cell of 'cellTemplate'">
+              <a (click)="UsernameClicked(cell)" href="javascript:void(0)">{{cell.text[0].toUpperCase()+ cell.text.slice(1)}}</a>
+            </div>
+
+            <dxi-column alignment="right" dataField="noofwords" dataType="string" caption="No. of Words"></dxi-column>
+            <dxi-column alignment="right" dataField="listatt" dataType="string" caption="Listening Attempts"></dxi-column>
+            <dxi-column alignment="right" dataField="pracatt" dataType="string" caption="Practice Attempts"></dxi-column>
+            <dxi-column alignment="right" dataField="correct" dataType="string" caption="Correct Attempts"></dxi-column>
+        
+            <dxi-column dataField="successrate" caption="Success %" dataType="string" format="percent" alignment="right"
+              [allowGrouping]="false" cssClass="bullet"></dxi-column>
+            <div *dxTemplate="let d of 'discountCellTemplate'">
+              <div class="chart-cell">
+                <dxi-bullet [showTarget]="false" [showZeroLevel]="true" [startScaleValue]="0" [endScaleValue]="100"
+                  [value]="d.value">
+                  <dxo-size [width]="150" [height]="35"></dxo-size>
+                  <dxo-tooltip [enabled]="true" [paddingTopBottom]="2" [customizeTooltip]="customizeTooltip">
+                    <dxo-font [size]="18"></dxo-font>
+                  </dxo-tooltip>
+                  <dxo-margin [top]="5" [bottom]="0" [left]="5"></dxo-margin>
+                </dxi-bullet>
+              </div>
+            </div>
+            <dxi-column dataField="company" dataType="string" caption="Batch Name"></dxi-column>
+            <dxi-column dataField="city" dataType="string" caption="City"></dxi-column>
+            <dxi-column dataField="team" dataType="string" caption="Team"></dxi-column>
+          </dx-data-grid>
+        </div>
+
+        <div class="card-body " *ngIf="Gridshowno == 2">
+         
+          <dx-data-grid #dataGridVar1 id="gridContainer2" [showBorders]="true" [dataSource]="FormatedGroupUserAndTitle"
+            [remoteOperations]="false" [allowColumnReordering]="true" [rowAlternationEnabled]="true"
+            [allowColumnResizing]="true" (onContentReady)="contentReady1($event)" (onCellClick)="onCellClickG2($event)"
+            [autoExpandAll]="false" [autoExpandGroup]="false" >
+            <dxo-filter-row [visible]="true"></dxo-filter-row>
+            <dxo-header-filter [visible]="true"></dxo-header-filter>
+            <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
+            <dxo-paging [pageSize]="10"></dxo-paging>
+            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>
+            <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+           
+            <dxi-column [autoExpandAll]="false" [autoExpandGroup]="false" dataField="title" [groupIndex]="0" dataType="string" caption="Category" ></dxi-column>
+            <!-- <div *dxTemplate="let cannot of 'cellTemplate'">
+              <a (click)="CategoryClicked(ccell)" href="javascript:void(0)">{{c.text}}</a>
+            </div> displayFormat="No of Words: {0}" -->
+
+            <dxi-column [width]="400" dataField="date" dataType="string" caption="Date"  cellTemplate="cellTemplate"></dxi-column>
+            <div *dxTemplate="let cell of 'cellTemplate'">
+              <a style="text-decoration: underline;"  href="javascript:void(0)">{{cell.text}}</a>
+            </div>
+            <dxi-column alignment="right" dataField="noofwords" dataType="string" caption="No. of Words"></dxi-column>
+            <dxi-column alignment="right" dataField="listatt" dataType="string" caption="Listening Attempts"></dxi-column>
+            <dxi-column alignment="right" dataField="pracatt" dataType="string" caption="Practice Attempts"></dxi-column>
+            <dxi-column alignment="right" dataField="correct" dataType="string" caption="Correct Attempts"></dxi-column>
+            <dxi-column alignment="right"  dataField="successrate" dataType="string" caption="Success %"  displayFormat="{0}%" ></dxi-column>
+
+            <dxo-summary>
+              <dxi-group-item column="noofwords" summaryType="sum" displayFormat="{0}"
+                [showInGroupFooter]="false" [alignByColumn]="true">
+              </dxi-group-item>
+
+              <dxi-group-item column="listatt" summaryType="sum" displayFormat="{0}"
+                [showInGroupFooter]="false" [alignByColumn]="true">
+              </dxi-group-item>
+              <dxi-group-item column="pracatt" summaryType="sum" displayFormat="{0}"
+                [showInGroupFooter]="false" [alignByColumn]="true">
+              </dxi-group-item>
+              <dxi-group-item column="correct" summaryType="sum" displayFormat="{0}"
+                [showInGroupFooter]="false" [alignByColumn]="true">
+              </dxi-group-item>
+              <dxi-group-item column="successrate" summaryType="avg" displayFormat="{0}%" valueFormat="##0.00"
+              [showInGroupFooter]="false" [alignByColumn]="true">
+              <!-- <dxo-value-format  [precision]="1"></dxo-value-format>   -->
+            </dxi-group-item>
+            </dxo-summary>
+          </dx-data-grid>
+        </div>
+
+        <div class="card-body " *ngIf="Gridshowno == 3">
+          <!-- <h1>sdfsd</h1> -->
+          <dx-data-grid #dataGridVar3 id="gridContainer3" [showBorders]="true" [dataSource]="WordsData"
+            [remoteOperations]="false" [allowColumnReordering]="true" [rowAlternationEnabled]="true"
+            [allowColumnResizing]="true" (onContentReady)="contentReady($event)"
+             >
+            <dxo-filter-row [visible]="true"></dxo-filter-row>
+            <dxo-header-filter [visible]="true"></dxo-header-filter>
+            <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
+            <dxo-paging [pageSize]="10"></dxo-paging>
+            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>
+            <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+           
+            <dxi-column dataField="word" [width]="150" cellTemplate="cellTemplate" dataType="string"
+              caption="Word"></dxi-column>
+            <div *dxTemplate="let cell of 'cellTemplate'">
+              <a (click)="onCellClickG3(cell)" href="javascript:void(0)">{{cell.text}}</a>
+            </div>
+
+            <!-- <dxi-column alignment="right" dataField="noofwords" dataType="string" caption="Sum of Word"></dxi-column> -->
+            <dxi-column alignment="right" dataField="listatt" dataType="string" caption="Listening Attempts"></dxi-column>
+            <dxi-column alignment="right" dataField="pracatt" dataType="string" caption="Practice Attempts"></dxi-column>
+            <dxi-column alignment="right" dataField="correct" dataType="string" caption="Correct Attempts"></dxi-column>
+          
+            <dxi-column dataField="successrate" caption="Success %" dataType="string" format="percent" alignment="right"
+              [allowGrouping]="false" cssClass="bullet"></dxi-column>
+           
+          </dx-data-grid>
+        </div>
+        <div class="card-body " *ngIf="Gridshowno == 4">
+          <!-- <h1>sdfsd</h1> -->
+          <dx-data-grid #dataGridVar3 id="gridContainer3" [showBorders]="true" [dataSource]="DatesData"
+            [remoteOperations]="false" [allowColumnReordering]="true" [rowAlternationEnabled]="true"
+            [allowColumnResizing]="true" (onContentReady)="contentReady($event)">
+            <dxo-filter-row [visible]="true"></dxo-filter-row>
+            <dxo-header-filter [visible]="true"></dxo-header-filter>
+            <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
+            <dxo-paging [pageSize]="10"></dxo-paging>
+            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>
+            <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+           
+            <!-- <dxi-column dataField="word" [width]="150" cellTemplate="cellTemplate" dataType="string"
+              caption="Word"></dxi-column>
+            <div *dxTemplate="let cell of 'cellTemplate'">
+              <a  href="javascript:void(0)">{{cell.text}}</a>
+            </div> -->
+
+            <dxi-column dataField="date" dataType="string" caption="Date" ></dxi-column>
+            <dxi-column alignment="right" dataField="listatt" dataType="string" caption="Listening Attempts"></dxi-column>
+            <dxi-column alignment="right" dataField="pracatt" dataType="string" caption="Practice Attempts"></dxi-column>
+            <dxi-column alignment="right" dataField="correct" dataType="string" caption="Correct Attempts"></dxi-column>
+          
+            <dxi-column dataField="successrate" caption="Success %" dataType="string" format="percent" alignment="right"
+              [allowGrouping]="false" cssClass="bullet"></dxi-column>
+           
+          </dx-data-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

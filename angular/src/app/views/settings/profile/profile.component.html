@@ -1,0 +1,269 @@
+
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-paperclip"></i> <span style="font-size: 18px;">Profile</span>
+                </div>
+                <form #profileForm="ngForm" (ngSubmit)="onFormSubmit(profileForm)"  autocomplete="off">
+                    <div class="card-body">
+                        <div class="form-group grouping-strains row">
+                            <div class="col-md-6" *ngIf="common">
+                                <div class="group-control">
+                                    <label for="name">Name <span class="mandatory">*</span> </label>
+                                    <input type="text" id="name" ngModel name="name" pattern = "[a-zA-Z ]+"  #name="ngModel" required class="form-control" placeholder="Enter the name" [ngClass]="{ 'is-invalid': profileForm.submitted && name.errors }" [ngClass]="{ 'is-valid': !name.errors && name.valid}">
+                                    <div *ngIf="profileForm.submitted && !name.valid">
+                                        <div class="invalid-feedback" *ngIf="name.errors?.required">Name is required.
+                                        </div>
+                                        <div class="invalid-feedback" *ngIf="name.errors?.pattern">please enter a valid name.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="common">
+                                <div class="group-control">
+                                    <label for="email">Email <span class="mandatory">*</span> </label>
+                                    <input type="text" id="email" name="email" [disabled]="true" ngModel email="email" #email="ngModel" required class="form-control" placeholder="Enter the email" [ngClass]="{ 'is-invalid': profileForm.submitted && email.errors }" [ngClass]="{ 'is-valid': !email.errors && email.valid}">
+                                    <div *ngIf="profileForm.submitted && !email.valid" >
+                                        <div class="invalid-feedback" *ngIf="email.errors?.required">Email is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="common">
+                                <div class="group-control">
+                                    <label for="email">Mobile <span class="mandatory">*</span> </label>
+                                    <input type="text" id="mobile" pattern="^(\+?\d{1,4}[\s-])?(?!0+\s+,?$)\d{10}\s*,?$"
+                                     name="mobile"  ngModel mobile="mobile" #mobile="ngModel" required class="form-control"  maxlength="10" minlength="10"
+                                     placeholder="Enter the mobile" [ngClass]="{ 'is-invalid': profileForm.submitted && mobile.errors }"
+                                      [ngClass]="{ 'is-valid': !mobile.errors && mobile.valid}">
+                                    <div *ngIf="profileForm.submitted && !mobile.valid" >
+                                        <div class="invalid-feedback" *ngIf="mobile.errors?.required">mobile is required.
+                                        </div>
+                                        <div class="invalid-feedback" *ngIf="mobile.errors.pattern">Please enter a valid 10-digit mobile number
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-6" *ngIf="common">
+                                <div class="group-control">
+                                    <label for="email">City<span class="mandatory">*</span> </label>
+                                    <input type="text" id="phone" name="phone"  ngModel phone="phone" #phone="ngModel" required class="form-control" placeholder="Enter the phone" [ngClass]="{ 'is-invalid': profileForm.submitted && phone.errors }" [ngClass]="{ 'is-valid': !phone.errors && phone.valid}">
+                                    <div *ngIf="profileForm.submitted && !phone.valid" >
+                                        <div class="invalid-feedback" *ngIf="phone.errors?.required">phone is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="col-md-6" *ngIf="traineradmin">
+                                <div class="group-control">
+                                    <label for="email">Company<span class="mandatory">*</span> </label>
+                                    <input type="text" id="company" [disabled]="true" name="company"  ngModel company="company" #company="ngModel" required class="form-control" placeholder="Enter the company" [ngClass]="{ 'is-invalid': profileForm.submitted && company.errors }" [ngClass]="{ 'is-valid': !company.errors && company.valid}">
+                                    <div *ngIf="profileForm.submitted && !company.valid" >
+                                        <div class="invalid-feedback" *ngIf="company.errors?.required">company is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-6" *ngIf="traineradmin||companyadmin">
+                                <div class="form-group">
+                                    <label for="city">City <span class="mandatory">*</span></label>
+                                    <ng-select [items]="citynames" 
+                                               [multiple]="companyadmin?true:false"  [addTag]="companyadmin?true:false"
+                                              ngModel
+                                               name="city" 
+                                               #city="ngModel" 
+                                               required 
+                                               placeholder="Select Your City" 
+                                               [searchable]="true" 
+                                               [clearable]="true"  
+                                               [ngClass]="{'is-invalid': profileForm.submitted && city.errors, 'is-valid': profileForm.submitted && !city.errors && city.valid}">
+                                        
+                                    </ng-select>
+                                    
+                                    <div *ngIf="profileForm.submitted && city.invalid">
+                                        <div class="invalid-feedback" *ngIf="city.errors?.required">City is required</div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="col-md-6" *ngIf="traineradmin">
+                                <div class="group-control">
+                             
+                                    <label for="web_header">Country <span
+                                            class="mandatory">*</span> </label>
+                                            <ng-select [items]="countryList" [addTag]="false" 
+                                            [multiple]="false" ngModel name="country"  bindValue="country"
+                                            bindLabel="country"
+                                            #country="ngModel" required placeholder="Select Country"
+                                            [searchable]="true" [clearable]="true"  (change)="changecountry($event)"
+                                            [ngClass]="{'is-invalid': profileForm.submitted && country.errors, 'is-valid': !country.errors && country.valid}">
+                                     <!-- <ng-template ng-option-tmp let-item="item" let-index="index">
+                                         <b>{{ item }}</b>
+                                     </ng-template> -->
+                                 </ng-select>
+                                    <div *ngIf="profileForm.submitted && !country.valid">
+                                        <div class="invalid-feedback" *ngIf="country.errors.required">Country is required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="traineradmin">
+                                <div class="group-control">
+                             
+                                    <label for="web_header">City <span
+                                            class="mandatory">*</span> </label>
+                                            <ng-select [items]="cityList" [addTag]="false" 
+                                            [multiple]="false" ngModel name="city" 
+                                            #city="ngModel" required placeholder="Select City"
+                                            [searchable]="true" [clearable]="true" 
+                                            [ngClass]="{'is-invalid': profileForm.submitted && city.errors, 'is-valid': !city.errors && city.valid}">
+                                     <!-- <ng-template ng-option-tmp let-item="item" let-index="index">
+                                         <b>{{ item }}</b>
+                                     </ng-template> -->
+                                 </ng-select>
+                                    <div *ngIf="profileForm.submitted && !city.valid">
+                                        <div class="invalid-feedback" *ngIf="city.errors.required">City is required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6"*ngIf="companyadmin">
+                                <div class="group-control">
+                             
+                                    <label for="web_header">Role <span
+                                            class="mandatory">*</span> </label>
+                                            <ng-select [items]="rolenames" [addTag]="true" 
+                                            [multiple]="true" ngModel name="role" 
+                                            #role="ngModel" required placeholder="Type And Enter"
+                                            [searchable]="true" [clearable]="true" 
+                                            [ngClass]="{'is-invalid': profileForm.submitted && role.errors, 'is-valid': !role.errors && role.valid}">
+                                     <ng-template ng-option-tmp let-item="item" let-index="index">
+                                         <b>{{ item }}</b>
+                                     </ng-template>
+                                 </ng-select>
+                                    <div *ngIf="profileForm.submitted && !role.valid">
+                                        <div class="invalid-feedback" *ngIf="role.errors.required">Role is required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="companyadmin">
+                                <div class="group-control">
+                             
+                                    <label for="web_header">Team <span
+                                            class="mandatory">*</span> </label>
+                                            <ng-select [items]="teamnames" [addTag]="true" 
+                                            [multiple]="true" ngModel name="team" 
+                                            #team="ngModel" required placeholder="Type And Enter"
+                                            [searchable]="true" [clearable]="true" 
+                                            [ngClass]="{'is-invalid': profileForm.submitted && team.errors, 'is-valid': !team.errors && team.valid}">
+                                     <ng-template ng-option-tmp let-item="item" let-index="index">
+                                         <b>{{ item }}</b>
+                                     </ng-template>
+                                 </ng-select>
+                                    <div *ngIf="profileForm.submitted && !team.valid">
+                                        <div class="invalid-feedback" *ngIf="team.errors.required">team is required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-6"*ngIf="companyadmin" >
+                                <div class="group-control">
+                                    <label for="web_header">Country <span
+                                            class="mandatory">*</span> </label>
+                                    <ng-select [items]="countrylist" id="country" bindValue="name"
+                                        bindLabel="name" [multiple]="false" ngModel name="country"
+                                        #country="ngModel" required placeholder="Select Your country"
+                                        [searchable]="true" [clearable]="true"
+                                        [ngClass]="{ 'is-invalid': profileForm.submitted && country.errors }"
+                                        [ngClass]="{ 'is-valid': !country.errors && country.valid}" >
+                                        <ng-template ng-option-tmp let-item="item" let-index="index" >
+                                            <b>{{ item.name }}</b>
+                                        </ng-template>
+                                    </ng-select>
+                                    <div *ngIf="profileForm.submitted && !country.valid">
+                                        <div class="invalid-feedback" *ngIf="country.errors.required">Country is required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div *ngIf="companyadmin" class="col-md-12">
+
+                       
+                            <div *ngFor="let pair of countryCity; let i = index" class="col-lg-12 row add_country_sec" >
+                                <div class="col-md-6">
+                                  <div class="group-control">
+                                    <label for="web_header">Country <span class="mandatory">*</span></label>
+                                    <ng-select
+                                      [items]="countrylist"
+                                      bindValue="name"
+                                      bindLabel="name"
+                                      [multiple]="false"
+                                      [(ngModel)]="pair.country"
+                                      name="country{{i}}"
+                                      #country="ngModel"
+                                      required
+                                      placeholder="Select  C    ountry"
+                                      [searchable]="true"
+                                      [clearable]="true"
+                                      [ngClass]="{ 'is-invalid': profileForm.submitted && country.errors, 'is-valid': !country.errors && country.valid }"
+                                    >
+                                      <ng-template ng-option-tmp let-item="item">
+                                        <b>{{ item.name }}</b>
+                                      </ng-template>
+                                    </ng-select>
+                                    <div *ngIf="profileForm.submitted && !country.valid">
+                                      <div class="invalid-feedback" *ngIf="country.errors.required">Country is required</div>
+                                    </div>
+                                  </div>
+                                </div>
+                            
+                                <div class="col-md-5">
+                                  <div class="group-control">
+                                    <label for="web_header">City <span class="mandatory">*</span></label>
+                                    <ng-select
+                                      [items]="citynames[i]"
+                                      [addTag]="true"
+                                      [multiple]="true"
+                                      [(ngModel)]="pair.city"
+                                      name="city{{i}}"
+                                      #city="ngModel"
+                                      required
+                                      placeholder="Type and enter city"
+                                      [searchable]="true"
+                                      [clearable]="true"
+                                      [ngClass]="{ 'is-invalid': profileForm.submitted && city.errors, 'is-valid': !city.errors && city.valid }"
+                                    >
+                                      <ng-template ng-option-tmp let-item="item">
+                                        <b>{{ item }}</b>
+                                      </ng-template>
+                                    </ng-select>
+                                    <div *ngIf="profileForm.submitted && !city.valid">
+                                      <div class="invalid-feedback" *ngIf="city.errors.required">City is required</div>
+                                    </div>
+                                  </div>
+                                </div>
+                            <div class="col-lg-1 remove">
+                                <button type="button" (click)="removeCountryCity(i)" style="font-weight: bold;">X</button>
+                            </div>
+                                <!-- Button to remove a specific country-city pair -->
+                              </div>
+                              <div class="add_country_btn">
+                                  <button type="button" (click)="addCountryCity(i)" style="font-weight: bold;">Add Country-City</button>
+                                </div>    
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" [disabled]="submitebtn" class="btn btn-sm btn-success" >
+                             Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

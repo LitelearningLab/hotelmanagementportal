@@ -1,0 +1,55 @@
+.custom-checkbox-select-all{
+    .custom-control.custom-checkbox{
+        display: inline-block;
+    }
+}
+
+.text-active {
+    color: green;
+    font-weight: bold;
+    
+}
+
+.text-inactive {
+    color: rgb(232, 186, 18);
+    font-weight: bold;
+}
+
+
+/* Container for the input group */
+.group-control {
+    position: relative;
+  }
+  
+  input[type="password"] {
+    padding-right: 40px; /* Space for the eye icon */
+  }
+  
+  /* Style for the eye icon */
+  .input-group-tex {
+    position: absolute;
+    right: 10px; /* Position the icon on the right side */
+    top: 75%;
+    transform: translateY(-50%); /* Vertically center the icon */
+    cursor: pointer;
+  }
+  
+  /* Style for the eye icon's font-awesome class */
+  .input-group-tex i {
+    font-size: 18px;
+    color: #999;
+  }
+  
+  /* Show different icon when password is visible */
+  .input-group-tex i.fa-eye {
+    color: #333;
+  }
+  
+  .input-group-tex i.fa-eye-slash {
+    color: #ccc;
+  }
+  
+  /* Optional: To make the icon more visually appealing on focus or hover */
+  input[type="password"]:focus + .input-group-tex i {
+    color: #007bff; /* Change the icon color when input is focused */
+  }

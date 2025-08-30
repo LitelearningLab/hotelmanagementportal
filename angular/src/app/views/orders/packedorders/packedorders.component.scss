@@ -1,0 +1,24 @@
+.input-group{
+    width:20%;
+}
+::ng-deep .seen_status{
+    font-size:22px;
+    color:green
+}
+::ng-deep .not_seen_status{
+    font-size:22px;
+    color:red
+}
+
+.GFG {
+    background-color: white;
+    border: 2px solid black;
+    color: green;
+    padding: 5px 10px;
+    text-align: center;
+    display: inline-block;
+    font-size: 20px;
+    margin: 10px 30px;
+    cursor: pointer;
+    text-decoration:none;
+}

@@ -1,0 +1,14 @@
+.ng-select.ng-select {
+    border: 1px solid #ffffff00;
+    border-radius: 0.25rem;
+}
+
+.ng-select.ng-select.is-invalid {
+    border-color: #ec5564;
+    // border: 1px;
+}
+
+.ng-select.ng-select.is-valid {
+    border-color: #4ec469;
+    // border: 1px;
+}

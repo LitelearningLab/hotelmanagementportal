@@ -1,0 +1,121 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="tabls-heading">
+                        <h3>{{pageTitle | titlecase}}</h3>
+                    </div>
+                </div>
+                <form #emailtempleteForm="ngForm" (ngSubmit)="onFormSubmit(emailtempleteForm)" autocomplete="off">
+                    <div class="card-body">
+                        <div class="form-group grouping-strains row">
+                            <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="name">Template Name <span class="mandatory">*</span> </label>
+                                    <input type="text" id="name" ngModel name="name" #name="ngModel" required class="form-control" placeholder="Enter Name" [ngClass]="{ 'is-invalid': emailtempleteForm.submitted && name.errors }" [ngClass]="{ 'is-valid': !name.errors && name.valid}">
+                                    <div *ngIf="emailtempleteForm.submitted && !name.valid">
+                                        <div class="invalid-feedback" *ngIf="name.errors.required">Template Name is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="email_subject">Email Subject <span class="mandatory">*</span> </label>
+                                    <input type="text" id="email_subject" ngModel name="email_subject" #email_subject="ngModel" required class="form-control" placeholder="Enter Email Subject" [ngClass]="{ 'is-invalid': emailtempleteForm.submitted && email_subject.errors }" [ngClass]="{ 'is-valid': !email_subject.errors && email_subject.valid}">
+                                    <div *ngIf="emailtempleteForm.submitted && !email_subject.valid">
+                                        <div class="invalid-feedback" *ngIf="email_subject.errors.required">Email Subject is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="sender_name">Sender Name <span class="mandatory">*</span> </label>
+                                    <input type="text" id="sender_name" ngModel name="sender_name" #sender_name="ngModel" required class="form-control" placeholder="Enter Sender Name" [ngClass]="{ 'is-invalid': emailtempleteForm.submitted && sender_name.errors }" [ngClass]="{ 'is-valid': !sender_name.errors && sender_name.valid}">
+                                    <div *ngIf="emailtempleteForm.submitted && !sender_name.valid">
+                                        <div class="invalid-feedback" *ngIf="sender_name.errors.required">Sender Name is required.
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="group-control">
+                                    <label for="sender_email">Sender Email Address <span class="mandatory">*</span>
+                                    </label>
+                                    <input type="email" id="sender_email" ngModel name="sender_email" #sender_email="ngModel" pattern="^[a-z0-9.]+@[a-z0-9.-]+\.[a-z]{2,3}$" required class="form-control" placeholder="Enter Sender Email" [ngClass]="{ 'is-invalid': emailtempleteForm.submitted && sender_email.errors }"
+                                        [ngClass]="{ 'is-valid': !sender_email.errors && sender_email.valid}">
+                                    <div *ngIf="emailtempleteForm.submitted && !sender_email.valid">
+                                        <div class="invalid-feedback" *ngIf="sender_email.errors.required">Sender Email Address is required.
+                                        </div>
+                                        <div class="invalid-feedback" *ngIf="!sender_email.errors.email && sender_email.errors.pattern">
+                                            Please enter valid Email
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="tile-widget p-20 cash-opt col-sm-6">
+                                <label for="maximum">Subscription Mail Options </label>
+                                <label class="switch">
+                                    <input type="checkbox" ngModel  name="subscription"  #subscription="ngModel">
+                                    <span class="slider round"></span>
+                                  </label>
+                            </div> -->
+                            <div class="col-md-12">
+                                <div class="group-control">
+                                    <label for="email_header">Email Header</label>
+                                    <textarea id="email_header" ngModel name="email_header" #email_header="ngModel" class="form-control" placeholder="Enter Email Header"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="group-control">
+                                    <label for="email_content">Email Content <span class="mandatory">*</span></label>
+                                    <editor [disabled]="viewpage" apiKey="wqel19pklihbenult7fuqsssltcd8vup4cl0n33y6m3hzghx" id="email_content" ngModel name="email_content" required #email_content="ngModel" [init]="{
+                                        height: 300,
+                                        menubar: false,
+                                        plugins: [
+                                          'advlist autolink lists link image charmap print preview anchor',
+                                          'searchreplace visualblocks code fullscreen',
+                                          'insertdatetime media table paste code wordcount'
+                                        ],
+                                        toolbar:
+                                          'undo redo | formatselect | bold italic backcolor | \
+                                          alignleft aligncenter alignright alignjustify | \
+                                          bullist numlist outdent indent | removeformat | code'
+                                      }">
+                                    </editor>
+                                    <div *ngIf="emailtempleteForm.submitted && !email_content.valid">
+                                        <div class="invalid-feedback" *ngIf="email_content.errors.required">Email Сontent is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="group-control">
+                                    <label for="email_footer">Email Footer </label>
+                                    <textarea id="email_footer" ngModel name="email_footer" #email_footer="ngModel" class="form-control" placeholder="Enter Email Footer"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button style="background-color: #0737B5; outline-color:  #0737B5;" type="button" *ngIf="viewpage" routerLink="/app/email-template/list" class="btn back-btns">
+                            Back
+                        </button>
+                        <button type="submit" *ngIf="!viewpage" class="btn btn-sm btn-success" [disabled]="submitebtn">
+                            Submit
+                        </button>
+                        <button type="button" *ngIf="!viewpage" routerLink="/app/email-template/list" class="btn btn-sm btn-danger">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="container">
+    <h3><strong>Coupon</strong></h3>
+    <div  *ngIf="data">
+        <div class="form-group grouping-strains row">
+            <div class="col-md-4">
+                <label  class="group-control" for="name"><span><strong>Coupon Type</strong></span></label>
+            </div>
+            <div class="col-md-4">
+                <label  class="group-control" for="name"><span>{{data.coupon_type}}</span></label>
+            </div>
+        </div>
+        <div class="form-group grouping-strains row">
+            <div class="col-md-4">
+                <label  class="group-control" for="name"><span><strong>Code</strong></span></label>
+            </div>
+            <div class="col-md-4">
+                <label  class="group-control" for="name"><span>{{data.code}}</span></label>
+            </div>
+        </div>
+    </div>
+    <!-- <p *ngIf="data != null"> Coupon Type : {{data.coupon_type}} </p>
+    <p *ngIf="data != null"> Code : {{data.code}}</p> -->
+</div>

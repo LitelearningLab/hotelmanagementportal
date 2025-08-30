@@ -1,0 +1,148 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header"><strong>{{pageTitle | titlecase}}</strong></div>
+                <form #categoryForm="ngForm" (ngSubmit)="onFormSubmit(categoryForm)" autocomplete="off">
+                    <div class="card-body">
+                        <div class="form-group grouping-strains row">
+                            <div class="col-md-6">
+                                <div class="group-control">
+                                    <label for="rcatname">Category Name <span class="mandatory">*</span> </label>
+                                    <input [disabled]="disableview" type="text" id="rcatname" ngModel name="rcatname"
+                                        #rcatname="ngModel" [(ngModel)]="cateory_name" (keyup)="changeSlug()" required maxlength="15"
+                                        class="form-control" placeholder="Enter category name"
+                                        [ngClass]="{ 'is-invalid': categoryForm.submitted && rcatname.errors }"
+                                        [ngClass]="{ 'is-valid': !rcatname.errors && rcatname.valid}">
+                                    <div *ngIf="categoryForm.submitted && !rcatname.valid">
+                                        <div class="invalid-feedback" *ngIf="rcatname.errors.required">Category is
+                                            required.
+                                        </div>
+                                        <div class="invalid-feedback" *ngIf="rcatname.errors.maxlength">Maximum character limit exceeded.</div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col-md-6">
+                                <div class="group-control">
+                                    <label for="slug">Slug <span class="mandatory">*</span> </label>
+                                    <input type="text" id="slug" ngModel name="slug" #slug="ngModel" disabled
+                                        [(ngModel)]="category_slug" required class="form-control"
+                                        placeholder="Enter category name"
+                                        [ngClass]="{ 'is-invalid': categoryForm.submitted && slug.errors }"
+                                        [ngClass]="{ 'is-valid': !slug.errors && slug.valid}">
+                                    <!-- <div *ngIf="categoryForm.submitted && !rcatname.valid">
+                                        <div class="invalid-feedback" *ngIf="rcatname.errors.required">Category is
+                                            required.
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="group-control">
+                                    <label for="cimage">Category Image <span class="mandatory">*</span> </label>
+                                    <span *ngIf="!id">
+                                        <input [disabled]="disableview" type="file" id="cimage" ngModel name="cimage"
+                                            required #cimage="ngModel" class="form-control" placeholder="Enter Name"
+                                            [ngClass]="{ 'is-invalid': categoryForm.submitted && cimage.errors }"
+                                            [ngClass]="{ 'is-valid': !cimage.errors && cimage.valid}"
+                                            (change)="fileUpload($event)">
+                                        <div *ngIf="categoryForm.submitted && !cimage.valid">
+                                            <div class="invalid-feedback" *ngIf="cimage.errors.required">Category image
+                                                is
+                                                required.
+                                            </div>
+                                        </div>
+                                    </span>
+                                    <span *ngIf="id">
+                                        <input [disabled]="disableview" accept="image/*" type="file" id="cimage" ngModel
+                                            name="cimage" #cimage="ngModel" class="form-control"
+                                            placeholder="Enter Name"
+                                            [ngClass]="{ 'is-invalid': categoryForm.submitted && cimage.errors }"
+                                            [ngClass]="{ 'is-valid': !cimage.errors && cimage.valid}"
+                                            (change)="fileUpload($event)">
+                                    </span>
+                                    <span class="restaurant-img-error">Allowed files: png, jpg. Max file size 2Mb</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="group-control">
+                                    <label for="iconimage">Icon Image <span class="mandatory">*</span> </label>
+                                    <span *ngIf="!id">
+                                        <input [disabled]="disableview" type="file" id="iconimage" ngModel
+                                            name="iconimage" required #iconimage="ngModel" class="form-control"
+                                            placeholder="Enter Name"
+                                            [ngClass]="{ 'is-invalid': categoryForm.submitted && iconimage.errors }"
+                                            [ngClass]="{ 'is-valid': !iconimage.errors && iconimage.valid}"
+                                            (change)="icon_fileUpload($event)">
+                                        <div *ngIf="categoryForm.submitted && !iconimage.valid">
+                                            <div class="invalid-feedback" *ngIf="iconimage.errors.required">Icon image
+                                                is
+                                                required.
+                                            </div>
+                                        </div>
+                                    </span>
+                                    <span *ngIf="id">
+                                        <input [disabled]="disableview" accept="image/*" type="file" id="iconimage"
+                                            ngModel name="iconimage" #iconimage="ngModel" class="form-control"
+                                            placeholder="Enter Name"
+                                            [ngClass]="{ 'is-invalid': categoryForm.submitted && iconimage.errors }"
+                                            [ngClass]="{ 'is-valid': !iconimage.errors && iconimage.valid}"
+                                            (change)="icon_fileUpload($event)">
+                                    </span>
+                                    <span class="restaurant-img-error">Allowed files: png, jpg. Max file size 2Mb</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group grouping-strains row">
+                            <div class="col-md-6">
+                                <div class="group-control">
+                                    <label for="status">Status <span class="mandatory">*</span></label>
+                                    <select [disabled]="disableview" name="status" id="status" class="form-control"
+                                        ngModel name="status" #status="ngModel" required
+                                        [ngClass]="{ 'is-invalid': categoryForm.submitted && status.errors }"
+                                        [ngClass]="{ 'is-valid': !status.errors && status.valid}">
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="1">Active</option>
+                                        <option value="2">Inactive</option>
+                                    </select>
+                                    <div *ngIf="categoryForm.submitted && !status.valid">
+                                        <div class="invalid-feedback" *ngIf="status.errors.required">Category status is
+                                            required.
+                                        </div>
+                                        <div class="invalid-feedback" *ngIf="status.errors.status">Please enter valid
+                                            status
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="group-control">
+                                    <img class="" height="150" [src]="previewImage">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="group-control">
+                                    <img class="" height="150" [src]="iconpreviewImage">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [disabled]="" -->
+                    <div class="card-footer">
+                        <button type="submit" *ngIf="!disableview" class="btn btn-sm btn-success"
+                            [disabled]="submitebtn">
+                            Submit
+                        </button>
+                        <button type="button" *ngIf="!disableview" routerLink="/app/category/category-list"
+                            class="btn btn-sm btn-danger">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+.pagination {
+    justify-content: end;
+    padding: 0 20px 0 30px;
+}
+
+.error {
+
+    color: red;
+    font-size: 0.875em;
+
+}
+
+.no-data-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-left: 131%;
+    width: 70%;
+}
+
+.no-data-message {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: monospace;
+    color: red;
+}

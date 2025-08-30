@@ -1,0 +1,701 @@
+<div class="animated fadeIn" *ngIf="!viewpage">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- <div class="email-status" *ngIf="emailVerifyTag == 1">
+                <p><i class="fa fa-check" aria-hidden="true"></i> Email Verified </p>
+            </div>
+            <div class="email-unstatus" *ngIf="emailVerifyTag == 0">
+                <p><i class="fa fa-times" aria-hidden="true"></i> Email Unverified </p>
+            </div> -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="tabls-heading">
+                        <h3>{{pageTitle | titlecase}}</h3>
+                    </div>
+                </div>
+                <form #userAddEditForm="ngForm" (ngSubmit)="onFormSubmit(userAddEditForm)" autocomplete="off">
+                    <!--Edit and add page-->
+                    <div class="card-body row">
+                        <div class="col-md-12">
+
+                            <div class="form-group  grouping-strains row">
+                                <div class="col-md-6">
+                                    <div class="group-control">
+                                        <label for="username">Name <span class="mandatory">*</span> </label>
+                                        <input type="text" name="username" id="username" ngModel username="username"
+                                            #username="ngModel" required placeholder="Enter  Name"
+                                            class="form-control" minlength="3" maxlength="20"
+                                            [ngClass]="{ 'is-invalid': userAddEditForm.submitted && username.errors }"
+                                            [ngClass]="{ 'is-valid': !username.errors && username.valid}">
+                                        <div *ngIf="userAddEditForm.submitted && !username.valid">
+                                            <div class="invalid-feedback" *ngIf="username.errors.required"> Name
+                                                is
+                                                required.
+                                            </div>
+                                            <div class="invalid-feedback" *ngIf="username.errors?.minlength">Name
+                                                must be at least 3 characters long.
+                                            </div>
+                                            <div class="invalid-feedback" *ngIf="username.errors?.maxlength">Name
+                                                can be max 20 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="mobile">Mobile <span class="mandatory">*</span></label>
+                                        <ngx-intl-tel-input
+                                            cssClass="form-control"
+                                            id="mobile"
+                                            [preferredCountries]="preferredCountries"
+                                            [enableAutoCountrySelect]="true"
+                                            [enablePlaceholder]="false"
+                                            [searchCountryFlag]="true"
+                                            [customPlaceholder]="'Enter Phone Number'"
+                                            [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                            [selectFirstCountry]="true"
+                                            [selectedCountryISO]="selectedCountryISO"
+                                            [phoneValidation]="true"
+                                            [separateDialCode]="false"
+                                            [maxLength]="15"
+                                            name="mobile"
+                                            ngModel
+                                            #mobile="ngModel"
+                                          
+                                            required
+                                        ></ngx-intl-tel-input>
+                                        <!-- (keyup)="phoneNumber($event)" -->
+                                        <!-- Validation messages -->
+                                        <div *ngIf="userAddEditForm.submitted && mobile.invalid" class="invalid-feedback">
+                                            <div *ngIf="mobile.errors?.required">Mobile is required.</div>
+                                            <div *ngIf="mobile.errors?.pattern">Please enter a valid mobile number.</div>
+                                            <!-- Add custom error message for phone number validation if needed -->
+                                            <div *ngIf="mobile.errors?.phoneValidation">Please enter a valid phone number.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                                
+                                <div class="col-md-6" *ngIf="!companyadmin">
+                                    <div class="group-control">  
+                                        <label for="web_header">Institution <span
+                                                class="mandatory">*</span> </label>
+                                        <ng-select [items]="companynames" id="company" bindValue="companyname"
+                                            bindLabel="companyname" [multiple]="false" ngModel name="company"
+                                            #company="ngModel" required placeholder="Select Your company"
+                                            [searchable]="true" [clearable]="true"
+                                            [ngClass]="{ 'is-invalid': userAddEditForm.submitted && company.errors }"
+                                            [ngClass]="{ 'is-valid': !company.errors && company.valid}" (change)="changecompany($event)">
+                                            <ng-template ng-option-tmp let-item="item" let-index="index" >
+                                                <b>{{ item.companyname }}</b>
+                                            </ng-template>
+                                        </ng-select>
+                                        <div *ngIf="userAddEditForm.submitted && !company.valid">
+                                            <div class="invalid-feedback" *ngIf="company.errors.required">Company is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="group-control">
+                                        <label for="email">E-Mail <span class="mandatory">*</span></label>
+                        
+                                        <input type="text" id="email" ngModel name="email" #email="ngModel" autocomplete="off"
+                                            class="form-control" placeholder="Enter E-Mail"
+                                            pattern="^[a-zA-Z0-9.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$" required
+                                            [ngClass]="{ 'is-invalid': userAddEditForm.submitted && email.errors }"
+                                                [ngClass]="{ 'is-valid': !email.errors && email.valid}">
+                                        <div *ngIf="userAddEditForm.submitted && !email.valid">
+                                            <div class="invalid-feedback" *ngIf="email.errors.required">Email is required.
+                                            </div>
+                                            <div class="invalid-feedback" *ngIf="email.errors.email">Please enter valid
+                                                Email
+                                            </div>
+                                            <div class="invalid-feedback"
+                                                *ngIf="!email.errors.email && email.errors.pattern">
+                                                Please enter valid Email</div>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                <div class="col-md-6" >
+                                    <div class="group-control">
+                                        <label for="web_header">Country <span
+                                                class="mandatory">*</span> </label>
+                                                <ng-select 
+                                                [items]="countrylist" 
+                                                id="country" 
+                                                bindValue="country"
+                                                bindLabel="country" 
+                                                [multiple]="false" 
+                                                ngModel 
+                                                name="country"
+                                                #country="ngModel" 
+                                                required 
+                                                placeholder="Select Your Country"
+                                                [searchable]="true" 
+                                                [clearable]="true" 
+                                                (change)="getCity($event)"
+                                                [ngClass]="{ 'is-invalid': userAddEditForm.submitted && country.errors, 'is-valid': !country.errors && country.valid }">
+                                                
+                                                <ng-template ng-label-tmp let-item="item">
+                                                    {{ item.country | titlecase }}
+                                                </ng-template>
+                                                
+                                                <ng-template ng-option-tmp let-item="item">
+                                                    {{ item.country | titlecase }}
+                                                </ng-template>
+                                            </ng-select>
+                                            
+                                        <div *ngIf="userAddEditForm.submitted && !country.valid">
+                                            <div class="invalid-feedback" *ngIf="country.errors.required">Country is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="group-control">
+                                 
+                                        <label for="web_header">City <span
+                                                class="mandatory">*</span> </label>
+                                                <ng-select [items]="citynames" [addTag]="true" 
+                                                [multiple]="false" ngModel name="city" 
+                                                #city="ngModel" required placeholder="Select Your City"
+                                                [searchable]="true" [clearable]="true" [disabled]="!disableinput"
+                                                [ngClass]="{'is-invalid': userAddEditForm.submitted && city.errors, 'is-valid': !city.errors && city.valid}">
+                                         <ng-template ng-option-tmp let-item="item" let-index="index">
+                                             <b>{{ item }}</b>
+                                         </ng-template>
+                                     </ng-select>
+                                        <div *ngIf="userAddEditForm.submitted && !city.valid">
+                                            <div class="invalid-feedback" *ngIf="city.errors?.required">City is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-6">
+                                    <div class="group-control">
+                                        <label for="name">state <span class="mandatory">*</span> </label>
+                                        <input type="text" id="state" ngModel  #state="ngModel" required 
+                                            class="form-control" name="state" placeholder="Enter state" 
+                                            [ngClass]="{ 'is-invalid': userAddEditForm.submitted && state.errors }"
+                                            [ngClass]="{ 'is-valid': !state.errors && state.valid}">
+                                        <div *ngIf="userAddEditForm.submitted && !state.valid">
+                                            <div class="invalid-feedback" *ngIf="state.errors.required">state is required.
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="col-md-6" >
+                                    <div class="group-control">
+                                        <label for="web_header">State <span
+                                                class="mandatory">*</span> </label>
+                                        <ng-select [items]="states" id="state" bindValue="name"
+                                            bindLabel="name" [multiple]="false" ngModel name="state"
+                                            #state="ngModel" required placeholder="Select Your state"
+                                            [searchable]="true" [clearable]="true" 
+                                            [ngClass]="{ 'is-invalid': userAddEditForm.submitted && state.errors }"
+                                            [ngClass]="{ 'is-valid': !state.errors && state.valid}" >
+                                            <ng-template ng-option-tmp let-item="item" let-index="index" >
+                                                <b>{{ item.name }}</b>
+                                            </ng-template>
+                                        </ng-select>
+                                        <div *ngIf="userAddEditForm.submitted && !state.valid">
+                                            <div class="invalid-feedback" *ngIf="state.errors.required">Country is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                                
+                             
+                                
+                                
+                                
+                              
+                                <div class="col-md-6">
+                                    <div class="group-control">
+                                 
+                                        <label for="web_header">Course <span
+                                                class="mandatory">*</span> </label>
+                                                <ng-select [items]="teamdata" [addTag]="false" 
+                                                [multiple]="false" ngModel name="course" 
+                                                #course="ngModel" required placeholder="Select Your Course"
+                                                [searchable]="true" [clearable]="true" [disabled]="!disableinput"
+                                                [ngClass]="{'is-invalid': userAddEditForm.submitted && course.errors, 'is-valid': !course.errors && course.valid}">
+                                         <ng-template ng-option-tmp let-item="item" let-index="index">
+                                             <b>{{ item }}</b>
+                                         </ng-template>
+                                     </ng-select>
+                                        <div *ngIf="userAddEditForm.submitted && !course.valid">
+                                            <div class="invalid-feedback" *ngIf="course.errors?.required">Course is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="group-control">
+                                 
+                                        <label for="web_header">Year <span
+                                                class="mandatory">*</span> </label>
+                                                <ng-select [items]="roleitmes" [addTag]="false" 
+                                                [multiple]="false" ngModel name="year" 
+                                                #year="ngModel" required placeholder="Select Your Year"
+                                                [searchable]="true" [clearable]="true" [disabled]="!disableinput"
+                                                [ngClass]="{'is-invalid': userAddEditForm.submitted && year.errors, 'is-valid': !year.errors && year.valid}">
+                                         <ng-template ng-option-tmp let-item="item" let-index="index">
+                                             <b>{{ item }}</b>
+                                         </ng-template>
+                                     </ng-select>
+                                        <div *ngIf="userAddEditForm.submitted && !year?.valid">
+                                            <div class="invalid-feedback" *ngIf="year.errors?.required">Year is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                
+                             
+                                <!-- <div class="col-md-6">
+                                    <div class="group-control">
+                                        <label for="name">State <span class="mandatory">*</span> </label>
+                                        <input type="text" id="state" ngModel  #state="ngModel" minlength="10" maxlength="11" required 
+                                            class="form-control" name="state" placeholder="Enter state" minlength="5"
+                                            [ngClass]="{ 'is-invalid': userAddEditForm.submitted && state.errors }"
+                                            [ngClass]="{ 'is-valid': !state.errors && state.valid}">
+                                        <div *ngIf="userAddEditForm.submitted && !state.valid">
+                                            <div class="invalid-feedback" *ngIf="state.errors.required">state is required.
+                                            </div>
+                                            
+                                            <div class="invalid-feedback" *ngIf="state.errors.minlength">Mininum 3 letters required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            
+                                <!-- <div class="col-md-6">
+                                    <div class="group-control">
+                                        <label for="name">Country <span class="mandatory">*</span> </label>
+                                        <input type="text" id="country" ngModel  #country="ngModel" minlength="10" maxlength="11" required 
+                                            class="form-control" name="country" placeholder="Enter country" minlength="5"
+                                            [ngClass]="{ 'is-invalid': userAddEditForm.submitted && country.errors }"
+                                            [ngClass]="{ 'is-valid': !country.errors && country.valid}">
+                                        <div *ngIf="userAddEditForm.submitted && !country.valid">
+                                            <div class="invalid-feedback" *ngIf="country.errors.required">country is required.
+                                            </div>
+                                            
+                                            <div class="invalid-feedback" *ngIf="country.errors.minlength">Mininum 4 letters required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="col-md-6">
+                                    <div class="group-control">
+                                        <label for="name">Team <span class="mandatory">*</span> </label>
+                                        <input type="text" id="team" ngModel  #team="ngModel" minlength="10" maxlength="11" required 
+                                            class="form-control" name="team" placeholder="Enter team" minlength="5"
+                                            [ngClass]="{ 'is-invalid': userAddEditForm.submitted && team.errors }"
+                                            [ngClass]="{ 'is-valid': !team.errors && team.valid}">
+                                        <div *ngIf="userAddEditForm.submitted && !team.valid">
+                                            <div class="invalid-feedback" *ngIf="team.errors.required">team is required.
+                                            </div>
+                                            
+                                            <div class="invalid-feedback" *ngIf="team.errors.minlength">Mininum 4 letters required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                              
+                                <div class="col-md-6" *ngIf="edituserdata">
+                                    <div class="group-control">
+                                        <label for="name">Device ID </label>
+                                        <input type="text" id="imei" ngModel  #imei="ngModel"  
+                                            class="form-control" name="imei"  placeholder="Enter IMEI" 
+                                           >
+                                        <!-- <div *ngIf="userAddEditForm.submitted && !imei.valid">
+                                            <div class="invalid-feedback" *ngIf="imei.errors.required">imei is required.
+                                            </div>
+                                            
+                                            <div class="invalid-feedback" *ngIf="team.errors.minlength">Mininum 4 letters required
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-6">
+                                    <div class="group-control">
+                                        <label for="phone">Mobile Number&nbsp;<span class="mandatory">*</span><span *ngIf="!userDetails"
+                                                class="mandatory">*</span></label><br>
+                                        <ngx-intl-tel-input
+                                            cssClass="form-control {{(userAddEditForm.submitted && phone.errors) ? 'is-invalid' : ''}} {{(!phone.errors && phone.valid  && !checkpassword) ? 'is-valid' : ''}}"
+                                            id="phone" [preferredCountries]="preferredCountries"
+                                            [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
+                                            [searchCountryFlag]="true"
+                                            [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                            [selectFirstCountry]="false" [selectedCountryISO]="selectedCountryISO"
+                                            [phoneValidation]="true" [separateDialCode]="separateDialCode"
+                                            #phone="ngModel" [numberFormat]="PhoneNumberFormat.National"
+                                            (keyup)="phoneNumberChange($event)" name="phone"
+                                            required="{{userDetails ? false : true}}" ngModel>
+                                        </ngx-intl-tel-input>
+                                        <div *ngIf="userAddEditForm.submitted && !phone.valid">
+                                            <div class="invalid-feedback" *ngIf="phone.errors && phone.errors.required">
+                                                Mobile Number is required.
+                                            </div>
+                                        </div>
+                                        <div
+                                            *ngIf="userAddEditForm.submitted && userAddEditForm.controls.phone.errors && userAddEditForm.controls.phone.errors">
+                                            <div class="invalid-feedback"
+                                                *ngIf="userAddEditForm.submitted && userAddEditForm.controls.phone.errors && userAddEditForm.controls.phone.errors.validatePhoneNumber">
+                                                Enter valid mobile number.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="col-md-6">
+                                    <div class="group-control">
+                                        <label for="web_header">Subscription Start Date <span
+                                                class="mandatory">*</span> </label>
+                                                <input  name="joindate" #joindate="ngModel" ngModel id="ngModel"
+                                                    placeholder="Subscription Start Date"
+                                                    class="form-control" [readonly]="true"
+                                                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && joindate.errors }"
+                                                    [ngClass]="{ 'is-valid': !city.errors && joindate.valid}" onkeydown="return false"
+                                                bsDatepicker required placement="top"   [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',showTodayButton:true, container: 'body' }">
+                                                <div *ngIf="userAddEditForm.submitted && !joindate.valid" >
+                                                    <div class="invalid-feedback" *ngIf="joindate.errors.required">Subscription Start date is required.
+                                                    </div>
+                                                   
+                                                    
+                                                </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="group-control">
+                                        <label for="web_header">Subscription End Date <span
+                                                class="mandatory">*</span> </label>
+                                                <input  name="subscriptionenddate" #subscriptionenddate="ngModel" ngModel id="ngModel"
+                                                    placeholder="Subscription End Date"
+                                                    class="form-control" [readonly]="true"
+                                                    [ngClass]="{ 'is-invalid': userAddEditForm.submitted && subscriptionenddate.errors }"
+                                                    [ngClass]="{ 'is-valid': !city.errors && subscriptionenddate.valid}" onkeydown="return false"
+                                                bsDatepicker required placement="top"   [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY',showTodayButton:true, container: 'body' }">
+                                                <div *ngIf="userAddEditForm.submitted && !subscriptionenddate.valid" >
+                                                    <div class="invalid-feedback" *ngIf="subscriptionenddate.errors.required">Subscription End date is required.
+                                                    </div>
+                                                   
+                                                    
+                                                </div>
+                                    </div>
+                                </div>
+                                 <div class="col-md-6">
+                                    <div class="group-control">
+                                        <label for="status">Status <span class="mandatory">*</span></label>
+                                        <select name="status" id="status" class="form-control" ngModel name="status"
+                                            #status="ngModel" required
+                                            [ngClass]="{ 'is-invalid': userAddEditForm.submitted && status.errors }"
+                                            [ngClass]="{ 'is-valid': !status.errors && status.valid}">
+                                            <option value="">--Select--</option>
+                                            <option value="1">Active</option>
+                                            <option value="2">Inactive</option>
+                                        </select>
+                                        <div *ngIf="userAddEditForm.submitted && !status.valid">
+                                            <div class="invalid-feedback" *ngIf="status.errors.required">Status is
+                                                required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                               
+                               
+                                <!-- <div class="col-md-12">
+                                    <div class="group-control">
+                                        <label for="address">Address <span>(Optional)</span></label>
+                                        <input type="text" id="address" ngModel name="address" #address="ngModel" class="form-control" placeholder="Enter Address" autocorrect="off" autocapitalize="off" spellcheck="off" #search (keydown.enter)="$event.preventDefault()">
+                                        <div *ngIf="userAddEditForm.submitted && !address.valid">
+                                            <div class="invalid-feedback" *ngIf="address.errors.required">Address is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+
+                        <!--profile image div-->
+                        <!-- <div class="col-md-4">
+                            <div class="form-group grouping-strains lab-midle row">
+                                <div class="group-control">
+                                    <label for="Profile">Profile</label>
+                                    
+                                    <h6 class="allow-files">Allowed files: png, jpg.</h6>
+                                    <div class="profile-uploaders">
+                                        <div *ngIf="usercroppedImage!='assets/image/user.jpg' " class="r-image">
+                                            <i class="fa fa-times red-icon" aria-hidden="true" (click)="removeImage()"></i>
+                                        </div>
+                                        <div class="profile-circle">
+                                            <img class="profile-pic" [src]="usercroppedImage">
+                                        </div>
+                                        <div class="p-image">
+                                            <i class="fa fa-camera upload-button" (click)="fileoploadclick()"></i>
+                                            <input class="file-upload" type="file" accept="image/*"
+                                                (change)="fileChangeEvent($event)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center col-md-12"
+                                    *ngIf="userimageChangedEvent && userimageChangedEvent!=''">
+                                    <image-cropper [imageChangedEvent]="userimageChangedEvent" class="cropper-image"
+                                        [maintainAspectRatio]="true" [aspectRatio]="1/1" roundCropper=true format="png"
+                                        output="base64"
+                                        (imageCropped)="imageCropped($event)">
+                                    </image-cropper>
+                                </div>
+
+                                <div class="text-center col-md-12">
+                                    <h5>Preview</h5>
+                                    <img [src]="croppedImage" />
+                                </div>
+                            </div>
+                        
+                        </div> -->
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-sm btn-success" [disabled]="submitebtn">
+                            Submit
+                        </button>
+                        <button type="button" routerLink="/app/users/list" class="btn btn-sm btn-secondary ">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--View page-->
+<div class="animated fadeIn" *ngIf="viewpage">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <!-- <div class="card-header" style="color: #0737B5;" ><strong>User Details</strong></div> -->
+                <div class="tabset-div tabbing-function">
+                    <tabset type="pills">
+                        <tab customClass="customtabClass" heading="User Details" customClass="customtabClass"  style="box-shadow: 0px 1px 10px rgb(161, 161, 161) ; border-radius: 10px;">
+                         
+                            <div class="card-body covers-spaces  ">
+                                <div class="col-md-8">
+                                    <div class="spaces-wisths">
+                                        <div class="dash-details">
+                                            <span class="heading-pros">Name <span class="qus-alg"> : </span>
+                                            </span>
+                                            <span>
+                                               {{userDetails?.username | titlecase}}
+                                            </span>
+                                        </div>
+                                        <div class="dash-details">
+                                            <span class="heading-pros">Email <span class="qus-alg"> : </span>
+                                            </span>
+                                            <span>
+                                               {{userDetails?.email}}
+                                            </span>
+                                        </div>
+                                        <div class="dash-details">
+                                            <span class="heading-pros">Mobile <span class="qus-alg"> : </span>
+                                            </span>
+                                            <span>
+                                               {{userDetails?.mobile}}
+                                            </span>
+                                        </div>
+                                        <div class="dash-details">
+                                            <span class="heading-pros">Company<span class="qus-alg"> : </span>
+                                            </span>
+                                            <span>
+                                               {{userDetails?.company | titlecase}}
+                                            </span>
+                                        </div>
+                                        <div class="dash-details">
+                                            <span class="heading-pros">Role <span class="qus-alg"> : </span>
+                                            </span>
+                                            <span>
+                                               {{userDetails?.role | titlecase}}
+                                            </span>
+                                        </div>
+
+                                        <div class="dash-details">
+                                            <span class="heading-pros">Country <span class="qus-alg"> : </span>
+                                            </span>
+                                            <span>
+                                               {{userDetails?.country | titlecase}}
+                                            </span>
+                                        </div>
+                                        <div class="dash-details">
+                                            <span class="heading-pros">City <span class="qus-alg"> : </span>
+                                            </span>
+                                            <span>
+                                               {{userDetails?.city | titlecase}}
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="dash-details">
+                                            <span class="heading-pros">Date of Joining<span class="qus-alg"> : </span>
+                                            </span>
+                                            <span>
+                                               {{userDetails?.joindate |date}}
+                                            </span>
+                                        </div>
+                                        <div class="dash-details" *ngIf="activedata">
+                                            <span class="heading-pros">Status<span class="qus-alg"> : </span>
+                                            </span>
+                                            <span [ngClass]="{'text-active': userDetails?.status === '1', 'text-inactive': userDetails?.status !== '1'}">
+                                                {{userDetails?.status === '1' ? 'Active' : 'Inactive'}}
+                                            </span>
+                                        </div>
+                                        
+                                        
+
+                                        <!-- <div class="dash-details">
+                                            <span class="heading-pros">Last Name <span class="qus-alg"> : </span>
+                                            </span>
+                                            <span>{{RootUserDetails.userDetails.last_name ?
+                                                RootUserDetails.userDetails.last_name
+                                                :'-'}}</span>
+                                        </div>
+
+                                        <div class="dash-details">
+                                            <span class="heading-pros">E-Mail <span class="qus-alg"> : </span> </span>
+                                            <span>{{RootUserDetails.userDetails.email ?
+                                                RootUserDetails.userDetails.email
+                                                :'-'}}</span>
+                                        </div>
+                                        <div class="dash-details">
+                                            <span class="heading-pros">Mobile Number <span class="qus-alg"> : </span>
+                                            </span>
+                                            <span>{{RootUserDetails.userDetails.phone ?
+                                                (RootUserDetails.userDetails.phone.code
+                                                ? RootUserDetails.userDetails.phone.code : '')
+                                                :''}}
+                                                {{RootUserDetails.userDetails.phone ?
+                                                (RootUserDetails.userDetails.phone.number
+                                                ? RootUserDetails.userDetails.phone.number : '-')
+                                                :'-'}}</span>
+                                        </div>
+                                      
+                                        <div class="dash-details">
+                                            <span class="heading-pros">Gender <span class="qus-alg"> : </span> </span>
+                                            <span *ngIf="RootUserDetails.userDetails.gender == 'male'"
+                                                class='badge badge-success badge-pill mb-1'>Male</span>
+                                            <span *ngIf="RootUserDetails.userDetails.gender == 'female'"
+                                                class='badge badge-success badge-pill mb-1'>Female</span>
+                                        </div>
+                                        <div class="dash-details">
+                                            <span class="heading-pros">Status <span class="qus-alg"> : </span> </span>
+                                            <span *ngIf="RootUserDetails.userDetails.status == 1"
+                                                class='badge badge-success badge-pill mb-1'>Active</span>
+                                            <span *ngIf="RootUserDetails.userDetails.status != 1"
+                                                class='badge badge-success badge-pill mb-1'>InActive</span>
+                                        </div>
+                                        <div class="dash-details">
+                                            <span class="heading-pros">About <span class="qus-alg"> : </span>
+                                            </span>
+                                            <span>{{RootUserDetails.userDetails.about ?
+                                                RootUserDetails.userDetails.about
+                                                :'-'}}</span>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-4">
+                                    <div class="avs-details">
+                                        <span>Avatar:</span>
+                                        <img [src]="usercroppedImage">
+                                    </div>
+                                </div> -->
+                                <!-- <div class="col-md-12">
+                                    <div class="cover-imgs">
+                                        <span>Cover Image:</span>
+                                        <img [src]="coverCroppedImage">
+                                    </div>
+                                </div> -->
+                            </div>
+                        </tab>
+                        <!-- <tab customClass="customtabClass">
+                            <ng-template tabHeading>
+                                Followers <span class="badge"> {{(RootUserDetails && RootUserDetails.followerCount) ?
+                                    RootUserDetails.followerCount : 0}}</span>
+                            </ng-template>
+                            <ul class="follow-list" *ngIf="RootUserDetails && RootUserDetails.followerDetails">
+                                <li *ngFor="let item of RootUserDetails.followerDetails">
+                                    <div class="folspac-lists">
+                                        <i><img src="{{imageurl+item.from_avatar}}"
+                                                onError="this.src='assets/image/user.jpg'"></i>
+                                        <p>
+                                            <span>{{item.from_name | titlecase}}</span>
+                                            <small>{{item.from_username | titlecase}}</small>
+                                            <small>{{ item.createdAt | date:"dd MMM yyyy,  hh:mm a" }}</small>
+                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="follow-list" *ngIf="RootUserDetails && RootUserDetails.followerDetails && RootUserDetails.followerDetails.length == 0">
+                                <p class="no-record">No Record found</p>
+                            </ul>
+                        </tab> -->
+                        <!-- <tab customClass="customtabClass">
+                            <ng-template tabHeading>
+                                Following <span class="badge"> {{(RootUserDetails && RootUserDetails.followingCount) ?
+                                    RootUserDetails.followingCount : 0}}</span>
+                            </ng-template>
+
+                            <ul class="follow-list" *ngIf="RootUserDetails && RootUserDetails.followingDetails">
+                                <li *ngFor="let item of RootUserDetails.followingDetails">
+                                    <div class="folspac-lists">
+                                        <i><img src="{{imageurl+item.to_avatar}}"
+                                                onError="this.src='assets/image/user.jpg'"></i>
+                                        <p>
+                                            <span>{{item.to_name | titlecase}}</span>
+                                            <small>{{item.to_username | titlecase}}</small>
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="follow-list" *ngIf="RootUserDetails && RootUserDetails.followingDetails && RootUserDetails.followingDetails.length == 0">
+                                <p class="no-record">No Record found</p>
+                            </ul>
+                        </tab> -->
+                         <!-- <tab customClass="customtabClass">
+                            <ng-template tabHeading>
+                                Blocked User <span class="badge"> {{(RootUserDetails && RootUserDetails.blockCount) ?
+                                    RootUserDetails.blockCount : 0}} </span>
+                            </ng-template>
+                            <ul class="follow-list" *ngIf="RootUserDetails && RootUserDetails.blockDetails">
+                                <li *ngFor="let item of RootUserDetails.blockDetails">
+                                    <div class="folspac-lists">
+                                        <i><img src="{{imageurl+item.to_avatar}}"
+                                                onError="this.src='assets/image/user.jpg'"></i>
+                                        <p>
+                                            <span>{{item.to_username | titlecase}} Blocked</span>
+                                            <small>{{ item.createdAt | date:"hh:mm a" }}</small>
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="follow-list" *ngIf="RootUserDetails && RootUserDetails.blockDetails && RootUserDetails.blockDetails.length == 0">
+                                <p class="no-record">No Record found</p>
+                            </ul>
+                        </tab> -->
+                    </tabset>
+                </div>
+                <div class="card-footer">
+                    <button  routerLink="/app/users/list" class="btn btn-secondary animated-button">
+                        Back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

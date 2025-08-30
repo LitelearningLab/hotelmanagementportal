@@ -1,0 +1,13 @@
+<app-common-table  [settings]="settings" [source]="source" [count]="count" [itemsPerPage]="default_limit"
+    [tablename]="'Trainer List'" [add_btn]="add_btn" [addBtnUrl]="addBtnUrl" [addBtnName]="addBtnName" [editUrl]="editUrl"
+    [deleteApis]="deleteApis" [category]="category" [restoreApis]="restoreApis" [inactiveApis]="inactiveApis"
+    [ActiveApis]="userActive" (onDeleteChange)="onDeleteChange($event)" [viewUrl]="viewUrl" [exportApis]="exportApis"
+    [filter_action_list]="filter_action_list" (onitemsPerPageChange)="onitemsPerPageChange($event)"
+    [card_details]="card_details" [bulk_action]="bulk_action" (onPageChange)="onPageChange($event)"
+    (onheaderCardChange)="onheaderCardChange($event)" (onInactivechange)="onInactivechange($event)"  [filter_action]="filter_action"
+    (onSearchChange)="onSearchChange($event)" (onFilterAction)="onFilterAction($event)"
+    [user_list_filter_action]="user_list_filter_action" [permanentdelete]="permanentdelete"
+    [activeBulkAction]="activeBulkAction" [deletestatus]="deletestatus">
+</app-common-table>
+
+

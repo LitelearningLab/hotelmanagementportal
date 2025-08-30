@@ -1,0 +1,319 @@
+<div class="animated fadeIn" style="margin-top: -20px !important;">
+    <div class="content">
+        <div class="container-fluid dashboard-container">
+            <div class="tile-header dvd dvd-btm" *ngIf="!companysubadmin && !trainerData && !companydata" >
+                <div class="row " style="margin-left: 0px !important;">
+                    <!-- <h3 class="custom-font color-gray"> Company Name :<b> Automech </b></h3> -->
+                    <select class="form-control col-3 m-right-10 form-control-sm" [(ngModel)]="SelectedCompany" (change)="getCountry($event)">
+                        <option value="">Select Institution</option>
+                        <option *ngFor="let a of companynames" [value]="a._id">{{a.companyname}}</option>
+                    </select>
+                    <button class="btn btn-success col-1 btn-sm" (click)="SearchCompany()">Search</button>
+                </div>
+            </div>
+            <section>
+                <div class="row">
+                    <div class="col-md-12">
+                            <div class="innerSquare">
+                                <div class="row" style="font-size: smaller;">
+                                    <div class="col-md-3">
+                                        <div class="d-flex align-items-center" style="padding: 10px;">
+                                            <div class="d-inline-block">
+                                                <img src="assets/Icons/Frame15.png" height="50" width="57" />
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <p class="mar-b-0 " style="color: lightgray;">Subscription Period</p>
+                                                <p class="mar-b-0 "><span class="color-gray" *ngIf="ComanyDetails">Start Date:</span> <b> {{ComanyDetails.subscriptionstartdate | date:'dd/MM/yyyy'}}</b></p>
+                                                <p class="mar-b-0 "><span class="color-gray" *ngIf="ComanyDetails">End Date:</span><b> {{ComanyDetails.subscriptionenddate | date:'dd/MM/yyyy'}}</b></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="d-flex align-items-center" style="padding: 10px;">
+                                            <div class="d-inline-block">
+                                                <img src="assets/Icons/Frame16.png" height="50" width="57" />
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <p class="mar-b-0 " style="color: lightgray;">App Liscence</p>
+                                                <p class="mar-b-0 "><span class="color-gray" *ngIf="ComanyDetails">Total: </span><b> {{ComanyDetails.activeusers}}</b></p>
+                                                <p class="mar-b-0 "><span class="color-gray" *ngIf="ComanyDetails">Assigned:</span><b> {{ComanyDetails.totalusers}}</b></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="d-flex align-items-center" style="padding: 10px;">
+                                            <div class="d-inline-block">
+                                                <img src="assets/Icons/Frame17.png" height="50" width="57" />
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <p class="mar-b-0 " style="color: lightgray;">Learning Hours</p>
+                                                <p class="mar-b-0 "><b>{{LearningHoursCount}}</b></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="d-flex align-items-center" style="padding: 10px;">
+                                            <div class="d-inline-block">
+                                                <img src="assets/Icons/Frame18.png" height="50" width="57" />
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <p class="mar-b-0 " style="color: lightgray;">English Practice & Listening Attempts</p>
+                                                <p class="mar-b-0 "><span class="color-gray"> Listening: </span> <b>  {{ProList}}</b> <span class="color-gray"> Words </span> | <b>{{sentWords}}</b> <span class="color-gray"> Sentences </span></p>
+                                                <p class="mar-b-0 "><span class="color-gray">Practice: </span> <b>   {{ProPract}}</b> <span class="color-gray"> Words </span> | <b>{{SentSum}}</b> <span class="color-gray"> Sentences </span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                   
+                </div>
+            </section>
+          
+            <section *ngIf="!SelectedCompany">
+                  <br>
+                <div class="row" *ngIf="CompaniesReport">
+                   
+                    <div class="col-md-12">
+                            <div class="innerSquare">
+                                <div class="row" style="font-size: smaller;">
+                                    <div class="col-md-3">
+                                        <div class="d-flex align-items-center" style="padding: 10px;">
+                                            <div class="d-inline-block">
+                                                <img src="assets/Icons/Frame15.png" height="50" width="57" />
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <p class="mar-b-0 " style="color: lightgray;">Companies</p>
+                                                <p class="mar-b-0 "><span class="color-gray" *ngIf="ComanyDetails">Total:</span> <b> {{CompaniesReport.Total}}</b></p>
+                                                <p class="mar-b-0 "><span class="color-gray" *ngIf="ComanyDetails">Active:</span><b> {{CompaniesReport.Active}}</b></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="d-flex align-items-center" style="padding: 10px;">
+                                            <div class="d-inline-block">
+                                                <img src="assets/Icons/Frame16.png" height="50" width="57" />
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <p class="mar-b-0 " style="color: lightgray;">App Liscence</p>
+                                                <p class="mar-b-0 "><span class="color-gray" *ngIf="ComanyDetails">Total: </span><b> {{CompaniesReport.TotalLicences}}</b></p>
+                                                <p class="mar-b-0 "><span class="color-gray" *ngIf="ComanyDetails">Assigned:</span><b> {{CompaniesReport.TotalAssignedLicences}}</b></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="d-flex align-items-center" style="padding: 10px;">
+                                            <div class="d-inline-block">
+                                                <img src="assets/Icons/Frame17.png" height="50" width="57" />
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <p class="mar-b-0 " style="color: lightgray;">Learning Hours</p>
+                                                <p class="mar-b-0 "><b>{{LearningHoursCount2}}</b></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="d-flex align-items-center" style="padding: 10px;">
+                                            <div class="d-inline-block">
+                                                <img src="assets/Icons/Frame18.png" height="50" width="57" />
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <p class="mar-b-0 " style="color: lightgray;">English Practice & Listening Attempts</p>
+                                                <p class="mar-b-0 "><span class="color-gray"> Listening: </span> <b>  {{ProList2}}</b> <span class="color-gray"> Words </span> | <b>{{sentWords2}}</b> <span class="color-gray"> Sentences </span></p>
+                                                <p class="mar-b-0 "><span class="color-gray">Practice: </span> <b>   {{ProPract2}}</b> <span class="color-gray"> Words </span> | <b>{{SentSum2}}</b> <span class="color-gray"> Sentences </span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                   
+                    <div class="col-md-12 m-top-10">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div><p class="h5 text-center" style="color: gray;"> Upcoming Subscription Ending</p></div>
+                                
+                                <div class="table-responsive" style="max-height:300px !important;">
+                                    <table class="table table-bordered" style="line-height: 8px;">
+                                       
+                                        <thead style="background: #646E7A;; color: white;">
+                                            <th>Client Name</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Total Licenses</th>
+                    
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let a of SortedBySubscriptionCompanies">
+                                                <td>{{a.companyname}}</td>
+                                                <td>{{a.subscriptionstartdate | date:'dd-MMM-yyyy'}}</td>
+                                                <td>{{a.subscriptionenddate | date:'dd-MMM-yyyy'}}</td>
+                                                <td>{{a.activeusers}}</td>
+                    
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+            <section class="m-top-10 m-left-10" *ngIf="SelectedCompany">
+              
+                <div class="row">
+                    <div class="col-md-5" style="padding: 0px !important;">
+                        <button (click)="UserSearch('1')" [ngClass]="{'active': btnUserRepotCondition==1}" class="btn btn-outline-success success_out mr-1 btn-sm"><i class="fa fa-plus-circle"></i> All Users</button>
+                        <button (click)="UserSearch('2')" [ngClass]="{'active': btnUserRepotCondition==2}" class="btn btn-outline-success success_out  mr-1 btn-sm"><i class="fa fa-plus-circle"></i> New Hires (<3 Months)</button>
+                        <button (click)="UserSearch('3')" [ngClass]="{'active': btnUserRepotCondition==3}" class="btn btn-outline-success success_out mr-1 btn-sm"><i class="fa fa-plus-circle"></i> Tenured (>3 Months)</button>
+                    </div>
+                    
+                    <div class="col-md-4 text-center" style="padding: 0px !important;">
+                        <!-- <button class="btn btn-outline-dark   mr-1 btn-sm"><i class="fa fa-plus-circle"></i> 7 Days</button> -->
+                        <button (click)="SearchType2('1')" [ngClass]="{'active': btnRepotCondition==1}"  class="btn btn-outline-success success_out active   mr-1 btn-sm"><i class="fa fa-plus-circle"></i> 4 Weeks</button>
+                        <button (click)="SearchType2('2')" [ngClass]="{'active': btnRepotCondition==2}" class="btn btn-outline-success mr-1 success_out  btn-sm"><i class="fa fa-plus-circle"></i> 3 Months</button>
+                        <button (click)="SearchType2('3')" [ngClass]="{'active': btnRepotCondition==3}" class="btn btn-outline-success mr-1 success_out  btn-sm"><i class="fa fa-plus-circle"></i> 6 Months</button>
+                        <button (click)="SearchType2('4')" [ngClass]="{'active': btnRepotCondition==4}" class="btn btn-outline-success mr-1 success_out  btn-sm"><i class="fa fa-plus-circle"></i> 1 Year</button>
+                    </div>
+                    
+                    <div class="col-md-3 text-center" style="padding: 0px !important;">
+                        <!-- <button class="btn btn-outline-dark   mr-1 btn-sm"> City</button> -->
+                        <!-- <button class="btn btn-outline-dark   btn-sm"> Batch Name</button> -->
+                        <div class="row">
+                            <select class="form-control col-5 form-control-sm" [(ngModel)]="SelectedCity" (change)="CityChange()" >
+                                <option value="">Select City</option>
+                                <option *ngFor="let a of cityList" [value]="a">{{a}}</option>
+                            </select>
+                            <select class="form-control col-7 form-control-sm" [(ngModel)]="SelectedBatch" (change)="BatchChange()" >
+                                <option value="">Select Batch</option>
+                                <option *ngFor="let a of BatchNames" [value]="a">{{a}}</option>
+                            </select>
+                        </div>
+                    </div>
+                 
+               
+                </div>
+            
+            </section>
+        
+            <section>
+                <div class="row">
+                    <div class="col-5 chart-container"  >
+                         <canvas   *ngIf="UsersBarChartData.length !=0" baseChart [datasets]="UsersBarChartData" [labels]="UsersBarChartLabels"
+                            [options]="barChartOptions4" [legend]="barChartLegend">
+                        </canvas>
+                    </div>
+                    <div class="col-7 chart-container">
+                        <canvas  *ngIf="barChartData.length !=0" baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                            [options]="barChartOptions1" [legend]="barChartLegend">
+                        </canvas>
+                    </div>
+                </div>
+                   
+                <div class="row">
+                    <div class="col-6 chart-container">
+                        <canvas  *ngIf="ProLabBarChartData.length !=0" baseChart [datasets]="ProLabBarChartData" [labels]="ProLabBarChartLabels"
+                            [options]="barChartOptions2" [legend]="barChartLegend" [plugins]="barChartPlugins" >
+                        </canvas>
+                    </div>
+                    <div class="col-6 chart-container">
+                        <canvas *ngIf="SentenceLabBarChartData.length !=0" baseChart [datasets]="SentenceLabBarChartData" [labels]="SentenceLabBarChartLabels"
+                            [options]="barChartOptions3" [legend]="barChartLegend" [plugins]="barChartPlugins">
+                        </canvas>
+                    </div>
+                </div>
+            </section>
+            <section *ngIf="SelectedCompany">
+                  <br>
+                <div class="row" *ngIf="CompaniesReport">
+                   
+                    <div class="col-md-12">
+                            <div class="innerSquare">
+                                <div class="row" style="font-size: smaller;">
+                                    <div class="col-md-3">
+                                        <div class="d-flex align-items-center" style="padding: 10px;">
+                                            <div class="d-inline-block">
+                                                <img src="assets/Icons/Frame15.png" height="50" width="57" />
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <p class="mar-b-0 " style="color: lightgray;">Companies</p>
+                                                <p class="mar-b-0 "><span class="color-gray" *ngIf="ComanyDetails">Total:</span> <b> {{CompaniesReport.Total}}</b></p>
+                                                <p class="mar-b-0 "><span class="color-gray" *ngIf="ComanyDetails">Active:</span><b> {{CompaniesReport.Active}}</b></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="d-flex align-items-center" style="padding: 10px;">
+                                            <div class="d-inline-block">
+                                                <img src="assets/Icons/Frame16.png" height="50" width="57" />
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <p class="mar-b-0 " style="color: lightgray;">App Liscence</p>
+                                                <p class="mar-b-0 "><span class="color-gray" *ngIf="ComanyDetails">Total: </span><b> {{CompaniesReport.TotalLicences}}</b></p>
+                                                <p class="mar-b-0 "><span class="color-gray" *ngIf="ComanyDetails">Assigned:</span><b> {{CompaniesReport.TotalAssignedLicences}}</b></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="d-flex align-items-center" style="padding: 10px;">
+                                            <div class="d-inline-block">
+                                                <img src="assets/Icons/Frame17.png" height="50" width="57" />
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <p class="mar-b-0 " style="color: lightgray;">Learning Hours</p>
+                                                <p class="mar-b-0 "><b>{{LearningHoursCount2}}</b></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="d-flex align-items-center" style="padding: 10px;">
+                                            <div class="d-inline-block">
+                                                <img src="assets/Icons/Frame18.png" height="50" width="57" />
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <p class="mar-b-0 " style="color: lightgray;">English Practice & Listening Attempts</p>
+                                                <p class="mar-b-0 "><span class="color-gray"> Listening: </span> <b>  {{ProList2}}</b> <span class="color-gray"> Words </span> | <b>{{sentWords2}}</b> <span class="color-gray"> Sentences </span></p>
+                                                <p class="mar-b-0 "><span class="color-gray">Practice: </span> <b>   {{ProPract2}}</b> <span class="color-gray"> Words </span> | <b>{{SentSum2}}</b> <span class="color-gray"> Sentences </span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                   
+                    <div class="col-md-12 m-top-10">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div><p class="h5 text-center" style="color: gray;"> Upcoming Subscription Ending</p></div>
+                                
+                                <div class="table-responsive" style="max-height:300px !important;">
+                                    <table class="table table-bordered" style="line-height: 8px;">
+                                       
+                                        <thead style="background: #646E7A;; color: white;">
+                                            <th>Client Name</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Total Licenses</th>
+                    
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let a of SortedBySubscriptionCompanies">
+                                                <td>{{a.companyname}}</td>
+                                                <td>{{a.subscriptionstartdate | date:'dd-MMM-yyyy'}}</td>
+                                                <td>{{a.subscriptionenddate | date:'dd-MMM-yyyy'}}</td>
+                                                <td>{{a.activeusers}}</td>
+                    
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

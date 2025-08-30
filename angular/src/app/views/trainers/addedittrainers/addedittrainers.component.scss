@@ -1,0 +1,53 @@
+// ::ng-deep .ng-select.custom-ng-select .ng-select-container {
+//     /* Add your custom styles here */
+//     border: none;
+//     box-shadow: none;
+//     background-color: transparent;
+//   }
+//   ::ng-deep .ng-select.custom-ng-select .ng-select-container .ng-clear-wrapper {
+//     display: none; /* Example: hide the clear button */
+//   }
+//   ::ng-deep .ng-select.custom-ng-select .ng-select-container .ng-arrow-wrapper {
+//     display: none; /* Example: hide the dropdown arrow */
+//   }
+//   ::ng-deep .custom-ng-select .ng-select-container {
+//     border: none !important;
+//     box-shadow: none !important;
+//     background-color: transparent !important;
+//   }
+//   ::ng-deep .custom-ng-select .ng-select-container .ng-clear-wrapper {
+//     display: none !important; /* Hide the clear button */
+//   }
+//   ::ng-deep .custom-ng-select .ng-select-container .ng-arrow-wrapper {
+//     display: none !important; /* Hide the dropdown arrow */
+//   }
+
+.ng-select.ng-select {
+    border: 1px solid #ffffff00;
+    border-radius: 0.25rem;
+}
+
+.ng-select.ng-select.is-invalid {
+    border-color: #ec5564;
+    // border: 1px;
+}
+
+.ng-select.ng-select.is-valid {
+    border-color: #4ec469;
+    // border: 1px;
+}
+// .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+//     border-color: rgb(238, 238, 238);
+//     box-shadow: inset 0 1px 1px rgba(255, 253, 253, 0.075), 0 0 0 3px rgba(250, 252, 255, 0.1);
+//     border-width: 1px;
+//   }
+.text-active {
+    color: green;
+    font-weight: bold;
+    
+}
+
+.text-inactive {
+    color: rgb(232, 186, 18);
+    font-weight: bold;
+}

@@ -1,0 +1,61 @@
+<h4>
+    <label class="ng-binding" *ngIf='!id'>Add walkthrough Images</label>
+    <label class="ng-binding" *ngIf='id'>Edit walkthrough Images</label>
+</h4>
+<label>Banners details</label>
+<div class="container">
+    <form name="nameDetails" [formGroup]="walkthroughform" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-sm-6">
+                <label for="rcategory">Title <span class="color_red">*</span></label>
+                <input type="text" maxlength="30" [(ngModel)]="letters" (keyup)="charLeftFunc(letters)"
+                    formControlName="title" class="form-control" placeholder="Title" required>
+                <span> Only 30 characters allowed, Left Characters : {{charLeft}}</span>
+                <div *ngIf="submitted && formcontrol.title.errors?.required" style="color:red">Title name is
+                    required!
+                </div>
+                <!-- File Input -->
+            </div>
+            <div class="col-sm-6">
+                <label for="rcategory">Specification<span class="color_red">*</span></label>
+                <input type="text" formControlName="description" class="form-control" placeholder="Specification"
+                    required>
+                <div *ngIf="submitted && formcontrol.description.errors?.required" style="color:red">Specification is
+                    required!
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <label for="rcategory">Walkthrough Image <span class="color_red">*</span></label>
+                <div class="form-group">
+                    <input class="form-control" type="file" accept="image/*" formControlName="image"
+                        (change)="onSelectedFile($event)" [required]="!preview">
+                </div>
+                <div *ngIf="submitted && formcontrol.image.errors?.required" style="color:red">Image is required!
+                </div>
+                <span class="restaurant-img-error">Allowed files: png, jpg. Max file size 1Mb</span>
+
+            </div>
+            <div class="col-sm-6">
+                <label>Status<span class="color_red">*</span></label>
+                <select type="text" name="status" id="status" class="form-control" [(ngModel)]="status"
+                    formControlName="status" convert-to-number required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="1">Active</option>
+                    <option value="2">In-Active</option>
+                </select>
+                <div *ngIf="submitted && formcontrol.status.errors?.required" style="color:red">Status is required!
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="preview">
+                        <img class="ng-scope" style="width: 200px;" [src]="preview" width="50px">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 50px;">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+</div>

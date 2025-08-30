@@ -1,0 +1,12 @@
+.review_details div {
+  width: 100px;
+  height: 100px;
+}
+.review_details {
+  display: flex;
+}
+.admin_rev_rat_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
+}

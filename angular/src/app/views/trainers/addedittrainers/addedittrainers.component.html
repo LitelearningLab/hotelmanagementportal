@@ -1,0 +1,417 @@
+<div class="animated fadeIn" *ngIf="!viewpage">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <h5 ><strong>{{ pageTitle | titlecase }}</strong></h5>
+        <!-- <div class="card-header">
+          
+        </div> -->
+        <form
+          #trainerForm="ngForm"
+          (ngSubmit)="onFormSubmit(trainerForm)"
+          autocomplete="off"
+        >
+          <div class="card-body">
+            <div class="form-group grouping-strains row">
+              <div class="col-md-6">
+                <div class="group-control">
+                  <label for="name"
+                    >Trainer Name <span class="mandatory">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    ngModel
+                    name="name"
+                    #name="ngModel"
+                    required
+                    class="form-control"
+                    placeholder="Enter Trainer Name"
+                    maxlength="30"
+                    [ngClass]="{
+                      'is-invalid': trainerForm.submitted && name.errors,
+                      'is-valid': !name.errors && name.valid
+                    }"
+                  />
+                  <div *ngIf="trainerForm.submitted && !name.valid">
+                    <div class="invalid-feedback" *ngIf="name.errors.required">
+                     Trainer Name is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="group-control">
+                  <label for="email"
+                    >E-Mail <span class="mandatory">*</span></label
+                  >
+                  <input
+                    type="text"
+                    id="email"
+                    ngModel
+                    name="email"
+                    #email="ngModel"
+                    autocomplete="off"
+                    class="form-control"
+                    placeholder="Enter E-Mail"
+                    pattern="^[a-z0-9.]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                    required
+                    [ngClass]="{
+                      'is-invalid': trainerForm.submitted && email.errors,
+                      'is-valid': !email.errors && email.valid
+                    }"
+                    [disabled]="inputdesable"
+                  />
+                  <div *ngIf="trainerForm.submitted && !email.valid">
+                    <div
+                      class="invalid-feedback"
+                      *ngIf="email.errors?.required"
+                    >
+                      Email is required.
+                    </div>
+                    <div class="invalid-feedback" *ngIf="email.errors?.email">
+                      Please enter valid Email
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="row" *ngIf="!id">
+                  <div class="col-md-6">
+                    <div class="group-control">
+                        <label for="password">Password <span class="mandatory">*</span></label>
+                        <input type="password" id="password" ngModel name="password" #password="ngModel" autocomplete="new-password" required class="form-control" minlength="8" maxlength="18" placeholder="Enter Password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&]).{8,}" [ngClass]="{ 'is-invalid': trainerForm.submitted && password.errors }" [ngClass]="{ 'is-valid': trainerForm.submitted && !password.errors }">
+                        <div *ngIf="trainerForm.submitted && !password.valid">
+                            <div class="invalid-feedback" *ngIf="password.errors && password.errors.required">Password is required.</div>
+                            <div class="invalid-feedback" *ngIf="password.errors && password.errors.pattern">Password must contain lowercase, uppercase, number, and special character</div>
+                            <div class="invalid-feedback" *ngIf="password.errors && password.errors.minlength">Minimum 8 characters required</div>
+                            <div class="invalid-feedback" *ngIf="password.errors && password.errors.maxlength">Maximum 18 characters required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="group-control">
+                        <label for="confirm_password">Confirm Password <span class="mandatory">*</span></label>
+                        <input type="password" id="confirm_password" ngModel name="confirmPassword" #confirm_password="ngModel" required class="form-control" placeholder="Re-enter Password" [ngClass]="{ 'is-invalid': trainerForm.submitted && (confirm_password.errors || password.value !== confirm_password.value) }" [ngClass]="{ 'is-valid': trainerForm.submitted && !confirm_password.errors && password.value === confirm_password.value }">
+                        <div *ngIf="trainerForm.submitted && !confirm_password.valid">
+                            <div class="invalid-feedback" *ngIf="confirm_password.errors && confirm_password.errors.required">Confirm Password is required.</div>
+                        </div>
+                        <div *ngIf="trainerForm.submitted && password.value !== confirm_password.value">
+                            <div class="invalid-feedback">Password and Confirm Password do not match.</div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+              </div>
+              <div class="col-md-6" *ngIf="!companyadmin">
+                <div class="group-control">
+                  <label for="web_header"
+                    >Institution <span class="mandatory">*</span>
+                  </label>
+                  <ng-select
+                    [items]="companynames"
+                    id="company"
+                    bindValue="_id"
+                    bindLabel="companyname"
+                    [multiple]="false"
+                    ngModel
+                    name="company"
+                    #company="ngModel"
+                    required
+                    placeholder="Select Your Institution"
+                    [searchable]="true"
+                    [clearable]="true"
+                    [ngClass]="{
+                      'is-invalid': trainerForm.submitted && company.errors,
+                      'is-valid': !company.errors && company.valid
+                    }"
+                    (change)="changecompany($event)"
+                  >
+                    <ng-template
+                      ng-option-tmp
+                      let-item="item"
+                      let-index="index"
+                    >
+                      <b>{{ item.companyname }}</b>
+                    </ng-template>
+                  </ng-select>
+                  <div *ngIf="trainerForm.submitted && !company.valid">
+                    <div
+                      class="invalid-feedback"
+                      *ngIf="company.errors.required"
+                    >
+                      Company is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="group-control">
+                  <label for="web_header"
+                    >Country <span class="mandatory">*</span>
+                  </label>
+                  <ng-select
+                    [items]="countrylist"
+                    bindValue="country"
+                    bindLabel="country"
+                    [multiple]="false"
+                    ngModel
+                    name="country"
+                    #country="ngModel"
+                    required
+                    placeholder="Select Your country"
+                    [disabled]="!disableinput"
+                    [searchable]="true"
+                    [clearable]="true"
+                    (change)="changeCountry($event)"
+                    [ngClass]="{
+                      'is-invalid': trainerForm.submitted && country.errors,
+                      'is-valid': !country.errors && country.valid
+                    }"
+                  >
+                    <!-- <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            <b>{{ item.name }}</b>
+                                        </ng-template> -->
+                  </ng-select>
+                  <div *ngIf="trainerForm.submitted && !country.valid">
+                    <div
+                      class="invalid-feedback"
+                      *ngIf="country.errors.required"
+                    >
+                      Country is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="group-control">
+                  <label for="web_header"
+                    >City <span class="mandatory">*</span>
+                  </label>
+                  <ng-select
+                    [items]="citynames"
+                    [addTag]="true"
+                    [multiple]="false"
+                    ngModel
+                    name="city"
+                    #city="ngModel"
+                    required
+                    placeholder="Select Your City"
+                    [searchable]="true"
+                    [clearable]="true"
+                    [disabled]="!disableinput"
+                    [ngClass]="{
+                      'is-invalid': trainerForm.submitted && city.errors,
+                      'is-valid': !city.errors && city.valid
+                    }"
+                  >
+                    <ng-template
+                      ng-option-tmp
+                      let-item="item"
+                      let-index="index"
+                    >
+                      <b>{{ item }}</b>
+                    </ng-template>
+                  </ng-select>
+                  <div *ngIf="trainerForm.submitted && !city.valid">
+                    <div
+                      class="invalid-feedback"
+                      *ngIf="city?.errors?.required"
+                    >
+                      City is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="group-control">
+                  <label for="name"
+                    >Mobile <span class="mandatory">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="mobile"
+                    ngModel
+                    #mobile="ngModel"
+                    minlength="10"
+                    maxlength="10"
+                    required
+                    class="form-control"
+                    name="mobile"
+                    placeholder="Enter Mobile Number"
+                    pattern="^(\+?\d{1,4}[\s-])?(?!0+\s+,?$)\d{10}\s*,?$"
+                    [ngClass]="{
+                      'is-invalid': trainerForm.submitted && mobile.errors,
+                      'is-valid': !mobile.errors && mobile.valid
+                    }"
+                  />
+                  <div *ngIf="trainerForm.submitted && !mobile.valid">
+                    <div
+                      class="invalid-feedback"
+                      *ngIf="mobile.errors.required"
+                    >
+                      Mobile is required.
+                    </div>
+                    <div class="invalid-feedback" *ngIf="mobile.errors.pattern">
+                      Please enter a valid 10-digit mobile number
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="group-control">
+                  <label for="status"
+                    >Status <span class="mandatory">*</span></label
+                  >
+                  <select
+                    name="status"
+                    id="status"
+                    class="form-control"
+                    ngModel
+                    name="status"
+                    #status="ngModel"
+                    required
+                    [ngClass]="{
+                      'is-invalid': trainerForm.submitted && status.errors,
+                      'is-valid': !status.errors && status.valid
+                    }"
+                  >
+                    <option value="1">Active</option>
+                    <option value="2">Inactive</option>
+                  </select>
+                  <div *ngIf="trainerForm.submitted && !status.valid">
+                    <div
+                      class="invalid-feedback"
+                      *ngIf="status.errors.required"
+                    >
+                      Status is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button
+              type="submit"
+              *ngIf="!viewpage"
+              class="btn btn-sm btn-success"
+            >
+              Submit
+            </button>
+            <button
+              type="button"
+              *ngIf="!viewpage"
+              routerLink="/app/trainers/list"
+              class="btn btn-sm btn-danger"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn" *ngIf="viewpage">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <!-- <div class="card-header"><strong>Trainer Details</strong></div> -->
+        <div class="tabset-div tabbing-function">
+          <tabset type="pills">
+            <tab
+              heading="Trainer Details"
+              customClass="customtabClass"
+              style="
+                box-shadow: 0px 1px 10px rgb(161, 161, 161);
+                border-radius: 10px;
+              "
+            >
+              <div class="card-body covers-spaces">
+                <div class="col-md-8">
+                  <div class="spaces-wisths">
+                    <div class="dash-details">
+                      <span class="heading-pros"
+                        >Name <span class="qus-alg"> : </span>
+                      </span>
+                      <span>
+                        {{ trainerDetails?.name | titlecase}}
+                      </span>
+                    </div>
+                    <div class="dash-details">
+                      <span class="heading-pros"
+                        >Email <span class="qus-alg"> : </span>
+                      </span>
+                      <span>
+                        {{ trainerDetails?.email }}
+                      </span>
+                    </div>
+                    <div class="dash-details">
+                      <span class="heading-pros"
+                        >Mobile <span class="qus-alg"> : </span>
+                      </span>
+                      <span>
+                        {{ trainerDetails?.mobile }}
+                      </span>
+                    </div>
+                    <div class="dash-details">
+                      <span class="heading-pros"
+                        >City <span class="qus-alg"> : </span>
+                      </span>
+                      <span>
+                        {{ trainerDetails?.city | titlecase}}
+                      </span>
+                    </div>
+                    <div class="dash-details">
+                      <span class="heading-pros"
+                        >Country <span class="qus-alg"> : </span>
+                      </span>
+                      <span>
+                        {{ trainerDetails?.country  | titlecase}}
+                      </span>
+                    </div>
+
+                    <!-- <div class="dash-details">
+                                            <span class="heading-pros">Join Data<span class="qus-alg"> : </span>
+                                            </span>
+                                            <span>
+                                               {{userDetails?.joindate |date}}
+                                            </span>
+                                        </div> -->
+                    <div class="dash-details" *ngIf="activedata">
+                      <span class="heading-pros"
+                        >Status<span class="qus-alg"> : </span>
+                      </span>
+                      <span
+                        [ngClass]="{
+                          'text-active': trainerDetails?.status === '1',
+                          'text-inactive': trainerDetails?.status !== '1'
+                        }"
+                      >
+                        {{
+                          trainerDetails?.status === "1" ? "Active" : "Inactive"
+                        }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </tab>
+          </tabset>
+        </div>
+        <div class="card-footer">
+          <button style="background-color: #0737B5; outline-color:  #0737B5; color: white;"
+            type="button"
+            routerLink="/app/trainers/list"
+            class=" animated-button"
+          >
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

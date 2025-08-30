@@ -1,0 +1,48 @@
+.error {
+
+        color: red;
+        font-size: 0.875em;
+
+}
+
+.swal2-title {
+        font-size: 12px;
+        /* Adjust the size as needed */
+}
+
+.swal2-text {
+        font-size: 8px;
+}
+
+
+.swal2-title {
+        font-size: 18px !important;
+        /* Adjust as needed */
+}
+
+/* Reducing font size of the text */
+.swal2-content {
+        font-size: 14px !important;
+        /* Adjust as needed */
+}
+
+/* Reducing the size of the success tick icon */
+.swal2-icon.swal2-success .swal2-icon-content {
+        font-size: 30px !important;
+        /* Adjust icon size */
+        width: 30px !important;
+        /* Adjust icon size */
+        height: 30px !important;
+        /* Adjust icon size */
+}
+
+/* Reducing the size of the confirm button text */
+.swal2-confirm {
+        font-size: 12px !important;
+        /* Adjust button font size */
+        padding: 6px 12px !important;
+        /* Adjust button padding */
+}
+.swal2-popup .swal2-modal .swal-wide .swal2-show{
+        width:950px !important;
+}    
