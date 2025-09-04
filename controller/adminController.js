@@ -13,13 +13,15 @@ const fs = require('fs/promises');
 const schedule = require('node-schedule');
 //'*/20 * * * * *' Run on every 20 seconds
 //'50 23 * * *' Run on every night 11.50 pm
-const job =  schedule.scheduleJob('50 23 * * *', function(){
-    //console.log(new Date())
-    console.log('Time for tea!');
-    console.log(new Date())
-    getdata();
 
-  });
+// const job =  schedule.scheduleJob('50 23 * * *', function(){
+   
+//     console.log('Time for tea!');
+//     console.log(new Date())
+//     getdata();
+
+//   });
+
 async function getdata(){
     //console.log("test")
     let collectionRef=admin.firestore().collection("UserNode").where('access',"==","company").where("status","=",'1');//.where("subscriptionenddate","!=",'undefined').where("subscriptionenddate","<=",new Date());
@@ -2900,7 +2902,7 @@ const generateLearnerReport = async (req, res) => {
           
             req.body.team.forEach(d => {
                 
-                var res = userres.filter(x => x.team != undefined && x.team.toLowerCase() == d);
+                var res = userres.filter(x => x.course != undefined && x.course.toLowerCase() == d);
                 console.log("var res len : ", d, res.length);
                 res.forEach(p=>{
                     citydata.push(p);
@@ -2957,7 +2959,7 @@ const generateLearnerReport = async (req, res) => {
         let startnum=  new Date(req.body.perioddate[0]).getTime();
         let endnum=  new Date(req.body.perioddate[1]).getTime();
 
-        let sentLabReports= admin.firestore().collection("sentLabReports")
+        let sentLabReports= admin.firestore().collection("SentenceLabReports")
         .where("companyId", "==", company)
         .where("timeCal",">=",startnum)
         .where("timeCal","<=",endnum)
@@ -2966,25 +2968,25 @@ const generateLearnerReport = async (req, res) => {
         sentLabReportsDocs=sentres.docs.map(s=>s.data())//.filter(o=>( o.dateTime !=undefined) && (new Date(o.dateTime) >= new Date( req.body.perioddate[0]) &&  new Date(o.dateTime) <= new Date( req.body.perioddate[1])));
         console.log("SentLabReports fetched:", sentLabReportsDocs.length);
 
-        let callFlowReports= admin.firestore().collection("callFlowReports")
-        .where("companyId", "==", company)
-        .where("timeCal",">=",startnum)
-        .where("timeCal","<=",endnum)
+        // let callFlowReports= admin.firestore().collection("callFlowReports")
+        // .where("companyId", "==", company)
+        // .where("timeCal",">=",startnum)
+        // .where("timeCal","<=",endnum)
 
-        let calres= await callFlowReports.get();
-        callFlowReportsDocs=calres.docs.map(s=>s.data())//.filter(o=>( o.dateTime !=undefined) && (new Date(o.dateTime) >= new Date( req.body.perioddate[0]) &&  new Date(o.dateTime) <= new Date( req.body.perioddate[1])));
-        console.log("CallFlowReports fetched:", callFlowReportsDocs.length);
+        // let calres= await callFlowReports.get();
+        // callFlowReportsDocs=calres.docs.map(s=>s.data())
+        // console.log("CallFlowReports fetched:", callFlowReportsDocs.length);
 
         
 
         let ures=userres.map(a1=>{
             //console.log(a1)
             const sendata = sentLabReportsDocs.filter(a2=>a2.userId == a1._id);
-            const caldata = callFlowReportsDocs.filter(a2=>a2.userId == a1._id);
-            return { ...a1,sendata,caldata};
+            //const caldata = callFlowReportsDocs.filter(a2=>a2.userId == a1._id);
+            return { ...a1,sendata};
         });
    
-        ures=ures.filter(o=>o.caldata.length !=0 || o.sendata.length !=0)
+        ures=ures.filter(o=> o.sendata.length !=0)
 
         // Send response
         res.status(200).send({

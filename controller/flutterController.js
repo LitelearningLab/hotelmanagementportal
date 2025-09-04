@@ -378,10 +378,10 @@ const pronunciationLabReportlist = async (req, res) => {
         let startnum=  new Date(req.body.perioddate[0]).getTime();
         let endnum=  new Date(req.body.perioddate[1]).getTime();
         const usersnapshot=await query.get();
-        let proquery= admin.firestore().collection("proLabReports")
+        let proquery= admin.firestore().collection("ProLabReports")
         .where("companyId", "==", req.body.company)
-        .where("timeCal",">=",startnum)
-        .where("timeCal","<=",endnum)
+        //.where("timeCal",">=",startnum)
+        //.where("timeCal","<=",endnum)
        
         // .where('date', '>=', req.body.startdate)
         // .where('date', '<=', req.body.enddate)
@@ -412,7 +412,7 @@ const pronunciationLabReportlist = async (req, res) => {
           
             req.body.team.forEach(d => {
                 
-                var res = userres.filter(x => x.team != undefined && x.team.toLowerCase() == d);
+                var res = userres.filter(x => x.course != undefined && x.course.toLowerCase() == d);
                 console.log("var res len : ", d, res.length);
                 res.forEach(p=>{
                     citydata.push(p);
