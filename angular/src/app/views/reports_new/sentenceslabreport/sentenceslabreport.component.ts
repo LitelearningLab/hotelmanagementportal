@@ -201,8 +201,8 @@ ngOnInit(): void {
     // Populate lists if data is available
     if (data != undefined) {
       this.cityList = data.countryCity.flatMap(country => country.city);
-      this.roleList = data.role;
-      this.teamList = data.team;
+      this.roleList = data.year;
+      this.teamList = data.course;
     }
   }
   filter(){
@@ -270,25 +270,7 @@ ngOnInit(): void {
               a['loadmain']=a['main']+" - "+a['load'];
               //s['successrate']=((correctno/noofwords)*100).toFixed(2)+"%";
             });
-            s.caldata.forEach(a=>{
-              if(a['pracatt']==undefined){
-                a['pracatt']=0
-              }
-              noofwords=noofwords+1;
-              correctno=correctno+a['correct'];
-              listenatmpno=listenatmpno+a['listatt'];
-              pracattno=pracattno+a['pracatt'];
-              score=score+a['score'];
-              time=time+a['time'];
-              lastScore=lastScore+a['lastScore'];
-              a['loadmain']=a['main']+" - "+a['load'];
-           
-              // s['noofwords']=noofwords;
-              // s['correct']=correctno;
-              // s['listatt']=listenatmpno;
-              // s['pracatt']=pracattno;
-               //s['successrate']=((correctno/noofwords)*100).toFixed(2)+"%";
-            });
+            
             s['noofwords'] = noofwords;
             s['noofwords'] = noofwords;
             s['correct'] = correctno;
@@ -334,12 +316,12 @@ ngOnInit(): void {
     this.GroupTitleDate = [];
     var res = this.RootData;
     var user = this.RootData.filter(o => o._id == e.data._id)[0];
-    var calldata = user.caldata;
+    //var calldata = user.caldata;
     var sentdata = user.sendata;
-    calldata=calldata.map(obj => ({ ...obj, type: 'Call Flow' }))
+    //calldata=calldata.map(obj => ({ ...obj, type: 'Call Flow' }))
     sentdata=sentdata.map(obj => ({ ...obj, type: 'Sentense Lab' }))
 
-    var mergeddata = [...calldata, ...sentdata];
+    var mergeddata = [...sentdata];
 
     from(mergeddata).pipe(
       groupBy((item: any) => item.loadmain),
@@ -353,7 +335,7 @@ ngOnInit(): void {
         debugger;
         var dgrow = {};
         dgrow['loadmain'] =g[0];
-        dgrow['loadmain2'] =g1[1][0].type+" - "+g[0];
+        dgrow['loadmain2'] =g[0];
 
         dgrow['date'] = g1[0]
         var noofsentences = 0, listatt = 0, pracatt = 0, lastScore = 0, score;
@@ -410,9 +392,9 @@ ngOnInit(): void {
       }
       
       var user = this.RootData.filter(o => o._id == crow.userId)[0];
-      var calldata = user.caldata;
+      //var calldata = user.caldata;
       var sentdata = user.sendata;
-      var mergeddata = [...calldata, ...sentdata];
+      var mergeddata = [...sentdata];
       if (!isNaN(Date.parse(ev.value))) {
         mergeddata= mergeddata.filter(s=>s.dateTime==ev.value)
       }
@@ -446,6 +428,7 @@ ngOnInit(): void {
   }
   WordsData:any[]=[];
   onCellClickG3(ev){
+    debugger;
     this.WordsData=[];
     this.Gridshowno=4;
     this.LabelWord=ev.data.sentence;
@@ -454,9 +437,9 @@ ngOnInit(): void {
     this.isShowlbl3 = true;
     debugger;
     var user = this.RootData.filter(o => o._id == ev.data.userId)[0];
-    var calldata = user.caldata;
+    //var calldata = user.caldata;
     var sentdata = user.sendata;
-    var mergeddata = [...calldata, ...sentdata];
+    var mergeddata = [...sentdata];
     var res1=mergeddata.filter(s=>s.sentence==ev.data.sentence && s.loadmain==ev.data.loadmain);
     var res2=JSON.stringify(res1);
     var res=JSON.parse(res2);
@@ -465,10 +448,12 @@ ngOnInit(): void {
       cols.forEach(c => {
         var row={};
         row['dateTime']=s.dateTime;
-        var fword = s.focusWord[c];
+        var fword1 =  s.focusWord[c];
+        var fword=fword1[Object.keys(fword1)[0]]
+        var timekey=Object.keys(fword1)[0].split('T')[1]
         row['words'] = "";
         row['timepart'] = c;
-        row['timepart2'] = c.split(':')[0]+":"+c.split(':')[1];
+        row['timepart2'] =timekey// c.split(':')[0]+":"+c.split(':')[1];
 
         if (fword) {
           var index = fword.indexOf("NA");
@@ -477,7 +462,11 @@ ngOnInit(): void {
           }
 
           //fword.pop()
-          row['lastScore'] =Math.floor(fword.at(-1))+"%";
+          row['lastScore']="0%";
+          if(Number.isInteger(fword.at(-1))){
+            row['lastScore'] =Math.floor(fword.at(-1))+"%";
+          }
+          //row['lastScore'] =Math.floor(fword.at(-1))+"%";
           index = fword.indexOf(fword.at(-1));
           if (index !== -1) {
             fword.splice(index, 1);

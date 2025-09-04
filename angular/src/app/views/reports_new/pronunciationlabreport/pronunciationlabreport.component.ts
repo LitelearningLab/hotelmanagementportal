@@ -188,8 +188,8 @@ export class PronunciationlabreportComponent {
     // Populate lists if data is available
     if (data != undefined) {
       this.cityList = data.countryCity.flatMap(country => country.city);
-      this.roleList = data.role;
-      this.teamList = data.team;
+      this.roleList = data.year;
+      this.teamList = data.course;
     }
   }
   filter(){
@@ -239,13 +239,13 @@ export class PronunciationlabreportComponent {
             
             //For 1st grid
             s.prdata.forEach(a=>{
-              if(a['pracatt']==undefined){
-                a['pracatt']=0
+              if(a['pracAtt']==undefined){
+                a['pracAtt']=0
               }
               noofwords=noofwords+1;
               correctno=correctno+a['correct'];
-              listenatmpno=listenatmpno+a['listatt'];
-              pracattno=pracattno+a['pracatt'];
+              listenatmpno=listenatmpno+a['listAtt'];
+              pracattno=pracattno+a['pracAtt'];
               // s['noofwords']=noofwords;
               // s['correct']=correctno;
               // s['listatt']=listenatmpno;
@@ -255,8 +255,8 @@ export class PronunciationlabreportComponent {
             });
             s['noofwords']=noofwords;
             s['correct']=correctno;
-            s['listatt']=listenatmpno;
-            s['pracatt']=pracattno;
+            s['listAtt']=listenatmpno;
+            s['pracAtt']=pracattno;
             s['successrate']=  ((correctno/pracattno)*100).toFixed(0)+"%";
            //( corection/pract)
             var gr=[]
@@ -353,14 +353,14 @@ debugger;
           dg.forEach(e1 => {
             totalatt=totalatt+1;
             correct=correct+e1['correct'];
-            listatt=listatt+e1['listatt'];
-            pracatt=pracatt+e1['pracatt'];
+            listatt=listatt+e1['listAtt'];
+            pracatt=pracatt+e1['pracAtt'];
           });
 
           dgrow['noofwords']=totalatt;
           dgrow['correct']=correct;
-          dgrow['listatt']=listatt;
-          dgrow['pracatt']=pracatt;
+          dgrow['listAtt']=listatt;
+          dgrow['pracAtt']=pracatt;
           var per=correct ==0 && pracatt==0?"0":((correct/pracatt)*100).toFixed(2);
 
           dgrow['successrate']=per;
@@ -445,14 +445,14 @@ debugger;
           dg.forEach(e1 => {
             totalatt=totalatt+1;
             correct=correct+e1['correct'];
-            listatt=listatt+e1['listatt'];
-            pracatt=pracatt+e1['pracatt'];
+            listatt=listatt+e1['listAtt'];
+            pracatt=pracatt+e1['pracAtt'];
           });
 
           dgrow['noofwords']=totalatt;
           dgrow['correct']=correct;
-          dgrow['listatt']=listatt;
-          dgrow['pracatt']=pracatt;
+          dgrow['listAtt']=listatt;
+          dgrow['pracAtt']=pracatt;
           var per=correct ==0 && pracatt==0?"0%":((correct/pracatt)*100).toFixed(2)+"%";
           dgrow['successrate']=  per;
           this.WordsData.push(dgrow);
@@ -474,7 +474,7 @@ debugger;
       var filldata=[];
       filldata=this.GroupUserAndTitle.filter(s=>s.userId== ev.data.userId && s[0] == ev.data.title)[0][1].filter(st=>st.date == ev.data.date);
       filldata.forEach((m1:any)=>{
-        var per=m1.correct ==0 && m1.pracatt==0?"0%":((m1.correct/m1.pracatt)*100).toFixed(2)+"%";
+        var per=m1.correct ==0 && m1.pracAtt==0?"0%":((m1.correct/m1.pracAtt)*100).toFixed(2)+"%";
         m1['successrate']=per;
       })
       this.DatesData=filldata;

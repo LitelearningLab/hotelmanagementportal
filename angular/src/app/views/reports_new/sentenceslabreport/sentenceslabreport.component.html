@@ -20,12 +20,12 @@
   
             <form class="row" [formGroup]="filterForm">
               <div class="col-md-2 mb-2" *ngIf="!companysubadmin && !trainerData && !companydata">
-                <label for="company">Company<span class="text-danger">*</span></label>
+                <label for="company">Institution<span class="text-danger">*</span></label>
                 <ng-select [items]="companynames" bindLabel="companyname" bindValue="_id" formControlName="company"
                   class="form-control custom-ng-select p-0" (change)="getCountry($event)"
-                  placeholder="Select Company"></ng-select>
+                  placeholder="Select Institution"></ng-select>
                 <div *ngIf="filterForm.get('company').invalid && (filterForm.get('company').touched )">
-                  <small class="error" *ngIf="filterForm.get('company').hasError('required')">Company is required.</small>
+                  <small class="error" *ngIf="filterForm.get('company').hasError('required')">Institution is required.</small>
                 </div>
               </div>
   
@@ -43,10 +43,10 @@
               </div>
   
               <div class="col-md-2 mb-2">
-                <label for="team">Role</label>
+                <label for="team">Course</label>
   
                 <ng-select [items]="teamList" formControlName="team"  [multiple]="true" class="form-control custom-ng-select p-0"
-                  placeholder="Select Role"></ng-select>
+                  placeholder="Select Course"></ng-select>
                 <!-- <div *ngIf="filterForm.get('team').invalid && (filterForm.get('team').touched )">
                   <small class="error" *ngIf="filterForm.get('team').hasError('required')">Role is required.</small>
                 </div> -->
