@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   // apiUrl: 'https://ecommerce-testing.quickiz.com/',
  // apiUrl: "https://profluent.quickiz.com/",
-  apiUrl: "http://34.47.223.179:4003/",
+  apiUrl: "http://34.100.213.250:4003/",
 
   mapKey: 'AIzaSyBxvZ4uekYJgs7atKyK3x0UOhZzcYw19Rg',
   // firebaseConfig :{
