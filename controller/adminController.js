@@ -934,12 +934,28 @@ const addedituser = async (req, res) => {
                     const numbers = '0123456789';
                     const symbols = '!@#$';
 
-                    let characters = symbols + lower + upper + numbers;
-                    let password = '';
-                    for (let i = 0; i < length; i++) {
-                        const randomIndex = Math.floor(Math.random() * characters.length);
-                        password += characters[randomIndex];
+                    // 1 uppercase letter
+                    const firstChar = lower[Math.floor(Math.random() * lower.length)].toUpperCase();
+
+                    // 5 lowercase letters
+                    let middle = "";
+                    for (let i = 0; i < 5; i++) {
+                        middle += lower[Math.floor(Math.random() * lower.length)];
                     }
+                    // 1 symbol
+                    const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+                    // 2-digit number (10–99)
+                    const number = Math.floor(10 + Math.random() * 90);
+                    //let password = '';
+                    let password = `${firstChar}${middle}${symbol}${number}`;
+
+                    // let characters = symbols + lower + upper + numbers;
+                    // let password = '';
+                    // for (let i = 0; i < length; i++) {
+                    //     const randomIndex = Math.floor(Math.random() * characters.length);
+                    //     password += characters[randomIndex];
+                    // }
+
                     data.password = password
 
 
@@ -1216,10 +1232,24 @@ const bulkuploaduser = async (req, res) => {
             data.createAt = firebbase.firestore.FieldValue.serverTimestamp();
 
             password="";
-            for (let i = 0; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * characters.length);
-                password += characters[randomIndex];
+            // 1 uppercase letter
+            const firstChar = lower[Math.floor(Math.random() * lower.length)].toUpperCase();
+
+            // 5 lowercase letters
+            let middle = "";
+            for (let i = 0; i < 5; i++) {
+                middle += lower[Math.floor(Math.random() * lower.length)];
             }
+            // 1 symbol
+            const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+            // 2-digit number (10–99)
+            const number = Math.floor(10 + Math.random() * 90);
+            //let password = '';
+            password = `${firstChar}${middle}${symbol}${number}`;
+            // for (let i = 0; i < length; i++) {
+            //     const randomIndex = Math.floor(Math.random() * characters.length);
+            //     password += characters[randomIndex];
+            // }
             console.log("Passwprd",password)
             data.password=password;
             let userPhone = await admin.firestore().collection("UserNode")
