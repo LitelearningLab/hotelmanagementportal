@@ -636,7 +636,8 @@ p.custom-font {
 .sidebar .nav-link:hover {
   //color: #1a1e31 !important;
   //background-color: transparent !important;
-  color: black !important;
+  //color: black !important;
+  color: white !important;
   background: #F6F6F6 !important;
 }
 
@@ -645,16 +646,22 @@ p.custom-font {
 }
 
 .sidebar .nav-link.active:hover {
-  color: #1a1e31 !important;
+  //color: #1a1e31 !important;
+  color: white !important;
+
   background-color: transparent !important;
 }
 
 .sidebar .nav-link.active:hover i.nav-icon {
-  color: #1a1e31 !important;
+  //color: #1a1e31 !important;
+  color: white !important;
+
 }
 
 .sidebar .nav-link.active {
-  background-color: #1a1e31 !important;
+  //background-color: #1a1e31 !important;
+  
+
 }
 
 .btn-group.export-lists > .btn,
@@ -1065,8 +1072,11 @@ a.navbar-brand.mainlogo-sec img {
 
 .app-body .sidebar .nav-link {
   //color: #7e7e7e;
-  color: #F6F6F6 !important;
+  //color: #F6F6F6 !important;
+  color: lightgray !important;
+
 }
+
 
 .sidebar .nav-link .nav-icon {
   color: #7e7e7e !important;
@@ -1081,7 +1091,8 @@ a.navbar-brand.mainlogo-sec img {
 
 .sidebar .nav-link i.nav-icon {
   //color: #969ba0;
-  color: #F6F6F6 !important;
+  //color: #F6F6F6 !important;
+  color: lightgray !important;
   font-size: 20px;
   position: relative;
   top: 5px;
@@ -1093,7 +1104,9 @@ a.navbar-brand.mainlogo-sec img {
 }
 
 .sidebar .nav-link.active i.nav-icon {
-  color: #F6F6F6;
+  //color: #F6F6F6;
+  color: white;
+
 }
 
 .tile-header {

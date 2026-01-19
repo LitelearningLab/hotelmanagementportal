@@ -27,7 +27,7 @@ export class CompanySubadminListComponent {
   userPrivilegeDetails: PrivilagesData[] = [];
   add_btn: boolean = false;
   edit_btn: boolean = true;
-  delete_btn: boolean = true;
+  delete_btn: boolean = false;
   bulk_action: boolean = false;
   activeBulkAction: boolean = false;
   addBtnUrl: string = '/app/administrator/sub-admin-add';

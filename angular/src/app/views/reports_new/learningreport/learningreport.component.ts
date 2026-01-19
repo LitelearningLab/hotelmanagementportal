@@ -473,8 +473,10 @@ export class LearningreportComponent {
         });
         //let hmformat = ((sum/60)/60).toFixed(2).split(".");
         let hh=Math.floor(sum/3600);
-        let mm=Math.floor((sum%3600)/60);
-        let displayformat=(hh ==0?'':hh.toString()+" hrs ")+(mm == 0?'':mm.toString()+" mins");
+        let mm=((sum%3600/60)).toFixed(2);
+        let tf=this.toTime(sum);
+        //alert(tf)
+        let displayformat= tf;//(hh ==0?'':hh.toString()+" hrs ")+(parseFloat( mm) == 0?'':mm.toString()+" mins");
         //let displayformat = (hmformat[0] == "0" ? '' : hmformat[0] + " hrs ") + (hmformat[1] == "0" ? '' : hmformat[1] + " mins");
 
         row['totalPracticeTime'] = displayformat;
@@ -482,6 +484,11 @@ export class LearningreportComponent {
       })
     }
   }
+  toTime(seconds) {
+  var date = new Date(null);
+  date.setSeconds(seconds);
+  return date.toISOString().substr(11, 8);
+}
 
   Grid3Data:any[]=[];
   SumClick2(row,  vi) {
@@ -558,12 +565,16 @@ export class LearningreportComponent {
             debugger
             let diffmins = Math.floor( (sdate2.valueOf() - sdate.valueOf()) /60000); 
             const hours = Math.floor(diffmins / 60);
-            const minutes = diffmins % 60;
+            //const minutes = (diffmins % 60).toFixed(2);
+            const minutes=((diffmins%3600)/60).toFixed(2);
 
             let hh=Math.floor(k.totalPracticeTime/3600);
             let mm=Math.floor(k.totalPracticeTime/60);
+            //alert(diffmins)
+            let difmilli=e.endTime._seconds-e.startTime._seconds;
+            let tf= this.toTime(difmilli)
             
-            let displayformat = (hours ==0?'':hours.toString()+" hrs ")+(minutes == 0?'':minutes.toString()+" mins");
+            let displayformat =tf;// (hours ==0?'':hours.toString()+" hrs ")+(parseFloat( minutes) == 0?'':minutes.toString()+" mins");
 
             row['learnhours'] = displayformat;
 

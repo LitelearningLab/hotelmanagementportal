@@ -28,7 +28,7 @@ export class ListSubadminComponent {
   userPrivilegeDetails: PrivilagesData[] = [];
   add_btn: boolean = false;
   edit_btn: boolean = true;
-  delete_btn: boolean = true;
+  delete_btn: boolean = false;
   addBtnUrl: string = '/app/administrator/sub-admin-add';
   addBtnName: string = 'Sub Admin Add';
   editUrl: string = '/app/subadmin/edit/';

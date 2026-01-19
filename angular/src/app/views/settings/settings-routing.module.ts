@@ -18,6 +18,7 @@ import { ReturnAddeditComponent } from './return-reasons/return-addedit/return-a
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SendPasswordToUserComponent } from '../settings/send-password-to-user/send-password-to-user.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -80,6 +81,7 @@ const routes: Routes = [
           title: 'Change Password'
         }
       },
+       
       {
         path: 'profile',
         component:  ProfileComponent,

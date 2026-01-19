@@ -591,23 +591,25 @@ const learninghoursReportlist= async(req,res)=>{
     try {
         console.log('test')
         console.log(req.body)
+        console.log( new Date( req.body.startdate));
         let query = admin.firestore().collection("UserNode")
         .where('companyid', '==', req.body.company)
 
         const usersnapshot=await query.get();
         let userres= usersnapshot.docs.map(s=>s.data())
         //Process Learning
-        let pr1= admin.firestore().collection("FoodProductionTimeStamp")//.where("companyID","==",req.body.company)
-        let pr2= admin.firestore().collection("FoodAndBeverageTimeStamp")//.where("companyID","=",req.body.company)
-        let pr3= admin.firestore().collection("FrontOfficeTimeStamp")//.where("companyID","==",req.body.company)
-        let pr4= admin.firestore().collection("HouseKeepingTimeStamp")//.where("companyID","==",req.body.company)
+        let pr1= admin.firestore().collection("FoodProductionTimeStamp").where("collegeId","==",req.body.company)
+        let pr2= admin.firestore().collection("FoodAndBeverageTimeStamp").where("collegeId","=",req.body.company)
+        let pr3= admin.firestore().collection("FrontOfficeTimeStamp").where("collegeId","==",req.body.company)
+        let pr4= admin.firestore().collection("HouseKeepingTimeStamp").where("collegeId","==",req.body.company)
 
         //AR Call
-        let arsimtime= admin.firestore().collection("InteractiveSimulationTimeStamp")//.where("companyID","==",req.body.company)
+        let arsimtime= admin.firestore().collection("InteractiveSimulationTimeStamp").where("collegeId","==",req.body.company)
         //Proflent English
-        let prosimtime= admin.firestore().collection("LanguageLabTimeStamp")//.where("companyID","=",req.body.company)
+        let prosimtime= admin.firestore().collection("LanguageLabTimeStamp").where("collegeId","=",req.body.company)
         //Soft Skills
-        let softsimtime= admin.firestore().collection("FrontOfficeTimeStamp")//.where("companyID","==",req.body.company)
+        let softsimtime= admin.firestore().collection("ContentLabTimeStamp").where("collegeId","==",req.body.company)
+        
 
         if(req.body.startdate){
             arsimtime=arsimtime.where("createdAt",">=", new Date( req.body.startdate)).where("createdAt","<=", new Date(req.body.enddate))//.where("companyID","==",req.body.company)
@@ -656,6 +658,9 @@ const learninghoursReportlist= async(req,res)=>{
 
 
         console.log(rese.length)
+        console.log(rese2.length)
+        console.log(rese3.length)
+
 
         var citydata=[];
         if (req.body.city.length !=0) {
@@ -2157,6 +2162,7 @@ module.exports = {
     speechlabreportMainLoad,
     sentecesflowlabgraph,
     pronunciationSoundLabGraph
+    
     
 
 }

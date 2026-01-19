@@ -90,7 +90,8 @@
               [allowColumnResizing]="true" (onContentReady)="contentReady($event)" [wordWrapEnabled]="true"  >
               <dxo-filter-row [visible]="true"></dxo-filter-row>
               <dxo-header-filter [visible]="true"></dxo-header-filter>
-              <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling>
+              <!-- <dxo-scrolling columnRenderingMode="virtual"></dxo-scrolling> -->
+              <!-- <dxo-scrolling     mode="standard"     [useNative]="true"     showScrollbar="always">   </dxo-scrolling> -->
               <dxo-paging [pageSize]="10"></dxo-paging>
               <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>
               <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
@@ -99,23 +100,23 @@
             </dxi-column>
             
 
-            <dxi-column alignment="right" dataField="processlearning_totalPracticeTime" cellTemplate="cellTemplate1" 
+            <dxi-column alignment="right" dataField="processlearning_totalPracticeTime" cellTemplate="cellTemplate1" [width]="160"
                 dataType="string" caption="Process Learning">
                 <div *dxTemplate="let cell of 'cellTemplate1'">
                     <a (click)="SumClick(cell,'processlearning',cell.value)" href="javascript:void(0)">{{cell.value}}</a>
                 </div>
             </dxi-column>
-              <dxi-column alignment="right" dataField="arcallsim_totalPracticeTime" cellTemplate="cellTemplate2" dataType="string" caption="AR Call Simulations">
+              <dxi-column alignment="right" dataField="arcallsim_totalPracticeTime" cellTemplate="cellTemplate2" dataType="string" [width]="170" caption="AR Call Simulations">
                 <div *dxTemplate="let cell of 'cellTemplate2'">
                     <a (click)="SumClick(cell,'arcallsim',cell.value)" href="javascript:void(0)">{{cell.value}}</a>
                 </div>
               </dxi-column>
-              <dxi-column alignment="right" dataField="profluenteng_totalPracticeTime" cellTemplate="cellTemplate3" dataType="string" caption="Profluent English">
+              <dxi-column alignment="right" dataField="profluenteng_totalPracticeTime" cellTemplate="cellTemplate3" dataType="string" [width]="160" caption="Profluent English">
                 <div *dxTemplate="let cell of 'cellTemplate3'">
                     <a (click)="SumClick(cell,'profluenteng',cell.value)" href="javascript:void(0)">{{cell.value}}</a>
                 </div>
               </dxi-column>
-              <dxi-column alignment="right" dataField="softskills_totalPracticeTime" cellTemplate="cellTemplate4" dataType="string" caption="Soft Skills">
+              <dxi-column alignment="right" dataField="softskills_totalPracticeTime" cellTemplate="cellTemplate4" dataType="string" [width]="150" caption="Content Library">
                 <div *dxTemplate="let cell of 'cellTemplate4'">
                     <a (click)="SumClick(cell,'softskills',cell.value)" href="javascript:void(0)">{{cell.value}}</a>
                 </div>
@@ -146,7 +147,7 @@
             <dxi-column dataField="type"  dataType="string" caption="Titles Accessed">
             </dxi-column>
             <dxi-column alignment="right" dataField="totalPracticeTime" cellTemplate="cellTemplate1"
-                dataType="string" caption="Learning Hours">
+                dataType="string" caption="Learning Hours (HH:MM:SS)">
                 <div *dxTemplate="let cell of 'cellTemplate1'">
                     <a (click)="SumClick2(cell,cell.value)" href="javascript:void(0)">{{cell.value}}</a>
                 </div>
@@ -184,7 +185,7 @@
                 dataType="string" caption="Active Screen Time">
             </dxi-column> -->
             <dxi-column alignment="right" dataField="learnhours" cellTemplate="cellTemplate1"
-            dataType="string" caption="Active Screen Time">
+            dataType="string" caption="Active Screen Time (HH:MM:SS)">
             <div *dxTemplate="let cell of 'cellTemplate1'">
                 <a href="javascript:void(0)">{{cell.value}}</a>
             </div>

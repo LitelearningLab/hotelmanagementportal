@@ -1,0 +1,45 @@
+.error{
+  
+    color: red;
+    font-size: 0.875em;
+
+}
+
+.swal2-title {
+    font-size: 12px; /* Adjust the size as needed */
+}
+
+.swal2-text{
+    font-size: 8px;
+}   
+.lblstyle{
+    text-decoration: underline;cursor: pointer; margin-bottom: 0px;margin-top: 5px;
+}
+.cur{
+    cursor: pointer;
+}
+
+.bs-daterangepicker-container .btn-secondary {
+    background-color: red;
+}
+
+::ng-deep .bs-daterangepicker-container .btn-secondary {
+    background-color: red;
+}
+.tatingtab td,tr{
+    line-height: 5px !important;
+}
+
+.div_line {
+  display: grid;
+  grid-template-columns: 50% 30% 20%;
+  padding: 5px;
+  gap: 5px;
+  align-content: center;
+}
+thead{
+    line-height: 5px;
+}
+p{
+    line-height: 5px !important;
+}

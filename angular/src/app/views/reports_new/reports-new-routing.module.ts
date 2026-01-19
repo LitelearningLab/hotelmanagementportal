@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PronunciationlabreportComponent  } from './pronunciationlabreport/pronunciationlabreport.component';
 import { SentenceslabreportComponent } from './sentenceslabreport/sentenceslabreport.component';
 import { LearningreportComponent } from './learningreport/learningreport.component';
+import { FeedbackreportComponent } from './feedbackreport/feedbackreport.component';
 
 
 
@@ -30,6 +31,13 @@ const routes: Routes = [
         component: LearningreportComponent,
         data: {
           title: 'Learning Hours Report'
+        }
+      },
+      {
+        path: 'feedbackreports',
+        component: FeedbackreportComponent,
+        data: {
+          title: 'Feedback Report'
         }
       },
       {

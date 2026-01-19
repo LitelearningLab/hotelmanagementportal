@@ -15,27 +15,34 @@ import { SentenceslabreportComponent } from './sentenceslabreport/sentenceslabre
 import { LearningreportComponent } from './learningreport/learningreport.component';
 import { DxDataGridModule } from 'devextreme-angular';
 import { DxPopupModule, DxButtonModule, DxTemplateModule  } from 'devextreme-angular';
+import { FeedbackreportComponent } from './feedbackreport/feedbackreport.component';
+
+import { StarRatingModule } from 'angular-star-rating';
+import { CollapseModule } from "ngx-bootstrap/collapse";
+
 @NgModule({
   declarations: [
     PronunciationlabreportComponent,
     SentenceslabreportComponent,
-    LearningreportComponent
+    LearningreportComponent,
+    FeedbackreportComponent
   ],
   imports: [
     CommonModule,
     ReportsNewRoutingModule,
-     FormsModule,
-     ReactiveFormsModule,
-     RouterModule,
-     NgxIntlTelInputModule,
-     NgSelectModule,
-     TabsModule.forRoot(),
-     BsDatepickerModule.forRoot(),
-     DxDataGridModule,
-     DxPopupModule,
-     DxButtonModule,
-     DxTemplateModule
-     
-  ]
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    NgxIntlTelInputModule,
+    NgSelectModule,
+    TabsModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    DxDataGridModule,
+    DxPopupModule,
+    DxButtonModule,
+    DxTemplateModule,
+    StarRatingModule.forRoot(),
+    CollapseModule
+]
 })
 export class ReportsNewModule { }

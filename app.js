@@ -39,7 +39,7 @@ const io = socketIo(server);
 const cors=require("cors")
 const adminRoutes=require("./routes/admin")
 const appRoutes=require("./routes/flutter")
-const dbconnect=require("./config/config")
+//const dbconnect=require("./config/config")
 const cron=require("node-cron")
 const moment=require("moment-timezone")
 const morgan=require("morgan")
@@ -48,7 +48,7 @@ const path = require("path")
 const subscriptioncron=require("./cron/subscriptioncron")
 dotenv.config()
 
-dbconnect.dbconnect()
+//dbconnect.dbconnect()
 app.use(cors({
     credentials:true,
     origin:'*'
@@ -110,20 +110,20 @@ server.listen(process.env.PORT,()=>{
     console.log("server started to listing port 4000")
 })
 
-process.on('SIGINT', () => {
-  console.log("SIGINT signal received: closing HTTP server");
-  server.close(() => {
-      console.log("HTTP server closed");
-      dbconnect.dbdisconnect();  // Close MongoDB connection
-      process.exit(0);          // Exit the process after disconnecting
-  });
-});
+// process.on('SIGINT', () => {
+//   console.log("SIGINT signal received: closing HTTP server");
+//   server.close(() => {
+//       console.log("HTTP server closed");
+//       dbconnect.dbdisconnect();  // Close MongoDB connection
+//       process.exit(0);          // Exit the process after disconnecting
+//   });
+// });
 
-process.on('SIGTERM', () => {
-  console.log("SIGTERM signal received: closing HTTP server");
-  server.close(() => {
-      console.log("HTTP server closed");
-      dbconnect.dbdisconnect();     // Close MongoDB connection
-      process.exit(0);             // Exit the process after disconnecting
-  });  
-});
+// process.on('SIGTERM', () => {
+//   console.log("SIGTERM signal received: closing HTTP server");
+//   server.close(() => {
+//       console.log("HTTP server closed");
+//       dbconnect.dbdisconnect();     // Close MongoDB connection
+//       process.exit(0);             // Exit the process after disconnecting
+//   });  
+// });

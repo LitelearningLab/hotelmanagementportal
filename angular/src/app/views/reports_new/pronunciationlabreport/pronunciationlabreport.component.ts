@@ -197,6 +197,9 @@ export class PronunciationlabreportComponent {
     this.Gridshowno=1;
     var res=this.filterForm;
     this.RootData=[];
+    this.LabelLernername="";
+    this.LabelGroupOrDate="";
+    this.LabelWord="";
   
     if (this.filterForm.valid) {
       this.filterForm.controls['startdate'].setValue(this.filterForm.value.perioddate[0]);

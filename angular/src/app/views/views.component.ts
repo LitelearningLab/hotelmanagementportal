@@ -75,7 +75,7 @@ export class ViewsComponent implements OnInit, AfterViewInit {
       let user=localStorage.getItem("companysubadmin")
       userObj=JSON.parse(user)
     }
-    debugger;
+    //debugger;
     // Parse the JSON string into a JavaScript object
     
     // Access the name property

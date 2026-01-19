@@ -24,6 +24,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { json } from 'stream/consumers';
 Chart.register(...registerables, ChartDataLabels);
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -249,7 +250,7 @@ export class DashboardComponent {
   companysubadmin: any;
   trainerData:any;
   companydata: any;
-
+  curentUser:any
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -269,6 +270,15 @@ export class DashboardComponent {
     this.companydata=JSON.parse(localStorage.getItem("company"))
   }
   async ngOnInit() {
+    debugger;
+    this.companydata=JSON.parse(localStorage.getItem("company"))
+    if(this.companydata){
+        const spanElement = document.getElementById("compnamedis");
+        if (spanElement) {
+                spanElement.textContent = this.companydata.companyname;
+            }
+      //$('#compnamedis').text("this.companydata.companyname");
+    }
     debugger;
     this.cityList = [];
     this.ComanyDetails={};
@@ -334,11 +344,9 @@ export class DashboardComponent {
       this.apiService.CommonApi(Apiconfig.getCompnay.method, Apiconfig.getCompnay.url, { data: this.SelectedCompany }).subscribe((result) => {
         if(result.status==true){
           this.ComanyDetails=result.data;
-          
         }
       })
       this.getUserDetails();
-   
     }
   }
   pageloadfilter(){
@@ -470,16 +478,16 @@ export class DashboardComponent {
       (result) => {
         debugger;
         
-        let arsum = result.data.AR.reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
-        let ProFluesum = result.data.ProFlue.reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
-        let ProcessLernsum = result.data.ProcessLern.reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
-        let Softskillsum = result.data.Softskill.reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
+        let arsum = result.data.AR.filter(s=>s.totalPracticeTime).reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
+        let ProFluesum = result.data.ProFlue.filter(s=>s.totalPracticeTime).reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
+        let ProcessLernsum = result.data.ProcessLern.filter(s=>s.totalPracticeTime).reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
+        let Softskillsum = result.data.Softskill.filter(s=>s.totalPracticeTime).reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
         this.LearningHoursCount = arsum + ProFluesum + ProcessLernsum + Softskillsum;
        
-        this.LH1 = result.data.AR;
-        this.LH2 = result.data.ProFlue;
-        this.LH3 = result.data.ProcessLern;
-        this.LH4 = result.data.Softskill;
+        this.LH1 = result.data.AR.filter(s=>s.totalPracticeTime);
+        this.LH2 = result.data.ProFlue.filter(s=>s.totalPracticeTime);
+        this.LH3 = result.data.ProcessLern.filter(s=>s.totalPracticeTime);
+        this.LH4 = result.data.Softskill.filter(s=>s.totalPracticeTime);
         this.LH1.forEach(s => {
           var cdt1=new Date(s.lastUpdated._seconds * 1000 + s.lastUpdated._nanoseconds / 1000000);
           s['LastUpdatedOn'] = cdt1;
@@ -653,8 +661,8 @@ export class DashboardComponent {
 
           });
           this.ProLabData=result.data;
-            this.ProList = this.ProLabData.filter(x =>  x.listatt).reduce((n, { listatt }) => n + listatt, 0);
-            this.ProPract = this.ProLabData.filter(x => x.pracatt).reduce((n, { pracatt }) => n + pracatt, 0);
+            this.ProList = this.ProLabData.filter(x =>  x.listAtt).reduce((n, { listAtt }) => n + listAtt, 0);
+            this.ProPract = this.ProLabData.filter(x => x.pracAtt).reduce((n, { pracAtt }) => n + pracAtt, 0);
           this.PronunciationReportFilter();
         }
       });
@@ -693,8 +701,8 @@ export class DashboardComponent {
     debugger;
     this.Last4WeekNos.forEach(l => {
       LabelNames.push(l.WeekName);
-      let res1 = LH1D.filter(x => x[l.Type] == l.WeekNo && x.listatt).reduce((n, { listatt }) => n + listatt, 0);
-      let res2 = LH1D.filter(x => x[l.Type] == l.WeekNo && x.pracatt).reduce((n, { pracatt }) => n + pracatt, 0);
+      let res1 = LH1D.filter(x => x[l.Type] == l.WeekNo && x.listAtt).reduce((n, { listAtt }) => n + listAtt, 0);
+      let res2 = LH1D.filter(x => x[l.Type] == l.WeekNo && x.pracAtt).reduce((n, { pracAtt }) => n + pracAtt, 0);
       let res3 = LH1D.filter(x => x[l.Type] == l.WeekNo && x.correct).reduce((n, { correct }) => n + correct, 0);
 
       arr1.push(res1)
@@ -742,14 +750,14 @@ export class DashboardComponent {
       (result) => {
         //pracatt
         if (result.status == true) {
-          let callsums  = result.data.call.filter(p=>p.pracatt).reduce((n, { pracatt }) => n + pracatt, 0);
+          //let callsums  = result.data.call.filter(p=>p.pracatt).reduce((n, { pracatt }) => n + pracatt, 0);
           let sentsums = result.data.sent.filter(p=>p.pracatt).reduce((n, { pracatt }) => n + pracatt, 0);
 
-          let calllistsums  = result.data.call.filter(p=>p.listatt).reduce((n, { listatt }) => n + listatt, 0);
+          //let calllistsums  = result.data.call.filter(p=>p.listatt).reduce((n, { listatt }) => n + listatt, 0);
           let sentlistsums = result.data.sent.filter(p=>p.listatt).reduce((n, { listatt }) => n + listatt, 0);
 
-          this.SentSum = sentsums + callsums;
-          this.sentWords = calllistsums + sentlistsums;
+          this.SentSum = sentsums ;
+          this.sentWords =  sentlistsums;
           result.data.sent.forEach(s => {
             s['LastUpdatedOn'] = new Date(s.lastAttempt);
             s['WeekNo'] =new Date(s.lastAttempt).getFullYear()+"-"+ moment(new Date(s.lastAttempt)).week();
@@ -759,18 +767,18 @@ export class DashboardComponent {
             }
             s['city']=this.UserDetails.filter(m=>m._id==s.userId).length !=0 ?this.UserDetails.filter(m=>m._id==s.userId)[0].city:'';
           });
-           result.data.call.forEach(s => {
-            s['LastUpdatedOn'] = new Date(s.lastAttempt);
-            s['WeekNo'] =new Date(s.lastAttempt).getFullYear()+"-"+ moment(new Date(s.lastAttempt)).week();
-            s['MonthNo'] = new Date(s.lastAttempt).getFullYear()+'-'+(new Date(s.lastAttempt).getMonth()+1);
-             if (s.batch != "" && !this.BatchNames.includes(s.batch)) {
-              this.BatchNames.push(s.batch);
-            }
-            s['city']=this.UserDetails.filter(m=>m._id==s.userId).length !=0 ?this.UserDetails.filter(m=>m._id==s.userId)[0].city:'';
+          //  result.data.call.forEach(s => {
+          //   s['LastUpdatedOn'] = new Date(s.lastAttempt);
+          //   s['WeekNo'] =new Date(s.lastAttempt).getFullYear()+"-"+ moment(new Date(s.lastAttempt)).week();
+          //   s['MonthNo'] = new Date(s.lastAttempt).getFullYear()+'-'+(new Date(s.lastAttempt).getMonth()+1);
+          //    if (s.batch != "" && !this.BatchNames.includes(s.batch)) {
+          //     this.BatchNames.push(s.batch);
+          //   }
+          //   s['city']=this.UserDetails.filter(m=>m._id==s.userId).length !=0 ?this.UserDetails.filter(m=>m._id==s.userId)[0].city:'';
 
-          });
+          // });
           this.SentenceLabData=result.data.sent;
-          this.CallflowData=result.data.call;
+          //this.CallflowData=result.data.call;
 
           this.SentenceLapReportFilter();
         }
@@ -782,15 +790,15 @@ export class DashboardComponent {
 
     let arr1 = []; let arr2 = []; let arr3=[]; let LabelNames = [];
     let LH1D=this.SentenceLabData;
-    let LH2D=this.CallflowData;
+    //let LH2D=this.CallflowData;
 
     if(this.SelectedCity !=""){
       LH1D=LH1D.filter(ss=>ss.city && ss.city.toLowerCase()==this.SelectedCity.toLowerCase() );
-      LH2D=LH2D.filter(ss=>ss.city && ss.city.toLowerCase()==this.SelectedCity.toLowerCase() );
+      //LH2D=LH2D.filter(ss=>ss.city && ss.city.toLowerCase()==this.SelectedCity.toLowerCase() );
     }
     if(this.SelectedBatch !=""){
       LH1D=LH1D.filter(ss=>ss.batch && ss.batch.toLowerCase()==this.SelectedBatch.toLowerCase() );
-      LH2D=LH2D.filter(ss=>ss.batch && ss.batch.toLowerCase()==this.SelectedBatch.toLowerCase() );
+      //LH2D=LH2D.filter(ss=>ss.batch && ss.batch.toLowerCase()==this.SelectedBatch.toLowerCase() );
     }
     if(this.SelectedUserId !=1){
       let filterdUsers=[];
@@ -803,7 +811,7 @@ export class DashboardComponent {
       if(filterdUsers.length !=0){
         let userids= filterdUsers.map(item => item._id);
         LH1D=LH1D.filter(ss=> userids.includes(ss.userId)  );
-        LH2D=LH2D.filter(ss=> userids.includes(ss.userId)  );
+        //LH2D=LH2D.filter(ss=> userids.includes(ss.userId)  );
 
       }
       else{
@@ -814,10 +822,10 @@ export class DashboardComponent {
     this.Last4WeekNos.forEach(l => {
       LabelNames.push(l.WeekName);
       let res1 = LH1D.filter(x => x[l.Type] == l.WeekNo && x.listatt).reduce((n, { listatt }) => n + listatt, 0);
-      let res2 = LH2D.filter(x => x[l.Type] == l.WeekNo && x.listatt).reduce((n, { listatt }) => n + listatt, 0);
+      //let res2 = LH2D.filter(x => x[l.Type] == l.WeekNo && x.listatt).reduce((n, { listatt }) => n + listatt, 0);
 
       let res3 = LH1D.filter(x => x[l.Type] == l.WeekNo && x.pracatt).reduce((n, { pracatt }) => n + pracatt, 0);
-      let res4 = LH2D.filter(x => x[l.Type] == l.WeekNo && x.pracatt).reduce((n, { pracatt }) => n + pracatt, 0);
+      //let res4 = LH2D.filter(x => x[l.Type] == l.WeekNo && x.pracatt).reduce((n, { pracatt }) => n + pracatt, 0);
 
       let score=0;
       let rowcnt=0;
@@ -831,15 +839,15 @@ export class DashboardComponent {
       });
       let score1=0;
       let rowcnt1=0;
-     LH2D.filter(x => x[l.Type] == l.WeekNo && x.focusWord).forEach(kl=>{
-         var cols=Object.keys(kl.focusWord);
-         if(cols.length !=0){
-            rowcnt1=rowcnt1+1;
-         }
-         score1=score1+kl.score/cols.length
-      });
-      arr1.push(res1 + res2);
-      arr2.push(res3 + res4);
+    //  LH2D.filter(x => x[l.Type] == l.WeekNo && x.focusWord).forEach(kl=>{
+    //      var cols=Object.keys(kl.focusWord);
+    //      if(cols.length !=0){
+    //         rowcnt1=rowcnt1+1;
+    //      }
+    //      score1=score1+kl.score/cols.length
+    //   });
+      arr1.push(res1 );
+      arr2.push(res3 );
       
       let av=Number.isNaN((score/rowcnt)) ? 0 :Math.floor((score/rowcnt));
       let av2=Number.isNaN((score1/rowcnt1)) ? 0 :Math.floor((score1/rowcnt1));
@@ -942,22 +950,23 @@ export class DashboardComponent {
     this.apiService.CommonApi(Apiconfig.getDashboardCompaniesReports.method, Apiconfig.getDashboardCompaniesReports.url, null).subscribe(
       (result) => {
         debugger;
-        let arsum = result.data.retdata.AR.reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
-        let ProFluesum = result.data.retdata.ProFlue.reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
-        let ProcessLernsum = result.data.retdata.ProcessLern.reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
-        let Softskillsum = result.data.retdata.Softskill.reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
-        this.LearningHoursCount2 = arsum + ProFluesum + ProcessLernsum + Softskillsum;
-        this.ProList2 = result.data.prolabres.filter(x => x.listatt).reduce((n, { listatt }) => n + listatt, 0);
-        this.ProPract2 = result.data.prolabres.filter(x => x.pracatt).reduce((n, { pracatt }) => n + pracatt, 0);
+        let arsum = result.data.retdata.AR.filter(s=>s.totalPracticeTime).reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
+        let ProFluesum = result.data.retdata.ProFlue.filter(s=>s.totalPracticeTime).reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
+        //let ProcessLernsum = result.data.retdata.ProcessLern.filter(s=>s.totalPracticeTime).reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
+        let Softskillsum = result.data.retdata.Softskill.filter(s=>s.totalPracticeTime).reduce((n, { totalPracticeTime }) => n + totalPracticeTime, 0);
+        this.LearningHoursCount2 = arsum + ProFluesum  + Softskillsum;
 
-        let callsums = result.data.call.filter(p => p.pracatt).reduce((n, { pracatt }) => n + pracatt, 0);
+        this.ProList2 = result.data.prolabres.filter(x => x.listAtt).reduce((n, { listAtt }) => n + listAtt, 0);
+        this.ProPract2 = result.data.prolabres.filter(x => x.pracAtt).reduce((n, { pracAtt }) => n + pracAtt, 0);
+
+        //let callsums = result.data.call.filter(p => p.pracatt).reduce((n, { pracatt }) => n + pracatt, 0);
         let sentsums = result.data.sent.filter(p => p.pracatt).reduce((n, { pracatt }) => n + pracatt, 0);
 
-        let calllistsums = result.data.call.filter(p => p.listatt).reduce((n, { listatt }) => n + listatt, 0);
+        //let calllistsums = result.data.call.filter(p => p.listatt).reduce((n, { listatt }) => n + listatt, 0);
         let sentlistsums = result.data.sent.filter(p => p.listatt).reduce((n, { listatt }) => n + listatt, 0);
 
-        this.SentSum2 = sentsums + callsums;
-        this.sentWords2 = calllistsums + sentlistsums;
+        this.SentSum2 = sentsums ;
+        this.sentWords2 =  sentlistsums;
 
       });
   }

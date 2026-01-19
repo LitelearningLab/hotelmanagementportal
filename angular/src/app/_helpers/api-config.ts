@@ -1483,5 +1483,14 @@ export const Apiconfig = {
     reviewsRatingDetails: {
         "url": "reviews/rating/details",
         "method": "post"
+    },
+
+     feedbackreport: {
+        "url": "feedbackreport",
+        "method": "post"
+    },
+    feedbackForm: {
+        "url": "feedbackForm",
+        "method": "post"
     }
 }

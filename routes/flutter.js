@@ -37,6 +37,8 @@ flutterRoutes.post("/verifyotp",fluttterController.verifyOtp)
 flutterRoutes.post('/sentecesandcallflowgraph',fluttterController.sentecesflowlabgraph)
 flutterRoutes.post('/pronunciation-sound-lab-graph',fluttterController.pronunciationSoundLabGraph)
 
+
+
 //flutterRoutes.post('/learninghoursReportlist_Dashboard',fluttterController.learninghoursReportlistDashboard)
 //flutterRoutes.post('/pronunciationLabReportlistDashboard',fluttterController.pronunciationLabReportlistDashboard)
 

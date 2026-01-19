@@ -26,6 +26,7 @@
     "@ng-select/ng-select": "^11.2.0",
     "@tinymce/tinymce-angular": "^7.0.0",
     "angular-ng-autocomplete": "^2.0.12",
+    "angular-star-rating": "^7.0.0",
     "bowser": "^2.11.0",
     "chart.js": "^4.1.1",
     "chartjs-plugin-datalabels": "^2.2.0",

@@ -1,0 +1,715 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="card">
+                <div class="card-body " *ngIf="isshow">
+                    
+                    <form class="row" [formGroup]="filterForm">
+
+                        <div class="col-md-2 mb-2" *ngIf="!companysubadmin && !trainerData && !companydata">
+                            <label for="company">Institution<span class="text-danger">*</span></label>
+
+                            <ng-select [items]="companynames" bindLabel="companyname" bindValue="_id"
+                                formControlName="company" class="form-control custom-ng-select p-0"
+                                (change)="getCountry($event)" placeholder="Select Institution">
+
+                            </ng-select>
+                            <div *ngIf="filterForm.get('company').invalid && (filterForm.get('company').touched )">
+                                <small class="error" *ngIf="filterForm.get('company').hasError('required')">Institution
+                                    is required.</small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 mb-2">
+                            <label for="city">City<span class="text-danger">*</span></label>
+
+                            <ng-select [items]="cityList" formControlName="city" [multiple]="true"
+                                class="form-control custom-ng-select p-0" placeholder="Select City"></ng-select>
+
+                            <div *ngIf="filterForm.get('city').invalid && (filterForm.get('city').touched )">
+                                <small class="error" *ngIf="filterForm.get('city').hasError('required')">City is
+                                    required.</small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 mb-2">
+                            <label for="team">Course</label>
+
+                            <ng-select [items]="teamList" formControlName="team" [multiple]="true"
+                                class="form-control custom-ng-select p-0" placeholder="Select Course"></ng-select>
+                            <!-- <div *ngIf="filterForm.get('team').invalid && (filterForm.get('team').touched )">
+                                    <small class="error" *ngIf="filterForm.get('team').hasError('required')">Role is required.</small>
+                                  </div> -->
+                        </div>
+
+
+
+                        <div class="col-md-2 mb-2">
+                            <label for="endDate">User Joining Date</label>
+                            <input type="text" formControlName="userjoiningdate" placeholder="Select Date Range"
+                                bsDaterangepicker triggers="keydown click" class="form-control"
+                                [bsConfig]="{ ranges: ranges,  todayHighlight: true, rangeInputFormat: 'DD/MM/YYYY', showTodayButton:true,containerClass:'theme-default'}">
+
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label for="endDate">Report Period<span class="text-danger">*</span></label>
+                            <input type="text" formControlName="perioddate" placeholder="Select Date Range"
+                                bsDaterangepicker triggers="keydown click" class="form-control"
+                                [bsConfig]="{ ranges: ranges, todayHighlight: true, rangeInputFormat: 'DD/MM/YYYY', showTodayButton:true,containerClass:'theme-default'}">
+                            <div
+                                *ngIf="filterForm.get('perioddate').invalid && (filterForm.get('perioddate').touched )">
+                                <small class="error" *ngIf="filterForm.get('perioddate').hasError('required')">Report
+                                    Period Date is
+                                    required.</small>
+                            </div>
+                        </div>
+                        <!-- *ngIf="Gridshowno != 1" [bsConfig]="{ containerClass : 'theme-default', todayHighlight: true, rangeInputFormat: 'DD/MM/YYYY', showTodayButton:true}" -->
+                        <div class="col-md-2 mb-2 mt-4 ">
+                            <button type="submit" style="margin-top: 6px;" class="btn  btn-success "
+                                (click)="filter()">Filter</button>
+                            <button class="btn  btn-secondary ml-2" style="margin-top: 6px;" type="button"
+                                (click)="clearForm()">Clear</button>
+
+                            <!-- <button *ngIf="Gridshowno == 3" class="btn  btn-primary ml-2" style="margin-top: 6px; float: right;"
+                                    type="button" (click)="BacktoBack()"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+                                    <button *ngIf="Gridshowno !=1" class="btn  btn-primary " style="margin-top: 6px; float: right;"
+                                    type="button" (click)="BacktoMain()"><i class="fa fa-backward" aria-hidden="true"></i></button> -->
+                        </div>
+
+                    </form>
+                </div>
+
+                <hr>
+                <div class="card-body ">
+                    
+                    <div *ngIf="Feedbacks.length !=0">
+                    
+                    <div>
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" 
+                                    type="button" role="tab" aria-controls="nav-home" aria-selected="true" (click)="tabclick('1')" [ngClass]="{'active': tabid === '1'}" >Feedback Overview</button>
+                                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" 
+                                    type="button" role="tab" aria-controls="nav-profile" aria-selected="false" (click)="tabclick('2')" [ngClass]="{'active': tabid === '2'}" >User Dashboard</button>
+                    
+                            </div>
+                        </nav>
+                    </div>
+                    <div *ngIf="tabid == '1'">
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12" style="line-height: 5px;">
+                               
+                                <p *ngIf="filterForm.value.perioddate"><b>Reporting Period:</b>
+                                    {{filterForm.value.perioddate[0] | date :'MMMM dd YYYY' }} to
+                                    {{filterForm.value.perioddate[1] | date :'MMMM dd YYYY' }} </p>
+                                <p><b>Total Responses: {{Feedbacks.length}}</b> </p>
+                                <p><b>Average Satisfaction Score:</b> {{TotalaveragePercentage}} / 5 </p>
+                                <p><b>Modules with Score ≥ 4:</b> <span
+                                        *ngFor="let h of Greaterthan4">{{h.name}}({{h.rate}} / 5)</span> </p>
+                                <p><b>Modules with Score 3.9 to 3: </b> <span
+                                        *ngFor="let h of t3to39">{{h.name}}({{h.rate}} / 5)</span> </p>
+                                <p><b>Modules with Score < 3:</b> <span
+                                                *ngFor="let h of Lessthan3">{{h.name}}({{h.rate}} / 5)</span> </p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4> 1. Combined Overall Rating and Section-wise Distribution</h4>
+                                <table class="table tatingtab">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Avg. Rating</th>
+                                            <th>% Rated ≥4</th>
+                                            <th>% Rated ≤3</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="feedbackForm.length !=0">
+                                        <tr *ngFor="let a1 of feedbackForm">
+                                            <td>{{a1.title}}</td>
+                                            <td>{{a1.avgrating}}</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4> 2. Section-Wise Summary</h4>
+                                <h5> A. Industry Fundamentals</h5>
+
+                                <table class="table tatingtab">
+                                    <thead>
+                                        <tr>
+                                            <th>Question</th>
+                                            <th>Avg. Rating</th>
+                                            <th>Rated 5</th>
+                                            <th>Rated 4</th>
+                                            <th>Rated 3</th>
+                                            <th>Rated 2</th>
+                                            <th>Rated 1</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="feedbackForm.length !=0">
+                                        <ng-container *ngFor="let b of feedbackForm[0].questions ;let rids = index">
+                                            <tr *ngIf="b.opvalues">
+                                                <td>
+                                                    <b>{{rids+1}}. {{b.text}}</b>
+                                                </td>
+                                                <td>{{b.avgrating}}</td>
+                                                <td>{{b.opvalues[0].percentage}}%</td>
+                                                <td>{{b.opvalues[1].percentage}}%</td>
+                                                <td>{{b.opvalues[2].percentage}}%</td>
+                                                <td>{{b.opvalues[3].percentage}}%</td>
+                                                <td>{{b.opvalues[4].percentage}}%</td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <h5> Comments ({{comments1.length}}):</h5>
+                                <p *ngFor="let fd of comments1; let fids=index ">
+                                    <span>
+                                        {{fids+1}} . <i><b>{{fd.username}}: </b></i>{{fd.answer}}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <h5> A. Language Lab</h5>
+
+                                <table class="table tatingtab">
+                                    <thead>
+                                        <tr>
+                                            <th>Question</th>
+                                            <th>Avg. Rating</th>
+                                            <th>Rated 5</th>
+                                            <th>Rated 4</th>
+                                            <th>Rated 3</th>
+                                            <th>Rated 2</th>
+                                            <th>Rated 1</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="feedbackForm.length !=0">
+                                        <ng-container *ngFor="let b of feedbackForm[1].questions ;let rids = index">
+                                            <tr *ngIf="b.opvalues">
+                                                <td>
+                                                    <b>{{rids+1}}. {{b.text}}</b>
+                                                </td>
+                                                <td>{{b.avgrating}}</td>
+                                                <td>{{b.opvalues[0].percentage}}%</td>
+                                                <td>{{b.opvalues[1].percentage}}%</td>
+                                                <td>{{b.opvalues[2].percentage}}%</td>
+                                                <td>{{b.opvalues[3].percentage}}%</td>
+                                                <td>{{b.opvalues[4].percentage}}%</td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <h5> Comments ({{comments2.length}}):</h5>
+                                <p *ngFor="let fd of comments2; let fids=index ">
+                                    <span>
+                                        {{fids+1}} . <i><b>{{fd.username}}: </b></i>{{fd.answer}}
+                                    </span>
+                                </p>
+
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <h5> A. Interactive Simulations</h5>
+
+                                <table class="table tatingtab">
+                                    <thead>
+                                        <tr>
+                                            <th>Question</th>
+                                            <th>Avg. Rating</th>
+                                            <th>Rated 5</th>
+                                            <th>Rated 4</th>
+                                            <th>Rated 3</th>
+                                            <th>Rated 2</th>
+                                            <th>Rated 1</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="feedbackForm.length !=0">
+                                        <ng-container *ngFor="let b of feedbackForm[2].questions ;let rids = index">
+                                            <tr *ngIf="b.opvalues">
+                                                <td>
+                                                    <b>{{rids+1}}. {{b.text}}</b>
+                                                </td>
+                                                <td>{{b.avgrating}}</td>
+                                                <td>{{b.opvalues[0].percentage}}%</td>
+                                                <td>{{b.opvalues[1].percentage}}%</td>
+                                                <td>{{b.opvalues[2].percentage}}%</td>
+                                                <td>{{b.opvalues[3].percentage}}%</td>
+                                                <td>{{b.opvalues[4].percentage}}%</td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <h5> Comments ({{comments3.length}}):</h5>
+                                <p *ngFor="let fd of comments3; let fids=index ">
+                                    <span>
+                                        {{fids+1}} . <i><b>{{fd.username}}: </b></i>{{fd.answer}}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <h5> A. Content Library</h5>
+
+                                <table class="table tatingtab">
+                                    <thead>
+                                        <tr>
+                                            <th>Question</th>
+                                            <th>Avg. Rating</th>
+                                            <th>Rated 5</th>
+                                            <th>Rated 4</th>
+                                            <th>Rated 3</th>
+                                            <th>Rated 2</th>
+                                            <th>Rated 1</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="feedbackForm.length !=0">
+                                        <ng-container *ngFor="let b of feedbackForm[3].questions ;let rids = index">
+                                            <tr *ngIf="b.opvalues">
+                                                <td>
+                                                    <b>{{rids+1}}. {{b.text}}</b>
+                                                </td>
+                                                <td>{{b.avgrating}}</td>
+                                                <td>{{b.opvalues[0].percentage}}%</td>
+                                                <td>{{b.opvalues[1].percentage}}%</td>
+                                                <td>{{b.opvalues[2].percentage}}%</td>
+                                                <td>{{b.opvalues[3].percentage}}%</td>
+                                                <td>{{b.opvalues[4].percentage}}%</td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <h5> Comments ({{comments4.length}}):</h5>
+                                <p *ngFor="let fd of comments4; let fids=index ">
+                                    <span>
+                                        {{fids+1}} . <i><b>{{fd.username}}: </b></i>{{fd.answer}}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <h5> A. PMS Simulation</h5>
+
+                                <table class="table tatingtab">
+                                    <thead>
+                                        <tr>
+                                            <th>Question</th>
+                                            <th>Avg. Rating</th>
+                                            <th>Rated 5</th>
+                                            <th>Rated 4</th>
+                                            <th>Rated 3</th>
+                                            <th>Rated 2</th>
+                                            <th>Rated 1</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="feedbackForm.length !=0">
+                                        <ng-container *ngFor="let b of feedbackForm[4].questions ;let rids = index">
+                                            <tr *ngIf="b.opvalues">
+                                                <td>
+                                                    <b>{{rids+1}}. {{b.text}}</b>
+                                                </td>
+                                                <td>{{b.avgrating}}</td>
+                                                <td>{{b.opvalues[0].percentage}}%</td>
+                                                <td>{{b.opvalues[1].percentage}}%</td>
+                                                <td>{{b.opvalues[2].percentage}}%</td>
+                                                <td>{{b.opvalues[3].percentage}}%</td>
+                                                <td>{{b.opvalues[4].percentage}}%</td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <h5> Comments ({{comments5.length}}):</h5>
+                                <p *ngFor="let fd of comments5; let fids=index ">
+                                    <span>
+                                        {{fids+1}} . <i><b>{{fd.username}}: </b></i>{{fd.answer}}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <h5> A. Overall Experience</h5>
+
+                                <table class="table tatingtab">
+                                    <thead>
+                                        <tr>
+                                            <th>Question</th>
+                                            <th>Avg. Rating</th>
+                                            <th>Rated 5</th>
+                                            <th>Rated 4</th>
+                                            <th>Rated 3</th>
+                                            <th>Rated 2</th>
+                                            <th>Rated 1</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="feedbackForm.length !=0">
+                                        <ng-container *ngFor="let b of feedbackForm[5].questions ;let rids = index">
+                                            <tr *ngIf="b.opvalues">
+                                                <td>
+                                                    <b>{{rids+1}}. {{b.text}}</b>
+                                                </td>
+                                                <td>{{b.avgrating}}</td>
+                                                <td>{{b.opvalues[0].percentage}}%</td>
+                                                <td>{{b.opvalues[1].percentage}}%</td>
+                                                <td>{{b.opvalues[2].percentage}}%</td>
+                                                <td>{{b.opvalues[3].percentage}}%</td>
+                                                <td>{{b.opvalues[4].percentage}}%</td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                    <hr>
+                                    <h5> Comments ({{comments6.length}}):</h5>
+                                    <p *ngFor="let fd of comments6; let fids=index ">
+                                        <span>
+                                            {{fids+1}} . <i><b>{{fd.username}}: </b></i>{{fd.answer}}
+                                        </span>
+                                    </p>
+                                </table>
+                            </div>
+                        </div>
+                        </div>
+
+                    <div  *ngIf="tabid == '2'">
+                    <div class="row" *ngIf="false">
+                        <div class="col-md-12">
+                            <hr>
+                            <h4><u> Industry Fundamentals</u></h4>
+                            <table class="table tatingtab">
+                                <thead>
+                                    <tr>
+                                        <th>Question</th>
+                                        <th>Answer</th>
+                                        <th>Total Count</th>
+                                        <th>Percentage(%) </th>
+
+                                        <!-- <th style="text-align: center;">Rating</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="feedbackForm.length !=0">
+                                    <ng-container *ngFor="let b of feedbackForm[0].questions ;let rid = index">
+                                        <tr *ngIf="b.opvalues">
+                                            <td colspan="4">
+                                                <div class="div_line">
+                                                    <div><b>{{rid+1}}. {{b.text}}</b></div>
+                                                    <div><star-rating style="float: right;" [starType]="'svg'" disabled
+                                                            [rating]="getQuestinRating(b.opvalues)"></star-rating>
+                                                    </div>
+                                                    <div> {{getQuestinRating(b.opvalues)}} out of 5</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr *ngFor="let c of b.opvalues">
+                                            <td></td>
+                                            <td>{{c.name}}</td>
+                                            <td>{{c.rating}}</td>
+                                            <td>{{c.percentage}}</td>
+                                        </tr>
+                                    </ng-container>
+
+                                </tbody>
+                            </table>
+                            <hr>
+                            <h4><u> Language Lab</u></h4>
+                            <table class="table tatingtab">
+                                <thead style="visibility: collapse;">
+                                    <tr>
+                                        <th>Question</th>
+                                        <th>Answer</th>
+                                        <th>Total Count</th>
+                                        <th>Percentage(%) </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="feedbackForm.length !=0">
+                                    <ng-container *ngFor="let b of feedbackForm[1].questions ;let rid = index">
+                                        <tr *ngIf="b.opvalues">
+                                            <td colspan="4">
+                                                <div class="div_line">
+                                                    <div><b>{{rid+1}}. {{b.text}}</b></div>
+                                                    <div><star-rating style="float: right;" [starType]="'svg'" disabled
+                                                            [rating]="getQuestinRating(b.opvalues)"></star-rating>
+                                                    </div>
+                                                    <div> {{getQuestinRating(b.opvalues)}} out of 5</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr *ngFor="let c of b.opvalues">
+                                            <td></td>
+                                            <td>{{c.name}}</td>
+                                            <td>{{c.rating}}</td>
+                                            <td>{{(c.rating/Feedbacks.length)*100}}</td>
+                                        </tr>
+                                    </ng-container>
+
+                                </tbody>
+                            </table>
+                            <hr>
+
+                            <h4><u> Interactive Simulations</u></h4>
+                            <table class="table tatingtab">
+                                <thead style="visibility: collapse;">
+                                    <tr>
+                                        <th>Question</th>
+                                        <th>Answer</th>
+                                        <th>Total Count</th>
+                                        <th>Percentage(%) </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="feedbackForm.length !=0">
+                                    <ng-container *ngFor="let b of feedbackForm[2].questions ;let rid = index">
+                                        <tr *ngIf="b.opvalues">
+                                            <td colspan="4">
+                                                <div class="div_line">
+                                                    <div><b>{{rid+1}}. {{b.text}}</b></div>
+                                                    <div><star-rating style="float: right;" [starType]="'svg'" disabled
+                                                            [rating]="getQuestinRating(b.opvalues)"></star-rating>
+                                                    </div>
+                                                    <div> {{getQuestinRating(b.opvalues)}} out of 5</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr *ngFor="let c of b.opvalues">
+                                            <td></td>
+                                            <td>{{c.name}}</td>
+                                            <td>{{c.rating}}</td>
+                                            <td>{{(c.rating/Feedbacks.length)*100}}</td>
+                                        </tr>
+                                    </ng-container>
+
+                                </tbody>
+                            </table>
+                            <hr>
+
+                            <h4><u> Content Library</u></h4>
+                            <table class="table tatingtab">
+                                <thead style="visibility: collapse;">
+                                    <tr>
+                                        <th>Question</th>
+                                        <th>Answer</th>
+                                        <th>Total Count</th>
+                                        <th>Percentage(%) </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="feedbackForm.length !=0">
+                                    <ng-container *ngFor="let b of feedbackForm[3].questions ;let rid = index">
+                                        <tr *ngIf="b.opvalues">
+                                            <td colspan="4">
+                                                <div class="div_line">
+                                                    <div><b>{{rid+1}}. {{b.text}}</b></div>
+                                                    <div><star-rating style="float: right;" [starType]="'svg'" disabled
+                                                            [rating]="getQuestinRating(b.opvalues)"></star-rating>
+                                                    </div>
+                                                    <div> {{getQuestinRating(b.opvalues)}} out of 5</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr *ngFor="let c of b.opvalues">
+                                            <td></td>
+                                            <td>{{c.name}}</td>
+                                            <td>{{c.rating}}</td>
+                                            <td>{{(c.rating/Feedbacks.length)*100}}</td>
+                                        </tr>
+                                    </ng-container>
+
+                                </tbody>
+                            </table>
+
+                            <hr>
+
+                            <h4><u> PMS Simulation</u></h4>
+                            <table class="table tatingtab">
+                                <thead style="visibility: collapse;">
+                                    <tr>
+                                        <th>Question</th>
+                                        <th>Answer</th>
+                                        <th>Total Count</th>
+                                        <th>Percentage(%) </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="feedbackForm.length !=0">
+                                    <ng-container *ngFor="let b of feedbackForm[4].questions ;let rid = index">
+                                        <tr *ngIf="b.opvalues">
+                                            <td colspan="4">
+                                                <div class="div_line">
+                                                    <div><b>{{rid+1}}. {{b.text}}</b></div>
+                                                    <div><star-rating style="float: right;" [starType]="'svg'" disabled
+                                                            [rating]="getQuestinRating(b.opvalues)"></star-rating>
+                                                    </div>
+                                                    <div> {{getQuestinRating(b.opvalues)}} out of 5</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr *ngFor="let c of b.opvalues">
+                                            <td></td>
+                                            <td>{{c.name}}</td>
+                                            <td>{{c.rating}}</td>
+                                            <td>{{(c.rating/Feedbacks.length)*100}}</td>
+                                        </tr>
+                                    </ng-container>
+
+                                </tbody>
+                            </table>
+                            <hr>
+
+                            <h4><u> Overall Experience</u></h4>
+                            <table class="table tatingtab">
+                                <thead style="visibility: collapse;">
+                                    <tr>
+                                        <th>Question</th>
+                                        <th>Answer</th>
+                                        <th>Total Count</th>
+                                        <th>Percentage(%) </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="feedbackForm.length !=0">
+                                    <ng-container *ngFor="let b of feedbackForm[5].questions ;let rid = index">
+                                        <tr *ngIf="b.opvalues">
+                                            <td colspan="4">
+                                                <div class="div_line">
+                                                    <div><b>{{rid+1}}. {{b.text}}</b></div>
+                                                    <div><star-rating style="float: right;" [starType]="'svg'" disabled
+                                                            [rating]="getQuestinRating(b.opvalues)"></star-rating>
+                                                    </div>
+                                                    <div> {{getQuestinRating(b.opvalues)}} out of 5</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr *ngFor="let c of b.opvalues">
+                                            <td></td>
+                                            <td>{{c.name}}</td>
+                                            <td>{{c.rating}}</td>
+                                            <td>{{(c.rating/Feedbacks.length)*100}}</td>
+                                        </tr>
+                                    </ng-container>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" >
+                        <div class="col-md-12">
+                            <table class="table table-hover">
+                                <thead>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Submitted On
+                                    </th>
+                                </thead>
+                                <tbody style="line-height: 5px !important;">
+                                    <tr *ngFor="let a of Feedbacks" (click)="rowclick(a)">
+                                        <td>
+                                            {{a.userName}}
+                                        </td>
+                                        <td>
+
+                                            {{a.CreatedOn | date:'dd/MM/yyyy HH:MM' }}
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="Feedbacks.length==0">
+                                        <td colspan="2" style="text-align: center;">No Rows</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row"
+                        *ngIf="(SelectedRow !=null && SelectedRow != undefined && SelectedRow !={}) && !isshow ">
+                        <div class="col-md-12">
+                            <h5>Feedback given by <b> <u>{{SelectedRow.userName}} </u></b> on <b>
+                                    {{SelectedRow.CreatedOn | date:'dd/MM/yyyy HH:MM' }}</b><button (click)="back()"
+                                    class="btn btn-success btn-sm" style="float: right;">Back</button></h5>
+                            <hr>
+                            <h4><u> Industry Fundamentals</u></h4>
+                            <div *ngFor="let b of SelectedRow.answers['Industry Fundamentals'] ;let i = index">
+                                <div><b>{{i+1}}. {{b.question}}</b> </div>
+                                <div>{{b.answer}}</div>
+                                <br>
+                            </div>
+                            <hr>
+                            <h4><u> Language Lab</u></h4>
+                            <div *ngFor="let b of SelectedRow.answers['Language Lab'] ;let i = index">
+                                <div><b>{{i+1}}. {{b.question}}</b> </div>
+                                <div>{{b.answer}}</div>
+                                <br>
+                            </div>
+                            <hr>
+                            <h4> <u> Interactive Simulations</u></h4>
+                            <div *ngFor="let b of SelectedRow.answers['Interactive Simulations'] ;let i = index">
+                                <div><b>{{i+1}}. {{b.question}}</b> </div>
+                                <div>{{b.answer}}</div>
+                                <br>
+                            </div>
+                            <hr>
+                            <h4> <u> Content Library</u></h4>
+                            <div *ngFor="let b of SelectedRow.answers['Content Library'] ;let i = index">
+                                <div><b>{{i+1}}. {{b.question}}</b> </div>
+                                <div>{{b.answer}}</div>
+                                <br>
+                            </div>
+                            <hr>
+                            <h4><u> PMS Simulation</u></h4>
+                            <div *ngFor="let b of SelectedRow.answers['PMS Simulation'] ;let i = index">
+                                <div><b>{{i+1}}. {{b.question}}</b> </div>
+                                <div>{{b.answer}}</div>
+                                <br>
+                            </div>
+                            <hr>
+                            <h4><u> Overall Experience</u> </h4>
+                            <div *ngFor="let b of SelectedRow.answers['Overall Experience'] ;let i = index">
+                                <div><b>{{i+1}}. {{b.question}}</b> </div>
+                                <div>{{b.answer}}</div>
+                                <br>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

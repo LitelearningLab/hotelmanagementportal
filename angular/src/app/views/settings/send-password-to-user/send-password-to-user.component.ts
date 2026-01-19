@@ -95,7 +95,7 @@ SelectedCompany:any;
         if (selectedData.length != 0) {
           let selected={selectedData:selectedData}
           this.apiService.CommonApi(Apiconfig.send_user_list.method, Apiconfig.send_user_list.url, selected).subscribe((result) => {
-            
+            this.notifyService.showSuccess("Emails sent successfully!");
           });
         }
         

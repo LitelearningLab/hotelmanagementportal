@@ -79,3 +79,16 @@
   height: 250px;
   width: 100%;
 }
+
+table {
+    overflow-y: auto;
+    height: 50vh;     /* !!!  HEIGHT MUST BE IN [ vh ] !!! */
+}
+
+thead th {
+    //background-color: white;
+    position: sticky;
+    top: 0;
+    background: #646E7A; color: white;
+    line-height: 5px;
+}

@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment';
 import { initializeApp } from "firebase/app";
 import { createUserWithEmailAndPassword,onAuthStateChanged , getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import data from 'src/app/menu/privilages';
+import { WebSocketService } from '../../_services/webSocketService.service';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +35,9 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private titleService: Title,
     private notifyService: NotificationService,
-    private store: DefaultStoreService
+    private store: DefaultStoreService,
+    private socketService: WebSocketService
+
   ) {
     const app = initializeApp(environment.firebaseConfig);
     this.auth = getAuth(app);
@@ -60,6 +63,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.logout();
     if (this.authService.currentUserValue) {
       this.router.navigate(['/app']);
     }
@@ -130,6 +134,15 @@ export class LoginComponent implements OnInit {
     } else {
       // this.notifyService.showError('Please Enter all mandatory fields');
     }
+  }
+
+  logout() {
+    this.authService.currentUser.subscribe(val => {
+      if (val && typeof val._id !== 'undefined') {
+        this.socketService.emit('disconnect', { user: val._id });
+      }
+    });
+
   }
 
 }

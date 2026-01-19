@@ -3150,7 +3150,7 @@ const generateSentenceLabReportDashbpard = async (req, res) => {
         console.log("generateSentenceLabReportDashbpard............")
 
 
-        let sentLabReports= admin.firestore().collection("sentLabReports")
+        let sentLabReports= admin.firestore().collection("SentenceLabReports")
         .where("companyId","==",req.body.company)
         //.where("timeCal",">=",startnum)
         //.where("timeCal","<=",endnum)
@@ -3160,15 +3160,15 @@ const generateSentenceLabReportDashbpard = async (req, res) => {
        // sentLabReportsDocs=sentres.docs.map(s=>s.data()).filter(o=>( o.dateTime !=undefined) && (new Date(o.dateTime) >= new Date( req.body.startdate) &&  new Date(o.dateTime) <= new Date( req.body.enddate)));
         console.log("SentLabReports fetched:", sentres.docs.map(s=>s.data()).length);
 
-        let callFlowReports= admin.firestore().collection("callFlowReports")   
-        .where("companyId","==",req.body.company)
-        //.where("timeCal",">=",startnum)
-        //.where("timeCal","<=",endnum)
-        let calres= await callFlowReports.get();
+        // let callFlowReports= admin.firestore().collection("callFlowReports")   
+        // .where("companyId","==",req.body.company)
+        // //.where("timeCal",">=",startnum)
+        // //.where("timeCal","<=",endnum)
+        // let calres= await callFlowReports.get();
         //callFlowReportsDocs=calres.docs.map(s=>s.data()).filter(o=>( o.dateTime !=undefined) && (new Date(o.dateTime) >= new Date( req.body.startdate) &&  new Date(o.dateTime) <= new Date( req.body.enddate)));
-        console.log("CallFlowReports fetched:", calres.docs.map(s=>s.data()).length);
+        //console.log("CallFlowReports fetched:", calres.docs.map(s=>s.data()).length);
 
-        var reportsdata={'sent': sentres.docs.map(s=>s.data()),'call':calres.docs.map(s=>s.data())};
+        var reportsdata={'sent': sentres.docs.map(s=>s.data())};
 
         // Send response
         res.status(200).send({
@@ -3193,7 +3193,7 @@ const pronunciationLabReportlistDashboard = async (req, res) => {
         //let startnum = new Date(req.body.perioddate[0]).getTime();
         //let endnum = new Date(req.body.perioddate[1]).getTime();
 
-        let proquery = admin.firestore().collection("proLabReports")
+        let proquery = admin.firestore().collection("ProLabReports")
             .where("companyId", "==", req.body.company)
            // .where("timeCal", ">=", startnum)
             //.where("timeCal", "<=", endnum)
@@ -3201,6 +3201,7 @@ const pronunciationLabReportlistDashboard = async (req, res) => {
         const prolabsnapshot = await proquery.get();
 
         let prolabres = prolabsnapshot.docs.map(s => s.data())//.filter(o=> (new Date(o.date)) >= (new Date(req.body.perioddate[0])) &&  (new Date(o.date)) <= (new Date(req.body.perioddate[1])));
+        console.log("pronunciationLabReportlistDashboard length : ",prolabres.length)
 
         res.status(200).send({ message: "pronuncation lab listing overall", data: prolabres, status: true })
     }
@@ -3218,10 +3219,27 @@ const learninghoursReportlistDashboard= async(req,res)=>{
         console.log(req.body)
     
      
-        let arsimtime= admin.firestore().collection("ARCallSimulationTimeStamp").where("companyID","==",req.body.company)//.orderBy('createdAt')
-        let prosimtime= admin.firestore().collection("ProfluentEnglishTimeStamp").where("companyID","=",req.body.company)//.orderBy('createdAt')
-        let softsimtime= admin.firestore().collection("SoftSkillsTimeStamp").where("companyID","==",req.body.company)
-        let proslernsimtime= admin.firestore().collection("processLearningTimeStamp").where("companyID","==",req.body.company)
+        // let arsimtime= admin.firestore().collection("ARCallSimulationTimeStamp").where("companyID","==",req.body.company)//.orderBy('createdAt')
+        // let prosimtime= admin.firestore().collection("ProfluentEnglishTimeStamp").where("companyID","=",req.body.company)//.orderBy('createdAt')
+        // let softsimtime= admin.firestore().collection("SoftSkillsTimeStamp").where("companyID","==",req.body.company)
+        // let proslernsimtime= admin.firestore().collection("processLearningTimeStamp").where("companyID","==",req.body.company)
+
+
+         //Process Learning
+        let pr1= admin.firestore().collection("FoodProductionTimeStamp").where("collegeId","==",req.body.company)
+        let pr2= admin.firestore().collection("FoodAndBeverageTimeStamp").where("collegeId","=",req.body.company)
+        let pr3= admin.firestore().collection("FrontOfficeTimeStamp").where("collegeId","==",req.body.company)
+        let pr4= admin.firestore().collection("HouseKeepingTimeStamp").where("collegeId","==",req.body.company)
+
+        //AR Call
+        let arsimtime= admin.firestore().collection("InteractiveSimulationTimeStamp").where("collegeId","==",req.body.company)
+        //Proflent English
+        let prosimtime= admin.firestore().collection("LanguageLabTimeStamp").where("collegeId","=",req.body.company)
+        //Soft Skills
+        let softsimtime= admin.firestore().collection("ContentLabTimeStamp").where("collegeId","==",req.body.company)
+
+      
+                
 
         // if(req.body.startdate){
         //     arsimtime=arsimtime.where("createdAt",">=", new Date( req.body.startdate)).where("createdAt","<=", new Date(req.body.enddate))//.where("companyID","==",req.body.company)
@@ -3253,15 +3271,33 @@ const learninghoursReportlistDashboard= async(req,res)=>{
         let ressnap3= await softsimtime.get()
         let rese3=ressnap3.docs.map(s=>s.data());
 
-        let ressnap4= await proslernsimtime.get()
-        let rese4=ressnap4.docs.map(s=>s.data());
+          //Process Learning
+        let ressnap4_1= await pr1.get()
+        let rese4_1=ressnap4_1.docs.map(s=>s.data());
+        let ressnap4_2= await pr2.get()
+        let rese4_2=ressnap4_2.docs.map(s=>s.data());
+        let ressnap4_3= await pr3.get()
+        let rese4_3=ressnap4_3.docs.map(s=>s.data());
+        let ressnap4_4= await pr4.get()
+        let rese4_4=ressnap4_4.docs.map(s=>s.data());
+
+
+         const processlearning = [...rese4_1,...rese4_2,...rese4_3,...rese4_4]
+
+
+        console.log(rese.length)
+        console.log(rese2.length)
+        console.log(rese3.length)
+
+        // let ressnap4= await proslernsimtime.get()
+        // let rese4=ressnap4.docs.map(s=>s.data());
 
         console.log(rese.length)
 
       
       
         //var udata1=udata.filter(m=>m.arcallsim.length !=0 || m.profluenteng.length !=0 || m.softskills.length !=0 || m.processlearning.length !=0  )
-        let retdata={"AR":rese,"ProFlue":rese2,"Softskill":rese3,"ProcessLern":rese4}
+        let retdata={"AR":rese,"ProFlue":rese2,"Softskill":rese3,"ProcessLern":processlearning}
 
         res.status(200).send({ message: "Learning Hours overall", data: retdata, status: true });
 
@@ -3330,21 +3366,28 @@ const getDashboardUsersReports = async (req, res) => {
   };
 const getDashboardCompaniesReports = async (req, res) => {
     try {
-        let sentLabReports = admin.firestore().collection("sentLabReports")
+        let sentLabReports = admin.firestore().collection("SentenceLabReports")
         let sentres = await sentLabReports.get();
 
-        let callFlowReports = admin.firestore().collection("callFlowReports")
-        let calres = await callFlowReports.get();
+        // let callFlowReports = admin.firestore().collection("callFlowReports")
+        // let calres = await callFlowReports.get();
 
-        let proquery = admin.firestore().collection("proLabReports")
+        let proquery = admin.firestore().collection("ProLabReports")
         const prolabsnapshot = await proquery.get();
 
         let prolabres = prolabsnapshot.docs.map(s => s.data())
 
-        let arsimtime = admin.firestore().collection("ARCallSimulationTimeStamp")//.where("companyID", "==", req.body.company)//.orderBy('createdAt')
-        let prosimtime = admin.firestore().collection("ProfluentEnglishTimeStamp")//.where("companyID", "=", req.body.company)//.orderBy('createdAt')
-        let softsimtime = admin.firestore().collection("SoftSkillsTimeStamp")//.where("companyID", "==", req.body.company)
-        let proslernsimtime = admin.firestore().collection("processLearningTimeStamp")//.where("companyID", "==", req.body.company)
+        //AR Call
+        let arsimtime = admin.firestore().collection("InteractiveSimulationTimeStamp")//.where("companyID", "==", req.body.company)//.orderBy('createdAt')
+        //Proflent English
+        let prosimtime = admin.firestore().collection("LanguageLabTimeStamp")//.where("companyID", "=", req.body.company)//.orderBy('createdAt')
+        //Soft Skills
+        let softsimtime = admin.firestore().collection("ContentLabTimeStamp")//.where("companyID", "==", req.body.company)
+        //Process Learning
+        let pr1= admin.firestore().collection("FoodProductionTimeStamp")//.where("collegeId","==",req.body.company)
+        let pr2= admin.firestore().collection("FoodAndBeverageTimeStamp")//.where("collegeId","=",req.body.company)
+        let pr3= admin.firestore().collection("FrontOfficeTimeStamp")//.where("collegeId","==",req.body.company)
+        let pr4= admin.firestore().collection("HouseKeepingTimeStamp")//.where("collegeId","==",req.body.company)
 
         let ressnap = await arsimtime.get()
         let rese = ressnap.docs.map(s => s.data());
@@ -3356,14 +3399,23 @@ const getDashboardCompaniesReports = async (req, res) => {
         let ressnap3 = await softsimtime.get()
         let rese3 = ressnap3.docs.map(s => s.data());
 
-        let ressnap4 = await proslernsimtime.get()
-        let rese4 = ressnap4.docs.map(s => s.data());
+        let ressnap4_1= await pr1.get()
+        let rese4_1=ressnap4_1.docs.map(s=>s.data());
+        let ressnap4_2= await pr2.get()
+        let rese4_2=ressnap4_2.docs.map(s=>s.data());
+        let ressnap4_3= await pr3.get()
+        let rese4_3=ressnap4_3.docs.map(s=>s.data());
+        let ressnap4_4= await pr4.get()
+        let rese4_4=ressnap4_4.docs.map(s=>s.data());
+        const processlearning = {prs1:rese4_1,prs2:rese4_2,prs3:rese4_3,prs4:rese4_4}
+        // let ressnap4 = await proslernsimtime.get()
+        // let rese4 = ressnap4.docs.map(s => s.data());
 
         //console.log(rese.length)
 
-        let retdata = { "AR": rese, "ProFlue": rese2, "Softskill": rese3, "ProcessLern": rese4 }
+        let retdata = { "AR": rese, "ProFlue": rese2, "Softskill": rese3, "ProcessLern": processlearning }
 
-        var reportsdata = { 'sent': sentres.docs.map(s => s.data()), 'call': calres.docs.map(s => s.data()), 'prolabres': prolabres, 'retdata': retdata };
+        var reportsdata = { 'sent': sentres.docs.map(s => s.data()),  'prolabres': prolabres, 'retdata': retdata };
         res.status(200).send({ message: "Overall companies report", data: reportsdata, status: true });
     }
     catch (error) {
@@ -3371,6 +3423,45 @@ const getDashboardCompaniesReports = async (req, res) => {
         res.status(500).send({ message: "somthing went wrong", status: false })
     }
 }
+
+const feedbackForm= async (req, res) => {
+    try {
+
+        console.log("feedback called");
+        console.log(req.body)
+        let proquery = admin.firestore().collection("feedbackform")//.where("collegeId", "==", req.body.company);
+        const feedbackrp = await proquery.get();
+        let feedbackrpres = feedbackrp.docs.map(s => s.data());
+
+        res.send({ message: "success", status: true, data: feedbackrpres, count: feedbackrpres.length })
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ message: "somthing went wrong", status: false })
+    }
+}
+const feedbackreport = async (req, res) => {
+    try {
+
+        console.log("feedback called");
+        console.log(req.body)
+        let proquery = admin.firestore().collection("feedbackResponses")//.where("collegeId", "==", req.body.company);
+        if (req.body.company !='0') {
+            proquery = proquery.where("collegeId", "==",  req.body.company);
+        }
+
+
+        const feedbackrp = await proquery.get();
+        let feedbackrpres = feedbackrp.docs.map(s => s.data());
+
+        res.send({ message: "success", status: true, data: feedbackrpres, count: feedbackrpres.length })
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ message: "somthing went wrong", status: false })
+    }
+}
+
 const getScenarioSummary = async (req, res) => {
     try {
         const { userid } = req.body;
@@ -3875,7 +3966,9 @@ module.exports = {
     learninghoursReportlistDashboard,
     pronunciationLabReportlistDashboard,
     getDashboardUsersReports,
-    getDashboardCompaniesReports
+    getDashboardCompaniesReports,
+    feedbackreport,
+    feedbackForm
 }
 
 

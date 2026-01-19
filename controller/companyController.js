@@ -24,9 +24,13 @@ let pwdhtmltemplate=`<html>
 <body>
     <div class="container">       
         <p><b>Dear {{User Name}},</b></p>
-        <p>Congratulations! Your account for the <b>Profluent Hotelier Learning App</b> has been successfully created.</p>  
+        <p>Congratulations! Your account for the <b>Profluent Hotelier</b> Learning App has been successfully created.</p>  
         <p><b>Login Details</b></p>  
-        <p>Email: {{email}} <br><span style="background: yellow;"> Password: {{pwd}}</span><br>App Link: <a target='_blank'  href="https://play.google.com/store/apps/details?id=com.profluent.hotelier.app&pcampaignid=web_share">Profluent Hotelier</a></p>     
+        <p>Email: {{email}} <br><span style="background: yellow;"> Password: {{pwd}}</span></p> 
+        <p> <b>App Link:</b></p> 
+        <p>Android Play Store: <a target="_blank" href="https://play.google.com/store/apps/details?id=com.profluent.hotelier.app">https://play.google.com/store/apps/details?id=com.profluent.hotelier.app</a><br>
+        iOS App Store: <a target="_blank" href="https://apps.apple.com/in/app/profluent-hotelier/id6754444749">https://apps.apple.com/in/app/profluent-hotelier/id6754444749</a>
+         </p>     
         <p>You can now log in using the above User ID & Password, and start your learning journey.</p>
       
         <p>Enjoy world-class, easy, and effective learning with the futuristic <b>*Profluent Hotelier App*.</b></p>
@@ -218,12 +222,13 @@ const sendUsersList = async (req, res) => {//for getting the company user list
             let etemplate=pwdhtmltemplate;
             etemplate=etemplate.replace("{{User Name}}",s.username).replace("{{pwd}}",s.password).replace("{{email}}",s.email)
             mailOptions.to = s.email;
-            mailOptions.subject="Your Profluent Hotelier Learning App Login Details";
+            mailOptions.subject="Profluent Hotelier - App Login Details";
             
             mailOptions.html=etemplate;
             //console.log(etemplate)
             transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
+                    console.log("error")
                     console.log(error);
                 } else {
                     console.log('Email sent: ' + info.response);

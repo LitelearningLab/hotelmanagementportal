@@ -143,6 +143,10 @@ adminRouter.post("/generateSentenceLabReportDashbpard",adminController.generateS
 adminRouter.post("/learninghoursReportlistDashboard",adminController.learninghoursReportlistDashboard)
 adminRouter.post("/pronunciationLabReportlistDashboard",adminController.pronunciationLabReportlistDashboard)
 adminRouter.post("/getDashboardUsersReports",adminController.getDashboardUsersReports)
+adminRouter.post("/getDashboardCompaniesReports",adminController.getDashboardCompaniesReports)
+
+adminRouter.post("/feedbackreport",adminController.feedbackreport)
+adminRouter.post("/feedbackForm",adminController.feedbackForm)
 
 
 module.exports=adminRouter

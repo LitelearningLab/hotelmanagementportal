@@ -454,18 +454,16 @@ ngOnInit(): void {
         row['words'] = "";
         row['timepart'] = c;
         row['timepart2'] =timekey// c.split(':')[0]+":"+c.split(':')[1];
-
+        row['lastScore']="0%";
         if (fword) {
           var index = fword.indexOf("NA");
           if (index !== -1) {
             fword.splice(index, 1);
           }
-
+        row['lastScore'] =fword[0].toFixed(2) +"%";
           //fword.pop()
-          row['lastScore']="0%";
-          if(Number.isInteger(fword.at(-1))){
-            row['lastScore'] =Math.floor(fword.at(-1))+"%";
-          }
+          
+          
           //row['lastScore'] =Math.floor(fword.at(-1))+"%";
           index = fword.indexOf(fword.at(-1));
           if (index !== -1) {

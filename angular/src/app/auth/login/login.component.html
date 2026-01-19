@@ -1,42 +1,71 @@
 <div class="app-body cus-login">
-    <div class="main d-flex align-items-center login-middle background-image;" style="background-image: url('assets/img/backgroundimagae.jpg'); object-fit: fill;">
-        <div class="container" >
+    <div class="main d-flex align-items-center login-middle background-image;"
+        style=" object-fit: fill; background-color: white; ">
+        <!-- background-image: url('assets/img/backgroundimagae.jpg'); -->
+        <div class="container">
             <div class="row">
-                <div class="col-md-5 mx-auto midl-spaces" >
-                    <div class="card-group" >
-                        <div class="card p-4" style="background-color: rgb(255, 255, 255); box-shadow: 0px 1px 10px rgb(18, 17, 17);" >
-                            <div class="card-body" >
+                <div class="col-md-6" >
+                                        <img style="    max-width: 100%;  height: auto;  margin-bottom: 5px;" src='assets/image/login2.png'  >
+
+                </div>
+                <div class="col-md-6">
+                    <div class="card-group" style="margin-top: 25px;">
+                        <div class="card p-4">
+                            <div class="card-body">
                                 <form [formGroup]="loginform" (ngSubmit)="onFormSubmit()" autocomplete="off">
-                                    <div class="login-logo">
-                                        <!-- <img *ngIf="logo" [src]='environment+logo'> -->
+                                    <br>
+                                   <div class="row">
+                                    <div class="col-6 " > <h4  style="    margin-top: 14px !important;" >Admin Portal</h4></div>
+                                    <div class="col-6 " >  <div class=""  >
+                                        <img style="float:right !important; float: right !important;    height: 43px;    width: 170px;    margin-bottom: 5px;" src='assets/img/profluent-logo-1.png'  >
+                                    </div></div>
+
+                                   </div>
+                                   
+                                                                        <!-- <div class="icon-wrapper">
+                                    <div class="icon-circle outer-circle">
+                                        <div class="icon-circle inner-circle">
+                                        <i class="fa fa-user fa-3x"></i>
+                                        </div>
+                                    </div>
+                                    </div> -->
+
+                                    <!-- <div class="login-logo">
                                         <img src='assets/img/profluent-logo-1.png'>
                                     </div>
-                                    <p class="text-muted" style="font-size: bold; font-family: monospace; color: black;">Sign In to your account</p>
+                                    <p class="text-muted"
+                                        style="font-size: bold; font-family: monospace; color: black;">Sign In to your
+                                        account</p> -->
+                                       
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fa fa-user-o"></i></span>
                                         </div>
                                         <input type="text" formControlName="username" class="form-control"
-                                            placeholder="Email" required name="username"  pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?">
+                                            placeholder="Email" required name="username"
+                                            pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?">
                                         <div class="req-content" *ngIf="from.username.errors && formsubmite">
                                             <div *ngIf="from.username.errors.required && formsubmite">
                                                 Email name is required.
                                             </div>
-                                            <div *ngIf="from.username.errors.pattern && formsubmite">Please enter valid Email</div>
+                                            <div *ngIf="from.username.errors.pattern && formsubmite">Please enter valid
+                                                Email</div>
                                         </div>
                                     </div>
-                                    <div class="input-group mb-4">
+                                    <div class="input-group ">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fa fa-lock"></i></span>
                                         </div>
-                                        <input [type]="passwordFieldType" formControlName="password" class="form-control"
-           placeholder="Password" required>
-    <div class="input-group-append">
-        <span class="input-group-text" (click)="togglePasswordVisibility()">
-            <i *ngIf="passwordFieldType === 'password'" class="fa fa-eye" aria-hidden="true"></i>
-            <i *ngIf="passwordFieldType === 'text'" class="fa fa-eye-slash" aria-hidden="true"></i>
-        </span>
-    </div>
+                                        <input [type]="passwordFieldType" formControlName="password"
+                                            class="form-control" placeholder="Password" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" (click)="togglePasswordVisibility()">
+                                                <i *ngIf="passwordFieldType === 'password'" class="fa fa-eye"
+                                                    aria-hidden="true"></i>
+                                                <i *ngIf="passwordFieldType === 'text'" class="fa fa-eye-slash"
+                                                    aria-hidden="true"></i>
+                                            </span>
+                                        </div>
                                         <div class="req-content" *ngIf="from.password.errors && formsubmite">
                                             <div *ngIf="from.password.errors.required && formsubmite">
                                                 Password is required.
@@ -44,14 +73,26 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-6">
-                                            <button type="submit"  [disabled]="submitted" class="btn btn-success px-4" style="font-weight: bold;">Login</button>
-                                        </div>
-                                        <div class="col-6 text-right">
-                                            <button type="button" class="btn btn-link password-links px-0" style="font-family: monospace; font-weight: bold;"
+                                        <div class="col-12 text-right">
+                                            <button type="button" class="btn btn-link password-links px-0"
+                                                style="color:darkgray"
                                                 routerLink="/auth/forgot">Forgot
                                                 password?</button>
                                         </div>
+                                        <div class="col-12">
+                                            <button type="submit" [disabled]="submitted" class="btn btn-success btn-block px-4"
+                                                style="font-weight: bold;">Login</button>
+                                        </div>
+                                        <div class="col-12 text-center">
+                                           <br>
+                                           <h5 style="color:darkgray !important; font-weight: 400 ; ">
+                                         
+                                            Unlock new possibilities! Derive exceptional value & results. 
+
+                                           </h5>
+                                         
+                                        </div>
+                                        
                                     </div>
                                 </form>
                             </div>

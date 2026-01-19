@@ -27,6 +27,11 @@ export const navItems: INavData[] = [
         url: '/app/reports/learninghoursreports',
         icon: ''
       },
+      {
+        name: 'Feedback Reports',
+        url: '/app/reports/feedbackreports',
+        icon: ''
+      },
       // {
       //   name: 'Add Template',
       //   url: '/app/email-template/add',
@@ -317,6 +322,7 @@ export const navItems: INavData[] = [
         url:"/app/settings/change-password",
         icon:''
       },
+      
       {
         name:'Profile',
         url:"/app/settings/profile",
