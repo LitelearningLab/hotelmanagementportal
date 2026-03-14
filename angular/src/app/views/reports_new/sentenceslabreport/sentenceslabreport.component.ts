@@ -206,6 +206,7 @@ ngOnInit(): void {
     }
   }
   filter(){
+    this.BacktoMain();
     debugger;
     this.Gridshowno=1;
     var res=this.filterForm;

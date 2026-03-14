@@ -201,6 +201,7 @@ export class LearningreportComponent {
     }
   }
   filter(){
+    this.BacktoMain();
     this.Gridshowno=1;
     var res=this.filterForm;
     this.RootData=[];

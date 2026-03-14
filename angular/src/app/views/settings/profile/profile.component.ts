@@ -168,14 +168,14 @@ export class ProfileComponent  implements OnInit{
             // this.form.controls['city'].setValue(result.data.city?result.data.city:"")
             // this.form.controls['country'].setValue(result.data.country?result.data.country:'')
             this.form.controls['team'].setValue(result.data.team?result.data.team:'')
-            this.form.controls['role'].setValue(result.data.role?result.data.role:'')
+            this.form.controls['year'].setValue(result.data.year?result.data.year:'')
            
             
             console.log(result.data.countryCity)
             this.countryCity=result.data.countryCity
             }
             })
-        console.log("inside of this arary")
+        console.log("inside of this arary") 
       }
     }
     

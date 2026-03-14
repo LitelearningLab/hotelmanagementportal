@@ -194,42 +194,63 @@ export class CommonTableComponent implements OnInit {
     let trainerdata=JSON.parse(localStorage.getItem('Trainer Login'))
     let companysubadmin=JSON.parse(localStorage.getItem("companysubadmin"))
     console.log(this.companybatchlisting,'asd1234asdasdasd');
-    
-    if(data || subadmin){
-      this.companyData=data
-      this.companyadmin=true
-      this.roleList=data.year
-      this.teamList=data.course
-      this.cityList = data.city
-      this.countryList=data.countryCity
-      
-      if(this.companybatchlisting){
-        let cityies=data.countryCity.flatMap(country=>country.city)
-        this.cityList=cityies
-      }
-    }
-    if(companysubadmin){
-      console.log(companysubadmin)
-      this.companyData=companysubadmin.companydata[0]
-      this.companyadmin=true
-      this.roleList=companysubadmin.companydata[0].year
-      this.teamList=companysubadmin.companydata[0].course
-      this.countryList=companysubadmin.companydata[0].countryCity
-      if(this.companybatchlisting){
-        let cityies=companysubadmin.companydata[0].countryCity.flatMap(country=>country.city)
-        this.cityList=cityies
-      }
-    }
-    if(trainerdata){
-      this.traineradmin=true
-        this.companyData=trainerdata.companydata
-        this.roleList=this.companyData.year
-        this.teamList=this.companyData.course
-        this.countryList=this.companyData.countryCity
-        if(this.companybatchlisting){
-          let cityies=this.companyData.countryCity.flatMap(country=>country.city)
-          this.cityList=cityies
+      this.store.companyList.subscribe(
+      (result) => {
+        if (result) {
+          this.companyList = result;
+          // this.cityList = result.city0
+          console.log(this.companyList)
         }
+      }
+    )
+    if (data || subadmin) {
+      this.companyadmin = true
+      if (data) {
+        this.companyData = data
+        this.roleList = data.year
+        this.teamList = data.course
+        this.cityList = data.city
+        this.countryList = data.countryCity
+
+        if (this.companybatchlisting) {
+          let cityies = data.countryCity.flatMap(country => country.city)
+          this.cityList = cityies
+        }
+      }
+      else {
+        this.companyData = this.companyList;
+
+      }
+    }
+    if (companysubadmin) {
+      console.log(companysubadmin)
+      if (companysubadmin) {
+
+        this.companyData = companysubadmin.companydata[0]
+        this.companyadmin = true
+        this.roleList = companysubadmin.companydata[0].year
+        this.teamList = companysubadmin.companydata[0].course
+        this.countryList = companysubadmin.companydata[0].countryCity
+        if (this.companybatchlisting) {
+          let cityies = companysubadmin.companydata[0].countryCity.flatMap(country => country.city)
+          this.cityList = cityies
+        }
+      }
+      else {
+        this.companyData = this.companyList;
+      }
+    }
+    if (trainerdata) {
+      
+      this.traineradmin = true
+      this.companyData = trainerdata.companydata
+      this.roleList = this.companyData.year
+      this.teamList = this.companyData.course
+      this.countryList = this.companyData.countryCity
+      if (this.companybatchlisting) {
+        let cityies = this.companyData.countryCity.flatMap(country => country.city)
+        this.cityList = cityies
+      }
     }
 
     this.search_value = ''
@@ -252,15 +273,8 @@ export class CommonTableComponent implements OnInit {
     this.filter_action_list.forEach((item, index) => {
       this.filterForm.addControl(`field_${index}`, new UntypedFormControl(''))
     });
-    this.store.companyList.subscribe(
-      (result) => {
-        if (result) {
-          this.companyList = result;
-          // this.cityList = result.city0
-          console.log(this.companyList)
-        }
-      }
-    )
+  
+   
     this.store.categoryList.subscribe(
       (result) => {
         if (result) {

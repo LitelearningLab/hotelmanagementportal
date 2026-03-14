@@ -132,19 +132,19 @@
                             <div class="col-md-6"*ngIf="companyadmin">
                                 <div class="group-control">
                              
-                                    <label for="web_header">Role <span
+                                    <label for="web_header">Year <span
                                             class="mandatory">*</span> </label>
                                             <ng-select [items]="rolenames" [addTag]="true" 
                                             [multiple]="true" ngModel name="role" 
-                                            #role="ngModel" required placeholder="Type And Enter"
+                                            #year="ngModel" required placeholder="Type And Enter"
                                             [searchable]="true" [clearable]="true" 
-                                            [ngClass]="{'is-invalid': profileForm.submitted && role.errors, 'is-valid': !role.errors && role.valid}">
+                                            [ngClass]="{'is-invalid': profileForm.submitted && year.errors, 'is-valid': !year.errors && year.valid}">
                                      <ng-template ng-option-tmp let-item="item" let-index="index">
                                          <b>{{ item }}</b>
                                      </ng-template>
                                  </ng-select>
-                                    <div *ngIf="profileForm.submitted && !role.valid">
-                                        <div class="invalid-feedback" *ngIf="role.errors.required">Role is required
+                                    <div *ngIf="profileForm.submitted && !year.valid">
+                                        <div class="invalid-feedback" *ngIf="year.errors.required">Year is required
                                         </div>
                                     </div>
                                 </div>
