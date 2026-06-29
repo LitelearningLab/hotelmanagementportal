@@ -3893,7 +3893,36 @@ const getPracticeDetailsBySentence = async (req, res) => {
 };
 
 
+const resetPassword = async (req, res) => {
+    const { email, currentPassword, newPassword } = req.body;
+    console.log("resetPassword called with:", { email, currentPassword, newPassword });
+    if (!email || !currentPassword || !newPassword) {
+        return res.status(400).send({ message: "email, currentPassword and newPassword are required", status: false });
+    }
 
+    try {
+        // Validate the user exists in the userNode collection by email
+        const userSnapshot = await admin.firestore().collection('UserNode').where('email', '==', email).limit(1).get();
+        if (userSnapshot.empty) {
+            return res.status(404).send({ message: 'User not found', status: false });
+        }
+      
+        const userDoc = userSnapshot.docs[0];
+        await userDoc.ref.update({ password: newPassword });
+
+        //await admin.auth().updateUser(uid, { password: newPassword });
+        return res.send({ message: 'Password updated successfully', status: true });
+    } catch (error) {
+        console.log('resetPassword error:', error);
+        if (error && error.error && error.error.message) {
+            return res.status(400).send({ message: error.error.message, status: false });
+        }
+        if (error && error.message) {
+            return res.status(400).send({ message: error.message, status: false });
+        }
+        return res.status(500).send({ message: 'Something went wrong', status: false });
+    }
+}
 
 
 
@@ -3968,7 +3997,8 @@ module.exports = {
     getDashboardUsersReports,
     getDashboardCompaniesReports,
     feedbackreport,
-    feedbackForm
+    feedbackForm,
+    resetPassword
 }
 
 

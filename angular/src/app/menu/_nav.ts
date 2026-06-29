@@ -322,7 +322,11 @@ export const navItems: INavData[] = [
         url:"/app/settings/change-password",
         icon:''
       },
-      
+      {
+        name:'Reset Password',
+        url:"/app/settings/reset-password",
+        icon:''
+      },
       {
         name:'Profile',
         url:"/app/settings/profile",
@@ -395,6 +399,11 @@ export const navItems: INavData[] = [
       {
         name:'Change Password',
         url:"/app/settings/change-password",
+        icon:''
+      },
+      {
+        name:'Reset Password',
+        url:"/app/settings/reset-password",
         icon:''
       },
       {

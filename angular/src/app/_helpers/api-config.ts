@@ -366,9 +366,9 @@ export const Apiconfig = {
         "url": "settings/widgets/save",
         "method": "post"
     },
-    resetPassword: {
-        "url": "api/admin/resetpassword",
-        "method": "post"
+    resetPassword:{
+        url:'resetPassword',
+        method:"post"
     },
     adminList: {
         "url": "admins/getadmins",

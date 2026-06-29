@@ -29,6 +29,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { SendPasswordToUserComponent } from '../settings/send-password-to-user/send-password-to-user.component';
 import { DxDataGridModule } from 'devextreme-angular';
 import { DxPopupModule, DxButtonModule, DxTemplateModule  } from 'devextreme-angular';
+import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
 @NgModule({
   declarations: [
     SettingsComponent,
@@ -49,7 +50,8 @@ import { DxPopupModule, DxButtonModule, DxTemplateModule  } from 'devextreme-ang
     ReturnReasonListComponent,
     ChangePasswordComponent,
     ProfileComponent,
-    SendPasswordToUserComponent
+    SendPasswordToUserComponent,
+    ResetpasswordComponent
   ],
   imports: [
     CommonModule,

@@ -148,5 +148,6 @@ adminRouter.post("/getDashboardCompaniesReports",adminController.getDashboardCom
 adminRouter.post("/feedbackreport",adminController.feedbackreport)
 adminRouter.post("/feedbackForm",adminController.feedbackForm)
 
+adminRouter.post("/resetPassword",adminController.resetPassword)
 
 module.exports=adminRouter

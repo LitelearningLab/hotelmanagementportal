@@ -113,7 +113,20 @@ export class FirebaseServiceService {
     });
   }
   
-
+async resetPasswordByEmail(data: any) {
+    const { email, currentPassword, newPassword } = data;
+    return new Promise(async (resolve, reject) => {
+      try {
+        const userCredential = await signInWithEmailAndPassword(this.auth, email, currentPassword);
+        const user = userCredential.user;
+        await updatePassword(user, newPassword);
+        resolve({ status: true, message: 'Password updated successfully' });
+      } catch (error) {
+        console.error('Error resetting password:', error);
+        reject({ error: error, status: false, message: 'Error occurred while resetting the password' });
+      }
+    });
+  }
 
     private showspinner() {
         this.spinner.Spinner('show');
