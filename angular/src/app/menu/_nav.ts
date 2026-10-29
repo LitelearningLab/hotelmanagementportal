@@ -218,6 +218,19 @@ export const navItems: INavData[] = [
     ]
   },
   {
+    id: "universities",
+    name: 'University',
+    url: '/app/universities',
+    icon: 'fa fa-university',
+    children: [
+      {
+        name: 'Upload Content',
+        url: '/app/universities/content',
+        icon: ''
+      }
+    ]
+  },
+  {
     id: "subadmin",
     name: 'Profluent Sub Admin',
     url: '/app/subadmin',

@@ -36,6 +36,19 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="group-control">
+                                    <label for="institutionPhoto">Institution Image</label>
+                                    <input type="file" id="institutionPhoto" class="form-control"
+                                        accept="image/png,image/jpeg,image/webp,image/gif"
+                                        (change)="onInstitutionPhotoSelected($event)">
+                                    <small class="form-text text-muted">Optional. PNG, JPEG, WebP or GIF, up to 5 MB.</small>
+                                    <img *ngIf="institutionPhotoPreview || CompanyDetails?.photo"
+                                        [src]="institutionPhotoPreview || CompanyDetails?.photo"
+                                        alt="Institution image preview"
+                                        style="display:block; max-width:160px; max-height:100px; margin-top:10px; object-fit:contain;">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="group-control">
                                     <label for="name">Primary Contact Person(Admin) <span class="mandatory">*</span> </label>
                                     <input type="text" id="name" ngModel name="name" #name="ngModel" required 
                                         class="form-control" placeholder="Enter Primary Contact Person's Name" maxlength="30"

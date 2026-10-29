@@ -537,17 +537,48 @@ const   addeditcompany = async (req, res) => { //for adding and editing companie
                 //delete data.city0;
             }
             data.joindate = new Date().toISOString()
-            const docRef = await admin.firestore().collection("UserNode").add(data)
-        
-            const id = docRef.id;                                                        //in this way we can add the id manually inside the collection
-            await admin.firestore().collection("UserNode").doc(id).set({ ...data, _id: id }, { merge: true }).then((result)=>{
-                 res.status(200).send({ message: "Company added", status: true, });
-            })
+            const firestore = admin.firestore();
+            const companyRef = firestore.collection("UserNode").doc();
+            const universityRef = firestore.collection("UniversityCollection").doc(companyRef.id);
+            const universityData = {
+                category: [],
+                collegeId: companyRef.id,
+                collegeName: data.companyname,
+                contentlibrary: "active",
+                fourcards: "active",
+                interactive: "active",
+                languagelab: "active",
+                photo: data.photo || "",
+                search: "active",
+                semster: "inactive"
+            };
+
+            const batch = firestore.batch();
+            batch.set(companyRef, { ...data, _id: companyRef.id });
+            batch.set(universityRef, universityData);
+            await batch.commit();
+
+            res.status(200).send({
+                message: "Company added",
+                status: true,
+                data: { companyId: companyRef.id, universityId: universityRef.id }
+            });
         }else if(type==="update"){
 
 
             let data=req.body
             await admin.firestore().collection("UserNode").doc(data._id).update(data);
+
+            const universitySnapshot = await admin.firestore()
+                .collection("UniversityCollection")
+                .where("collegeId", "==", data._id)
+                .limit(1)
+                .get();
+            if (!universitySnapshot.empty) {
+                const universityUpdate = { collegeName: data.companyname };
+                if (data.photo !== undefined) universityUpdate.photo = data.photo;
+                await universitySnapshot.docs[0].ref.update(universityUpdate);
+            }
 
             //const firestore = firebbase.firestore();
             //const batch = firestore.batch();
@@ -568,6 +599,128 @@ const   addeditcompany = async (req, res) => { //for adding and editing companie
     } catch (error) {
         console.error(error);
         res.status(500).send({ message: "Something went wrong", status: false });
+    }
+};
+
+const syncUniversityCollections = async (req, res) => {
+    try {
+        const firestore = admin.firestore();
+        const [companiesSnapshot, universitiesSnapshot] = await Promise.all([
+            firestore.collection("UserNode").where("access", "==", "company").get(),
+            firestore.collection("UniversityCollection").get()
+        ]);
+
+        const linkedCollegeIds = new Set();
+        universitiesSnapshot.forEach((doc) => {
+            const collegeId = doc.data().collegeId;
+            if (collegeId) linkedCollegeIds.add(collegeId);
+        });
+
+        const missingCompanies = companiesSnapshot.docs.filter(
+            (doc) => !linkedCollegeIds.has(doc.id)
+        );
+
+        // Firestore batches support at most 500 writes. Keep some headroom.
+        for (let offset = 0; offset < missingCompanies.length; offset += 450) {
+            const batch = firestore.batch();
+            missingCompanies.slice(offset, offset + 450).forEach((companyDoc) => {
+                const company = companyDoc.data();
+                const universityRef = firestore.collection("UniversityCollection").doc(companyDoc.id);
+                batch.set(universityRef, {
+                    category: [],
+                    collegeId: companyDoc.id,
+                    collegeName: company.companyname || company.college || "",
+                    contentlibrary: "active",
+                    fourcards: "active",
+                    interactive: "active",
+                    languagelab: "active",
+                    photo: company.photo || "",
+                    search: "active",
+                    semster: "inactive"
+                });
+            });
+            await batch.commit();
+        }
+
+        res.status(200).send({
+            message: "University collections synchronized",
+            status: true,
+            created: missingCompanies.length,
+            existing: companiesSnapshot.size - missingCompanies.length
+        });
+    } catch (error) {
+        console.error("Error synchronizing UniversityCollection:", error);
+        res.status(500).send({ message: "Unable to synchronize university collections", status: false });
+    }
+};
+
+const universityContentList = async (req, res) => {
+    try {
+        const snapshot = await admin.firestore().collection("UniversityCollection").get();
+        const data = snapshot.docs.map((doc) => ({
+            _id: doc.id,
+            ...doc.data(),
+            category: Array.isArray(doc.data().category) ? doc.data().category : []
+        }));
+        data.sort((a, b) => (a.collegeName || "").localeCompare(b.collegeName || ""));
+        res.status(200).send({ status: true, data });
+    } catch (error) {
+        console.error("Error loading university content:", error);
+        res.status(500).send({ status: false, message: "Unable to load university content" });
+    }
+};
+
+const addUniversityContent = async (req, res) => {
+    try {
+        const { universityId, categoryName, file } = req.body;
+        if (!universityId || !categoryName || !file || !file.url || !file.name) {
+            return res.status(400).send({
+                status: false,
+                message: "University, category name and uploaded file are required"
+            });
+        }
+
+        const universityRef = admin.firestore().collection("UniversityCollection").doc(universityId);
+        await admin.firestore().runTransaction(async (transaction) => {
+            const universityDoc = await transaction.get(universityRef);
+            if (!universityDoc.exists) throw new Error("University document not found");
+
+            const current = universityDoc.data();
+            const categories = Array.isArray(current.category) ? [...current.category] : [];
+            const normalizedName = categoryName.trim();
+            const index = categories.findIndex(
+                (item) => item && typeof item.name === "string" &&
+                    item.name.toLowerCase() === normalizedName.toLowerCase()
+            );
+            const uploadedFile = {
+                name: file.name,
+                url: file.url,
+                type: file.type || "application/octet-stream",
+                size: Number(file.size) || 0,
+                uploadedAt: firebbase.firestore.Timestamp.now()
+            };
+
+            if (index >= 0) {
+                const existingFiles = Array.isArray(categories[index].files)
+                    ? categories[index].files
+                    : [];
+                categories[index] = {
+                    ...categories[index],
+                    name: categories[index].name,
+                    files: [...existingFiles, uploadedFile]
+                };
+            } else {
+                categories.push({ name: normalizedName, files: [uploadedFile] });
+            }
+
+            transaction.update(universityRef, { category: categories });
+        });
+
+        res.status(200).send({ status: true, message: "University content added" });
+    } catch (error) {
+        console.error("Error adding university content:", error);
+        const status = error.message === "University document not found" ? 404 : 500;
+        res.status(status).send({ status: false, message: error.message || "Unable to add content" });
     }
 };
 
@@ -3940,6 +4093,9 @@ module.exports = {
     getSubadmin,
     deleteSubAdmin,
     companyList,
+    syncUniversityCollections,
+    universityContentList,
+    addUniversityContent,
     addeditcompany,
     company_subadmin_Delete,
     getCompany,

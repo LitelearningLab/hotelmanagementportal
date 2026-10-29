@@ -393,7 +393,7 @@ export class ViewsComponent implements OnInit, AfterViewInit {
     }else if(localStorage.getItem("Admin")){
       this.navItems.forEach((value) => {
         // console.log(value, 'this isvalue');
-        var checkmodule = [ , "Settings","Reports", "Profluent Sub Admin","Lecturer","Notification","Email Template","Users","Push Notification","Institution","Dashboard" ];
+        var checkmodule = [ , "Settings","Reports", "Profluent Sub Admin","Lecturer","Notification","Email Template","Users","Push Notification","Institution","University","Dashboard" ];
         if (value.name && checkmodule.includes(value.name)) {
           menu.push(value);
         }
@@ -449,7 +449,7 @@ export class ViewsComponent implements OnInit, AfterViewInit {
       // console.log(menu.length)
       this.navItems.forEach((value) => {
         // console.log(value)
-        var checkmodule = [ , "Settings","Lecturer","Notification","Email Template","Users","Push Notification","Institution","Dashboard" ,"Reports" ];
+        var checkmodule = [ , "Settings","Lecturer","Notification","Email Template","Users","Push Notification","Institution","University","Dashboard" ,"Reports" ];
         if (value.name && checkmodule.includes(value.name)) {
           if(value.name==="Users"){
           

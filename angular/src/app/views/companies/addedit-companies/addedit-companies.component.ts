@@ -65,6 +65,8 @@ export class AddeditCompaniesComponent {
   CountryISO = CountryISO;
   PhoneNumberFormat = PhoneNumberFormat;
   preferredCountries: CountryISO[] = [CountryISO.India];
+  institutionPhoto: File | null = null;
+  institutionPhotoPreview: string | null = null;
   constructor(
     private ActivatedRoute: ActivatedRoute,
     private apiService: ApiService,
@@ -294,6 +296,34 @@ export class AddeditCompaniesComponent {
     this.countryCity.splice(index, 1);
   }
 
+  onInstitutionPhotoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files && input.files.length ? input.files[0] : null;
+
+    if (!file) {
+      this.institutionPhoto = null;
+      this.institutionPhotoPreview = null;
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      input.value = '';
+      this.notifyService.showError('Please select an image file');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      input.value = '';
+      this.notifyService.showError('Institution image must be 5 MB or smaller');
+      return;
+    }
+
+    this.institutionPhoto = file;
+    const reader = new FileReader();
+    reader.onload = () => this.institutionPhotoPreview = reader.result as string;
+    reader.readAsDataURL(file);
+  }
+
   public onFormSubmit(companyForm: UntypedFormGroup) {
     console.log(this.countryCity);
 
@@ -324,7 +354,7 @@ export class AddeditCompaniesComponent {
         // New company creation
         this.firebaseService.checkmobileexsist(data.mobile).then((result) => {
           if (result === 0) {
-            this.firebaseService.createAccount(data.email, data.password).subscribe((res) => {
+            this.firebaseService.createAccount(data.email, data.password).subscribe(async (res) => {
               // Ensure team and role are in lowercase
               //let team = data.team.map(x => x.toLowerCase());
               //let role = data.role.map(x => x.toLowerCase());
@@ -336,6 +366,15 @@ export class AddeditCompaniesComponent {
               data.access = "company";
               data.countryCity = this.countryCity;
               data.slugname = data.name.toLowerCase();
+
+              if (this.institutionPhoto) {
+                try {
+                  data.photo = await this.firebaseService.uploadInstitutionPhoto(this.institutionPhoto);
+                } catch (error) {
+                  this.notifyService.showError('Unable to upload the institution image');
+                  return;
+                }
+              }
 
               console.log("----------------------------------");
               console.log(data);
@@ -368,7 +407,7 @@ export class AddeditCompaniesComponent {
 
         console.log(data);
 
-        this.apiService.CommonApi(Apiconfig.add_edit_company.method, Apiconfig.add_edit_company.url, data).subscribe((result) => {
+        const updateCompany = () => this.apiService.CommonApi(Apiconfig.add_edit_company.method, Apiconfig.add_edit_company.url, data).subscribe((result) => {
           if (result.status) {
             this.notifyService.showSuccess("Updated successfully");
             this.router.navigate(["app/companies/list"]);
@@ -376,6 +415,17 @@ export class AddeditCompaniesComponent {
             this.notifyService.showError(result.message);
           }
         });
+
+        if (this.institutionPhoto) {
+          this.firebaseService.uploadInstitutionPhoto(this.institutionPhoto)
+            .then(photo => {
+              data.photo = photo;
+              updateCompany();
+            })
+            .catch(() => this.notifyService.showError('Unable to upload the institution image'));
+        } else {
+          updateCompany();
+        }
       }
     } else {
       this.notifyService.showError('Please Enter all mandatory fields');

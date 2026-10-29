@@ -53,6 +53,13 @@ const routes: Routes = [
         }
       },
       {
+        path:'universities',
+        loadChildren:()=>import('./universities/universities.module').then(m=>m.UniversitiesModule),
+        data:{
+          title:"University Content"
+        }
+      },
+      {
         path:'batches',
         loadChildren:()=>import('./batches/batches.module').then(m=>m.BatchesModule),
         data:{

@@ -428,6 +428,28 @@ ngOnInit(): void {
     }
   }
   WordsData:any[]=[];
+  private extractFocusWordEntries(value: any, fallbackTime = ''): Array<{ timestamp: string, words: any[] }> {
+    if (!value) return [];
+
+    if (Array.isArray(value)) {
+      const containsOnlyValues = value.every(item =>
+        typeof item === 'string' || typeof item === 'number'
+      );
+      if (containsOnlyValues) {
+        return [{ timestamp: fallbackTime, words: value }];
+      }
+      return value.flatMap(item => this.extractFocusWordEntries(item, fallbackTime));
+    }
+
+    if (typeof value === 'object') {
+      return Object.entries(value).flatMap(([timestamp, entryValue]) =>
+        this.extractFocusWordEntries(entryValue, timestamp)
+      );
+    }
+
+    return [];
+  }
+
   onCellClickG3(ev){
     debugger;
     this.WordsData=[];
@@ -445,34 +467,31 @@ ngOnInit(): void {
     var res2=JSON.stringify(res1);
     var res=JSON.parse(res2);
     res.forEach(s=>{
-      var cols=Object.keys(s.focusWord);
-      cols.forEach(c => {
-        var row={};
-        row['dateTime']=s.dateTime;
-        var fword1 =  s.focusWord[c];
-        var fword=fword1[Object.keys(fword1)[0]]
-        var timekey=Object.keys(fword1)[0].split('T')[1]
-        row['words'] = "";
-        row['timepart'] = c;
-        row['timepart2'] =timekey// c.split(':')[0]+":"+c.split(':')[1];
-        row['lastScore']="0%";
-        if (fword) {
-          var index = fword.indexOf("NA");
-          if (index !== -1) {
-            fword.splice(index, 1);
-          }
-        row['lastScore'] =fword[0].toFixed(2) +"%";
-          //fword.pop()
-          
-          
-          //row['lastScore'] =Math.floor(fword.at(-1))+"%";
-          index = fword.indexOf(fword.at(-1));
-          if (index !== -1) {
-            fword.splice(index, 1);
-          }
-          row['words'] = fword.join(', ');
-          this.WordsData.push(row);
-        }
+      const entries = this.extractFocusWordEntries(s.focusWord ?? s.yy);
+      entries.forEach(entry => {
+        const numericValues = entry.words.filter(value => typeof value === 'number');
+        const words = entry.words.filter(value =>
+          typeof value === 'string' && value.trim() && value.toUpperCase() !== 'NA'
+        );
+        const timestamp = entry.timestamp || s.dateTime || '';
+        const timePart = timestamp.includes('T')
+          ? timestamp.split('T')[1]
+          : timestamp.includes(' ')
+            ? timestamp.split(' ')[1]
+            : timestamp;
+        const score = Number.isFinite(Number(s.lastScore))
+          ? Number(s.lastScore)
+          : numericValues.length
+            ? Number(numericValues[numericValues.length - 1])
+            : 0;
+
+        this.WordsData.push({
+          dateTime: s.dateTime,
+          timepart: timestamp,
+          timepart2: timePart ? timePart.substring(0, 8) : '-',
+          words: words.length ? words.join(', ') : '-',
+          lastScore: `${score.toFixed(2)}%`
+        });
       });
 
       // if(s.lastAttempt){

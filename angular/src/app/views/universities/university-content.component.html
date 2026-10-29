@@ -1,0 +1,110 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header"><h4>University Content</h4></div>
+    <div class="card-body">
+      <form #contentForm="ngForm" (ngSubmit)="uploadContent(contentForm)">
+        <div class="row">
+          <div class="col-md-4 form-group">
+            <label for="university">Institution <span class="mandatory">*</span></label>
+            <ng-select
+              id="university"
+              name="universityId"
+              [items]="universities"
+              bindLabel="collegeName"
+              bindValue="_id"
+              [(ngModel)]="selectedUniversityId"
+              (change)="onUniversityChange()"
+              placeholder="Select institution"
+              required>
+            </ng-select>
+          </div>
+
+          <div class="col-md-4 form-group">
+            <label for="categoryName">Content Category <span class="mandatory">*</span></label>
+            <ng-select
+              id="categoryName"
+              name="categoryName"
+              [items]="categoryOptions"
+              bindLabel="name"
+              bindValue="name"
+              [addTag]="true"
+              addTagText="Create category"
+              [(ngModel)]="categoryName"
+              [disabled]="!selectedUniversityId"
+              placeholder="Select or create a content category"
+              required>
+            </ng-select>
+            <small class="form-text text-muted" *ngIf="selectedUniversityId && !categoryOptions.length">
+              No categories exist for this institution. Type a name and press Enter to create one.
+            </small>
+          </div>
+
+          <div class="col-md-4 form-group">
+            <label for="contentTitle">Content Title <span class="mandatory">*</span></label>
+            <input
+              id="contentTitle"
+              name="contentTitle"
+              class="form-control"
+              [(ngModel)]="contentTitle"
+              maxlength="200"
+              placeholder="Example: Planning and Organization"
+              required>
+          </div>
+
+          <div class="col-md-12 form-group" *ngIf="selectedUniversity">
+            <label>Institution Features</label>
+            <div class="feature-grid">
+              <label class="feature-toggle" *ngFor="let feature of featureFields">
+                <span>{{ feature.label }}</span>
+                <span class="switch">
+                  <input
+                    type="checkbox"
+                    [checked]="isFeatureActive(feature.key)"
+                    (change)="toggleFeature(feature.key, $event)">
+                  <span class="slider"></span>
+                </span>
+                <small [class.active-status]="isFeatureActive(feature.key)">
+                  {{ isFeatureActive(feature.key) ? 'Active' : 'Inactive' }}
+                </small>
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-12 form-group">
+            <label for="contentFile">Content File <span class="mandatory">*</span></label>
+            <input
+              id="contentFile"
+              name="contentFile"
+              type="file"
+              class="form-control"
+              (change)="selectFile($event)"
+              required>
+            <small class="form-text text-muted">Documents, images, audio, video and archive files are supported, up to 100 MB.</small>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-success" [disabled]="uploading">
+          {{ uploading ? 'Uploading...' : 'Upload Content' }}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card" *ngIf="selectedUniversity">
+    <div class="card-header"><strong>{{ selectedUniversity.collegeName }} Content</strong></div>
+    <div class="card-body">
+      <p *ngIf="!selectedUniversity.category?.length" class="text-muted">No content categories have been added.</p>
+      <div class="category" *ngFor="let category of selectedUniversity.category">
+        <h5>{{ category.name }}</h5>
+        <small class="text-muted">Order: {{ category.order }}</small>
+        <ul *ngIf="category.subcategory?.length">
+          <li *ngFor="let content of category.subcategory">
+            <a *ngIf="content.link" [href]="content.link" target="_blank" rel="noopener noreferrer">{{ content.text }}</a>
+            <span *ngIf="!content.link">{{ content.text }}</span>
+          </li>
+        </ul>
+        <p *ngIf="!category.subcategory?.length" class="text-muted">No content in this category.</p>
+      </div>
+    </div>
+  </div>
+</div>

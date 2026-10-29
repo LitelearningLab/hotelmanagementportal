@@ -98,8 +98,16 @@ export class ListCompaniesComponent {
       'status': this.global_status,
       'search': this.global_search
     };
-    // this.getDataList(data);
-    this.getCompanies(data)
+    // Backfill UniversityCollection for institutions created before that
+    // collection was linked. Existing university records are left unchanged.
+    this.apiService.CommonApi(
+      Apiconfig.sync_university_collections.method,
+      Apiconfig.sync_university_collections.url,
+      {}
+    ).subscribe({
+      next: () => this.getCompanies(data),
+      error: () => this.getCompanies(data)
+    });
   };
   
   getCompanies(data){

@@ -32,6 +32,18 @@ export const Apiconfig = {
         url:"companeylist",
         method:"post"
     },
+    sync_university_collections:{
+        url:"syncuniversitycollections",
+        method:"post"
+    },
+    university_content_list:{
+        url:"university/content/list",
+        method:"get"
+    },
+    university_content_add:{
+        url:"university/content/add",
+        method:"post"
+    },
     batch_companies_list:{
         url:"batchcompaneylist",
         method:"post"

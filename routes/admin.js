@@ -25,6 +25,9 @@ adminRouter.post("/restoreuser",adminController.restoreUser)
 
 
 adminRouter.post("/companeylist",adminController.companyList)
+adminRouter.post("/syncuniversitycollections",adminController.syncUniversityCollections)
+adminRouter.get("/university/content/list",adminController.universityContentList)
+adminRouter.post("/university/content/add",adminController.addUniversityContent)
 adminRouter.post("/addeditcompany",adminController.addeditcompany)
 adminRouter.post("/deletecompany",adminController.companyDelete)
 adminRouter.post("/deletesubadmincompany",adminController.company_subadmin_Delete)
